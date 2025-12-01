@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dummy Tableau Dashboard</title>
+    <style>
+      body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:20px;background:#fff}
+      .header{display:flex;justify-content:space-between;align-items:center}
+      .tiles{display:flex;gap:12px;margin-top:16px}
+      .tile{flex:1;padding:12px;background:#f7f7f9;border-radius:8px;text-align:center}
+      .chart{margin-top:18px;height:300px;background:linear-gradient(180deg,#fff,#f3f6ff);border:1px solid #e6e9fb;border-radius:8px;padding:12px}
+      .bar{height:24px;background:#4f46e5;border-radius:6px;margin:8px 0}
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h3>Dummy Tableau Dashboard</h3>
+      <small>Last refreshed: <span id="ts"></span></small>
+    </div>
+    <div class="tiles">
+      <div class="tile"><strong>Participants</strong><div>1,234</div></div>
+      <div class="tile"><strong>Events</strong><div>56</div></div>
+      <div class="tile"><strong>Donations</strong><div>$12,345</div></div>
+    </div>
+    <div class="chart" role="img" aria-label="Sample chart">
+      <div style="font-weight:600">Engagement by Month</div>
+      <div class="bar" style="width:80%"></div>
+      <div class="bar" style="width:60%"></div>
+      <div class="bar" style="width:40%"></div>
+      <div class="bar" style="width:70%"></div>
+    </div>
+    <script>
+      document.getElementById('ts').textContent = new Date().toLocaleString();
+      // Small simulated refresh to mimic interactivity
+      setInterval(()=>{
+        const bars = document.querySelectorAll('.bar');
+        bars.forEach(b=> b.style.width = Math.floor(30+Math.random()*70) + '%');
+        document.getElementById('ts').textContent = new Date().toLocaleString();
+      },5000);
+    </script>
+  </body>
+</html>
