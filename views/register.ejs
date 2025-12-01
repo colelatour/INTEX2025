@@ -5,13 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Milestones</title>
+        <title>Register</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
         <!-- Google fonts-->
-
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="/stylesheets/styles.css" rel="stylesheet" />
     </head>
@@ -30,39 +30,45 @@
             <a href="/" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Milestones</h1>
-                    <p class="lead fw-normal text-dark mb-0">Manage your milestones</p>
+                    <h1 class="display-4 fw-bolder">Register</h1>
+                    <p class="lead fw-normal text-dark mb-0">Create your account</p>
                 </div>
             </div>
         </header>
-        <!-- Section-->
+        <!-- Register Form Section-->
         <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="d-flex justify-content-end mb-3">
-                    <a class="btn btn-custom-view" href="/milestones/add">Add New Milestone</a>
-                </div>
-                <div class="table-responsive-scroll">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% milestones.forEach(function(milestone) { %>
-                                <tr>
-                                    <td><%= milestone.title %></td>
-                                    <td><%= milestone.description %></td>
-                                    <td class="text-center">
-                                        <a class="me-2" href="/milestones/edit/<%= milestone.id %>"><i class="bi-pencil text-secondary"></i></a>
-                                        <a href="/milestones/delete/<%= milestone.id %>"><i class="bi-trash text-danger"></i></a>
-                                    </td>
-                                </tr>
-                            <% }); %>
-                        </tbody>
-                    </table>
+            <div class="container px-4 px-lg-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body p-5">
+                                <form action="/register" method="post">
+                                    <div class="mb-4">
+                                        <label for="username" class="form-label fw-bold">Username</label>
+                                        <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Choose a username" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="email" class="form-label fw-bold">Email</label>
+                                        <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Enter your email" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="password" class="form-label fw-bold">Password</label>
+                                        <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Choose a password" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="confirmPassword" class="form-label fw-bold">Confirm Password</label>
+                                        <input type="password" class="form-control form-control-lg" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" required>
+                                    </div>
+                                    <div class="d-grid mb-4">
+                                        <button type="submit" class="btn btn-custom-view btn-lg">Register</button>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-muted mb-0">Already have an account? <a href="/login" style="color: #3A3F3B; font-weight: bold;">Login here</a></p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

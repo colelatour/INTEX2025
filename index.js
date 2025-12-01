@@ -38,20 +38,25 @@ app.use('/donations', donationsRouter);
 
 // Routes
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Ella Rises' });
+  res.render('dashboard', { title: 'Ella Rises Dashboard' });
 });
 
 app.get('/login', (req, res) => {
   res.render('login');
 });
 
-app.get('/dashboard', (req, res) => {
-  res.render('dashboard');
+app.get('/register', (req, res) => {
+  res.render('register');
 });
 
 app.post('/login', (req, res) => {
   // TODO: Implement actual authentication logic
-  res.redirect('/dashboard');
+  res.redirect('/');
+});
+
+app.post('/register', (req, res) => {
+  // TODO: Implement actual registration logic
+  res.redirect('/login');
 });
 
 // Start the server

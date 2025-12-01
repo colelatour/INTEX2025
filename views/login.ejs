@@ -18,50 +18,54 @@
     <body>
         <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
-            <div class="container">
-                <a class="navbar-brand" href="/">Ella Rises</a>
+            <div class="container-fluid px-4">
+                <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo" style="height: 60px;"></a>
                 <div>
-                  <a class="btn btn-primary" href="/">Home</a>
-                  <a class="btn btn-secondary" href="/dashboard">Dashboard</a>
+                  <a class="btn btn-no-background" href="/login">Login</a>
                 </div>
             </div>
         </nav>
-        <!-- Masthead-->
-        <header class="bg-dark py-5">
-            <div class="container position-relative">
+        <!-- Header-->
+        <header class="bg-primary py-5 position-relative">
+            <a href="/" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Login</h1>
+                    <p class="lead fw-normal text-dark mb-0">Access your account</p>
+                </div>
+            </div>
+        </header>
+        <!-- Login Form Section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5">
                 <div class="row justify-content-center">
-                    <div class="col-xl-6">
-                        <div class="text-center">
-                            <div class="card text-dark">
-                                <div class="card-header bg-secondary text-white text-center">
-                                    <h1 class="card-title mb-0">Login</h1>
-                                </div>
-                                <div class="card-body">
-                                    <form action="/login" method="post">
-                                        <div class="mb-3">
-                                            <label for="username" class="form-label">Username</label>
-                                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="password" class="form-label">Password</label>
-                                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                                        </div>
-                                        <div class="d-grid mb-3">
-                                            <button type="submit" class="btn btn-secondary btn-lg">Login</button>
-                                        </div>
-                                        <div class="text-center">
-                                            <p class="text-muted mb-0">Don't have an account? <a href="/signup">Sign up here</a></p>
-                                        </div>
-                                    </form>
-                                </div>
+                    <div class="col-lg-6 col-md-8">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body p-5">
+                                <form action="/login" method="post">
+                                    <div class="mb-4">
+                                        <label for="username" class="form-label fw-bold">Username</label>
+                                        <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Enter your username" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="password" class="form-label fw-bold">Password</label>
+                                        <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Enter your password" required>
+                                    </div>
+                                    <div class="d-grid mb-4">
+                                        <button type="submit" class="btn btn-custom-view btn-lg">Login</button>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-muted mb-0">Don't have an account? <a href="/register" style="color: #3A3F3B; font-weight: bold;">Sign up here</a></p>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
+        </section>
         <!-- Footer-->
-        <footer class="footer bg-light">
+        <footer class="footer bg-dark">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
@@ -74,7 +78,7 @@
                             <li class="list-inline-item">⋅</li>
                             <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
                         </ul>
-                        <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2023. All Rights Reserved.</p>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; 2025 Ella Rises. All Rights Reserved.</p>
                     </div>
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">

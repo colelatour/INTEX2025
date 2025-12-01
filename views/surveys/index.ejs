@@ -18,16 +18,16 @@
     <body>
         <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
-            <div class="container">
-                <a class="navbar-brand" href="/">Ella Rises</a>
+            <div class="container-fluid px-4">
+                <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo" style="height: 60px;"></a>
                 <div>
-                  <a class="btn btn-primary" href="/">Home</a>
-                  <a class="btn btn-secondary" href="/dashboard">Dashboard</a>
+                  <a class="btn btn-no-background" href="/login">Login</a>
                 </div>
             </div>
         </nav>
         <!-- Header-->
-        <header class="bg-primary py-5">
+        <header class="bg-primary py-5 position-relative">
+            <a href="/" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder">Surveys</h1>
@@ -39,7 +39,7 @@
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="d-flex justify-content-end mb-3">
-                    <a class="btn btn-primary" href="/surveys/add">Add New Survey</a>
+                    <a class="btn btn-custom-view" href="/surveys/add">Add New Survey</a>
                 </div>
                 <div class="table-responsive-scroll">
                     <table class="table table-striped table-hover">
@@ -48,7 +48,7 @@
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Participant ID</th>
-                                <th class="fixed-column">Actions</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,7 +57,7 @@
                                     <td><%= survey.title %></td>
                                     <td><%= survey.description %></td>
                                     <td><%= survey.participant_id %></td>
-                                    <td class="text-center fixed-column">
+                                    <td class="text-center">
                                         <a class="me-2" href="/surveys/edit/<%= survey.id %>"><i class="bi-pencil text-secondary"></i></a>
                                         <a href="/surveys/delete/<%= survey.id %>"><i class="bi-trash text-danger"></i></a>
                                     </td>
@@ -82,7 +82,7 @@
                             <li class="list-inline-item">⋅</li>
                             <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
                         </ul>
-                        <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2023. All Rights Reserved.</p>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; 2025 Ella Rises. All Rights Reserved.</p>
                     </div>
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">
