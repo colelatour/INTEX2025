@@ -1,4 +1,6 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 /*!
 * Start Bootstrap - Landing Page v6.0.6 (https://startbootstrap.com/theme/landing-page)
 * Copyright 2013-2023 Start Bootstrap
@@ -34,35 +36,59 @@
   --bs-gray-700: #495057;
   --bs-gray-800: #343a40;
   --bs-gray-900: #212529;
-  --bs-primary: #0d6efd;
-  --bs-secondary: #6c757d;
-  --bs-success: #198754;
-  --bs-info: #0dcaf0;
-  --bs-warning: #ffc107;
-  --bs-danger: #dc3545;
-  --bs-light: #f8f9fa;
-  --bs-dark: #212529;
-  --bs-primary-rgb: 13, 110, 253;
-  --bs-secondary-rgb: 108, 117, 125;
-  --bs-success-rgb: 25, 135, 84;
-  --bs-info-rgb: 13, 202, 240;
-  --bs-warning-rgb: 255, 193, 7;
-  --bs-danger-rgb: 220, 53, 69;
-  --bs-light-rgb: 248, 249, 250;
-  --bs-dark-rgb: 33, 37, 41;
+
+  /* Ella Rises Custom Colors */
+  --ella-light-blue: #99B7C6;
+  --ella-purple: #978Ec4;
+  --ella-off-white: #F9F5EA;
+  --ella-light-pink: #FFD8D1;
+  --ella-pink: #F9AFB1;
+  --ella-green: #9AB59D;
+  --ella-dark-gray: #3A3F3B;
+  --ella-orange: #F4B092;
+  --ella-red: #CE325B;
+
+  /* Bootstrap Theme Colors - Overridden for Ella Rises */
+  --bs-primary: var(--ella-red);
+  --bs-secondary: var(--ella-purple);
+  --bs-accent: var(--ella-orange); /* Using accent for one of the colors */
+  --bs-success: var(--ella-green);
+  --bs-info: var(--ella-light-blue);
+  --bs-warning: var(--ella-orange); /* Reusing orange as warning for now */
+  --bs-danger: var(--ella-red); /* Reusing red as danger for now */
+  --bs-light: var(--ella-off-white);
+  --bs-dark: var(--ella-dark-gray);
+
+  /* RGB values for Bootstrap theme colors */
+  --bs-primary-rgb: 206, 50, 91; /* CE325B */
+  --bs-secondary-rgb: 151, 142, 196; /* 978Ec4 */
+  --bs-success-rgb: 154, 181, 157; /* 9AB59D */
+  --bs-info-rgb: 153, 183, 198; /* 99B7C6 */
+  --bs-warning-rgb: 244, 176, 146; /* F4B092 */
+  --bs-danger-rgb: 206, 50, 91; /* CE325B */
+  --bs-light-rgb: 249, 245, 234; /* F9F5EA */
+  --bs-dark-rgb: 58, 63, 59; /* 3A3F3B */
   --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
-  --bs-body-color-rgb: 33, 37, 41;
-  --bs-body-bg-rgb: 255, 255, 255;
-  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --bs-body-color-rgb: 58, 63, 59; /* Ella Dark Gray */
+  --bs-body-bg-rgb: 249, 245, 234; /* Ella Off-White */
+
+  /* Ella Rises Custom Fonts */
+  --ella-heading-font: 'DM Serif Display', serif;
+  --ella-body-font: 'Montserrat', sans-serif;
+  --ella-script-font: 'TT milk script', cursive; /* Fallback for custom script font */
+
+  /* Bootstrap Font Assignments - Overridden for Ella Rises */
+  --bs-font-sans-serif: var(--ella-body-font);
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
-  --bs-body-font-family: Lato, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  --bs-body-font-family: var(--ella-body-font);
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
-  --bs-body-color: #212529;
-  --bs-body-bg: #fff;
+  --bs-body-color: var(--ella-dark-gray); /* Text Color */
+  --bs-body-bg: var(--ella-off-white); /* Background Color */
   --bs-border-width: 1px;
   --bs-border-style: solid;
   --bs-border-color: #dee2e6;
@@ -73,10 +99,10 @@
   --bs-border-radius-xl: 1rem;
   --bs-border-radius-2xl: 2rem;
   --bs-border-radius-pill: 50rem;
-  --bs-link-color: #0d6efd;
-  --bs-link-hover-color: #0a58ca;
-  --bs-code-color: #d63384;
-  --bs-highlight-bg: #fff3cd;
+  --bs-link-color: var(--ella-purple); /* Using purple for links */
+  --bs-link-hover-color: var(--ella-red); /* Using red for link hover */
+  --bs-code-color: var(--ella-pink);
+  --bs-highlight-bg: var(--ella-light-pink);
 }
 
 *,
@@ -115,6 +141,7 @@ hr {
 h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   margin-top: 0;
   margin-bottom: 0.5rem;
+  font-family: var(--ella-heading-font); /* Changed to Ella Rises heading font */
   font-weight: 700;
   line-height: 1.2;
 }
