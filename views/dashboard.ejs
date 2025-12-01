@@ -25,7 +25,12 @@
             <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
                     style="height: 60px;"></a>
             <div>
-                <a class="btn btn-no-background" href="/login">Login</a>
+                <% if (user) { %>
+                    <span class="navbar-text me-3">Hi, <%= user.username %></span>
+                    <a class="btn btn-no-background" href="/logout">Logout</a>
+                <% } else { %>
+                    <a class="btn btn-no-background" href="/login">Login</a>
+                <% } %>
             </div>
         </div>
     </nav>
@@ -34,7 +39,13 @@
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center">
                 <h1 class="display-4 fw-bolder">Dashboard</h1>
-                <p class="lead fw-normal mb-0">Manage your application data</p>
+                <p class="lead fw-normal mb-0">
+                    <% if (user && user.role === 'manager') { %>
+                        Manage your application data
+                    <% } else { %>
+                        View application data
+                    <% } %>
+                </p>
             </div>
         </div>
     </header>
@@ -53,7 +64,13 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">Participants</h5>
                                     <!-- Product price-->
-                                    <p class="card-text">View and manage participants.</p>
+                                    <p class="card-text">
+                                        <% if (user && user.role === 'manager') { %>
+                                            View and manage participants.
+                                        <% } else { %>
+                                            View participants.
+                                        <% } %>
+                                    </p>
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -75,7 +92,13 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">Events</h5>
                                     <!-- Product price-->
-                                    <p class="card-text">View and manage events.</p>
+                                    <p class="card-text">
+                                        <% if (user && user.role === 'manager') { %>
+                                            View and manage events.
+                                        <% } else { %>
+                                            View events.
+                                        <% } %>
+                                    </p>
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -97,7 +120,13 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">Surveys</h5>
                                     <!-- Product price-->
-                                    <p class="card-text">View and manage surveys.</p>
+                                    <p class="card-text">
+                                        <% if (user && user.role === 'manager') { %>
+                                            View and manage surveys.
+                                        <% } else { %>
+                                            View surveys.
+                                        <% } %>
+                                    </p>
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -119,7 +148,13 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">Milestones</h5>
                                     <!-- Product price-->
-                                    <p class="card-text">View and manage milestones.</p>
+                                    <p class="card-text">
+                                        <% if (user && user.role === 'manager') { %>
+                                            View and manage milestones.
+                                        <% } else { %>
+                                            View milestones.
+                                        <% } %>
+                                    </p>
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -141,7 +176,13 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">Donations</h5>
                                     <!-- Product price-->
-                                    <p class="card-text">View and manage donations.</p>
+                                    <p class="card-text">
+                                        <% if (user && user.role === 'manager') { %>
+                                            View and manage donations.
+                                        <% } else { %>
+                                            View donations.
+                                        <% } %>
+                                    </p>
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -152,6 +193,7 @@
                         </div>
                     </div>
                 </div>
+                <% if (user && user.role === 'manager') { %>
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product image-->
@@ -174,6 +216,7 @@
                         </div>
                     </div>
                 </div>
+                <% } %>
             </div>
         </div>
     </section>
