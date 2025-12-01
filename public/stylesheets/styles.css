@@ -11064,3 +11064,266 @@ header.bg-primary {
 .navbar.bg-light {
   background-color: #fff !important;
 }
+/* ============================================
+   ANIMATION STYLES
+   ============================================ */
+
+/* Fade-in animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animation classes */
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.fade-in-scale {
+  animation: fadeInScale 0.5s ease-out forwards;
+}
+
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+.bounce-animation {
+  animation: bounce 0.5s ease;
+}
+
+/* Ripple effect */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(0);
+  animation: ripple-effect 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-effect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Smooth transitions */
+.smooth-transition {
+  transition: all 0.3s ease;
+}
+
+/* Card animations */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Button animations */
+.btn {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* Icon animations */
+.features-icons-icon i,
+.card-body i {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Navbar animation */
+.navbar {
+  transition: box-shadow 0.3s ease;
+}
+
+/* Parallax effect */
+.masthead {
+  transition: transform 0.1s ease-out;
+}
+
+/* Stagger animation delays */
+.col:nth-child(1) .card {
+  animation-delay: 0s;
+}
+
+.col:nth-child(2) .card {
+  animation-delay: 0.1s;
+}
+
+.col:nth-child(3) .card {
+  animation-delay: 0.2s;
+}
+
+.col:nth-child(4) .card {
+  animation-delay: 0.3s;
+}
+
+.col:nth-child(5) .card {
+  animation-delay: 0.4s;
+}
+
+.col:nth-child(6) .card {
+  animation-delay: 0.5s;
+}
+
+/* Smooth page load */
+body {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+/* Hover glow effect */
+.glow-on-hover:hover {
+  box-shadow: 0 0 20px rgba(153, 183, 198, 0.5);
+}
+
+/* Floating animation */
+@keyframes floating {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, var(--ella-light-blue), var(--ella-purple), var(--ella-pink));
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Slide up animation for footer */
+footer {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Dashboard logo roll-in animation */
+@keyframes rollInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%) rotate(-360deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+.dashboard-logo-animated {
+  animation: rollInFromLeft 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  display: block;
+  margin: 0 auto;
+}
