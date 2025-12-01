@@ -1,3 +1,4 @@
+Colors
 #99B7C6
 #978Ec4
 #F9F5EA
@@ -7,3 +8,8 @@
 #3A3F3B
 #F4B092
 #CE325B
+
+Fonts
+DM Serif Display
+Montserrat
+TT milk script
