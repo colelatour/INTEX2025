@@ -72,7 +72,7 @@
   --bs-black-rgb: 0, 0, 0;
 
   --bs-body-color-rgb: 58, 63, 59; /* Ella Dark Gray */
-  --bs-body-bg-rgb: 249, 245, 234; /* Ella Off-White */
+  --bs-body-bg-rgb: 255, 255, 255; /* White */
 
   /* Ella Rises Custom Fonts */
   --ella-heading-font: 'DM Serif Display', serif;
@@ -88,7 +88,7 @@
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: var(--ella-dark-gray); /* Text Color */
-  --bs-body-bg: var(--ella-off-white); /* Background Color */
+  --bs-body-bg: #fff; /* Background Color */
   --bs-border-width: 1px;
   --bs-border-style: solid;
   --bs-border-color: #dee2e6;
@@ -10976,15 +10976,16 @@ footer.footer {
 /* Custom Button Styles */
 .btn-no-background {
   background: transparent !important;
-  border: none !important;
+  border: 2px solid #3A3F3B !important;
   color: #3A3F3B !important;
-  padding: 0.375rem 0.75rem;
+  padding: 0.375rem 1.5rem;
+  border-radius: 50rem !important;
 }
 
 .btn-no-background:hover {
-  background: transparent !important;
-  color: #3A3F3B !important;
-  text-decoration: underline;
+  background-color: #3A3F3B !important;
+  color: #fff !important;
+  border: 2px solid #3A3F3B !important;
 }
 
 .btn-custom-view {
@@ -11052,4 +11053,14 @@ header.bg-primary .display-4 {
 header.bg-primary p,
 header.bg-primary .lead {
   color: #000 !important;
+}
+
+/* Banner Background Override */
+header.bg-primary {
+  background-color: #FFD8D1 !important;
+}
+
+/* Navigation Banner White Background */
+.navbar.bg-light {
+  background-color: #fff !important;
 }
