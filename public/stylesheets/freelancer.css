@@ -1,0 +1,139 @@
+/*!
+ * Start Bootstrap - Freelancer v7.0.7 (https://startbootstrap.com/theme/freelancer)
+ * Copyright 2013-2023 Start Bootstrap
+ * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-freelancer/blob/master/LICENSE)
+ */
+/*!
+ * Bootstrap v5.3.2 (https://getbootstrap.com/)
+ * Copyright 2011-2023 The Bootstrap Authors
+ * Copyright 2011-2023 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
+
+// Variables
+:root {
+  --bs-font-sans-serif: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-size: 1rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  --bs-body-color: #2c3e50;
+  --bs-body-bg: #fff;
+
+  --bs-primary: #1abc9c; // Teal
+  --bs-secondary: #2c3e50; // Dark Blue
+  --bs-success: #198754;
+  --bs-info: #0dcaf0;
+  --bs-warning: #ffc107;
+  --bs-danger: #dc3545;
+  --bs-light: #f8f9fa;
+  --bs-dark: #212529;
+  --bs-white: #fff;
+}
+
+// Global styling for the body
+body {
+  font-family: var(--bs-body-font-family);
+  font-size: var(--bs-body-font-size);
+  font-weight: var(--bs-body-font-weight);
+  line-height: var(--bs-body-line-height);
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", -apple-system, BlinkMacMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+// Navigation Bar
+#mainNav {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background-color: var(--bs-secondary);
+  .navbar-brand {
+    color: var(--bs-white);
+  }
+  .nav-link {
+    color: var(--bs-white);
+    &:hover {
+      color: var(--bs-primary);
+    }
+  }
+}
+
+// Masthead (Hero Section)
+.masthead {
+  padding-top: calc(6rem + 74px);
+  padding-bottom: 6rem;
+  background-color: var(--bs-primary);
+  color: var(--bs-white);
+  .masthead-heading {
+    font-size: 2.75rem;
+    line-height: 2.75rem;
+  }
+  .masthead-subheading {
+    font-size: 1.25rem;
+  }
+}
+
+// Divider
+.divider-custom {
+  margin: 1.25rem 0 1.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .divider-custom-line {
+    width: 100%;
+    max-width: 7rem;
+    height: 0.25rem;
+    background-color: var(--bs-secondary);
+    border-radius: 1rem;
+    border-color: var(--bs-secondary);
+  }
+  .divider-custom-icon {
+    color: var(--bs-secondary);
+    font-size: 2rem;
+    margin: 0 1rem;
+  }
+  &.divider-light {
+    .divider-custom-line {
+      background-color: var(--bs-white);
+    }
+    .divider-custom-icon {
+      color: var(--bs-white);
+    }
+  }
+}
+
+// Buttons
+.btn-xl {
+  padding: 1rem 1.75rem;
+  font-size: 1.25rem;
+}
+
+.btn-social {
+  height: 3.25rem;
+  width: 3.25rem;
+  font-size: 1.25rem;
+  line-height: 2rem;
+}
+
+// Footer
+.footer {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-color: var(--bs-secondary);
+  color: var(--bs-white);
+}
+
+.copyright {
+  background-color: #1a252f;
+}
