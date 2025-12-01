@@ -49,7 +49,7 @@
   --ella-red: #CE325B;
 
   /* Bootstrap Theme Colors - Overridden for Ella Rises */
-  --bs-primary: var(--ella-red);
+  --bs-primary: var(--ella-pink); /* Changed to Ella Rises main color */
   --bs-secondary: var(--ella-purple);
   --bs-accent: var(--ella-orange); /* Using accent for one of the colors */
   --bs-success: var(--ella-green);
@@ -60,7 +60,7 @@
   --bs-dark: var(--ella-dark-gray);
 
   /* RGB values for Bootstrap theme colors */
-  --bs-primary-rgb: 206, 50, 91; /* CE325B */
+  --bs-primary-rgb: 249, 175, 177; /* F9AFB1 */
   --bs-secondary-rgb: 151, 142, 196; /* 978Ec4 */
   --bs-success-rgb: 154, 181, 157; /* 9AB59D */
   --bs-info-rgb: 153, 183, 198; /* 99B7C6 */
@@ -99,8 +99,8 @@
   --bs-border-radius-xl: 1rem;
   --bs-border-radius-2xl: 2rem;
   --bs-border-radius-pill: 50rem;
-  --bs-link-color: var(--ella-purple); /* Using purple for links */
-  --bs-link-hover-color: var(--ella-red); /* Using red for link hover */
+  --bs-link-color: var(--ella-red); /* Changed to Ella Rises red for links */
+  --bs-link-hover-color: var(--ella-purple); /* Changed to Ella Rises purple for link hover */
   --bs-code-color: var(--ella-pink);
   --bs-highlight-bg: var(--ella-light-pink);
 }
@@ -1998,6 +1998,34 @@ progress {
   font-size: inherit;
   line-height: 1.5;
 }
+
+/* Custom CSS for Fixed Table Columns */
+.table-responsive-scroll {
+  overflow-x: auto;
+}
+
+.table-responsive-scroll th.fixed-column,
+.table-responsive-scroll td.fixed-column {
+  position: sticky;
+  right: 0; /* Pin to the right */
+  background-color: var(--bs-body-bg); /* Use body background for continuity */
+  z-index: 10;
+}
+
+/* Optional: Add a subtle shadow to the fixed column for better visual separation */
+.table-responsive-scroll th.fixed-column::before, /* Use ::before for right-fixed column */
+.table-responsive-scroll td.fixed-column::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -1px; /* Adjust as needed */
+  bottom: 0;
+  width: 1px;
+  box-shadow: -1px 0 3px rgba(0,0,0,0.1); /* Subtle shadow on the left */
+  z-index: 11;
+  pointer-events: none;
+}
+
 
 .col-form-label-lg {
   padding-top: calc(1rem + 1px);
