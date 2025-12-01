@@ -8,9 +8,9 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      database: 'ella_rises',
-      user:     'your_username', // a comment to remind user to replace
-      password: 'your_password'  // a comment to remind user to replace
+      database: 'ellarises',
+      user:     'postgres', // a comment to remind user to replace
+      password: 'Butterfingers24.'  // a comment to remind user to replace
     },
     migrations: {
       tableName: 'knex_migrations'
@@ -20,9 +20,9 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      database: 'ellarises',
+      user:     'postgres',
+      password: 'Butterfingers24.'
     },
     pool: {
       min: 2,
@@ -33,12 +33,14 @@ module.exports = {
     }
   },
 
-  production: {
+production: {
     client: 'postgresql',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      host: process.env.RDS_HOSTNAME,
+      user: process.env.RDS_USERNAME,
+      password: process.env.RDS_PASSWORD,
+      database: process.env.RDS_DB_NAME,
+      port: process.env.RDS_PORT || 5432
     },
     pool: {
       min: 2,

@@ -10,7 +10,7 @@ const milestonesRouter = require('./routes/milestones');
 const donationsRouter = require('./routes/donations');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
