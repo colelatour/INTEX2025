@@ -3,57 +3,104 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
         <title>Donations</title>
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
         <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/stylesheets/freelancer.css" rel="stylesheet" />
+        <link href="/stylesheets/styles.css" rel="stylesheet" />
     </head>
-    <body id="page-top">
+    <body>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+        <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
                 <a class="navbar-brand" href="/">Ella Rises</a>
-                <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/login">Login</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/dashboard">Dashboard</a></li>
-                    </ul>
+                <div>
+                  <a class="btn btn-primary" href="/">Home</a>
+                  <a class="btn btn-secondary" href="/dashboard">Dashboard</a>
                 </div>
             </div>
         </nav>
-
-        <div class="container mt-5 pt-5">
-            <h1 class="mb-4">Donations</h1>
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Donor Name</th>
-                        <th>Amount</th>
-                        <th>Donation Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% donations.forEach(function(donation) { %>
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Donations</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Manage your donations</p>
+                </div>
+            </div>
+        </header>
+        <!-- Section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-primary" href="/donations/add">Add New Donation</a>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
                         <tr>
-                            <td><%= donation.donor_name %></td>
-                            <td><%= donation.amount %></td>
-                            <td><%= donation.donation_date %></td>
+                            <th>Donor Name</th>
+                            <th>Amount</th>
+                            <th>Donation Date</th>
+                            <th>Actions</th>
                         </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-        </div>
-
+                    </thead>
+                    <tbody>
+                        <% donations.forEach(function(donation) { %>
+                            <tr>
+                                <td><%= donation.donor_name %></td>
+                                <td><%= donation.amount %></td>
+                                <td><%= donation.donation_date %></td>
+                                <td>
+                                    <a class="btn btn-sm btn-secondary" href="/donations/edit/<%= donation.id %>"><i class="bi-pencil"></i></a>
+                                    <a class="btn btn-sm btn-danger" href="/donations/delete/<%= donation.id %>"><i class="bi-trash"></i></a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="footer bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                        <ul class="list-inline mb-2">
+                            <li class="list-inline-item"><a href="#!">About</a></li>
+                            <li class="list-inline-item">⋅</li>
+                            <li class="list-inline-item"><a href="#!">Contact</a></li>
+                            <li class="list-inline-item">⋅</li>
+                            <li class="list-inline-item"><a href="#!">Terms of Use</a></li>
+                            <li class="list-inline-item">⋅</li>
+                            <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
+                        </ul>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2023. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item me-4">
+                                <a href="#!"><i class="bi-facebook fs-3"></i></a>
+                            </li>
+                            <li class="list-inline-item me-4">
+                                <a href="#!"><i class="bi-twitter fs-3"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!"><i class="bi-instagram fs-3"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/javascripts/scripts.js"></script>
     </body>
 </html>
