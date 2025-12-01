@@ -42,7 +42,7 @@
   --ella-purple: #978Ec4;
   --ella-off-white: #F9F5EA;
   --ella-light-pink: #FFD8D1;
-  --ella-pink: #F9AFB1;
+  --ella-pink: #FFD8D1;
   --ella-green: #9AB59D;
   --ella-dark-gray: #3A3F3B;
   --ella-orange: #F4B092;
@@ -60,7 +60,7 @@
   --bs-dark: var(--ella-dark-gray);
 
   /* RGB values for Bootstrap theme colors */
-  --bs-primary-rgb: 249, 175, 177; /* F9AFB1 */
+  --bs-primary-rgb: 255, 216, 209; /* FFD8D1 */
   --bs-secondary-rgb: 151, 142, 196; /* 978Ec4 */
   --bs-success-rgb: 154, 181, 157; /* 9AB59D */
   --bs-info-rgb: 153, 183, 198; /* 99B7C6 */
@@ -11028,8 +11028,8 @@ footer.footer a:hover {
 
 /* Navigation Centered Content */
 .navbar .container-fluid {
-  padding-left: 5% !important;
-  padding-right: 5% !important;
+  padding-left: 15% !important;
+  padding-right: 15% !important;
 }
 
 /* Login Form Styles */
@@ -11040,4 +11040,16 @@ footer.footer a:hover {
 
 .form-label {
   color: #3A3F3B !important;
+}
+
+/* Header Text Colors */
+header.bg-primary h1,
+header.bg-primary .h1,
+header.bg-primary .display-4 {
+  color: #000 !important;
+}
+
+header.bg-primary p,
+header.bg-primary .lead {
+  color: #000 !important;
 }
