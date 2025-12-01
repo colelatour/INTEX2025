@@ -1,7 +1,7 @@
 module.exports = {
   users: [
-    { id: 1, username: 'manager', role: 'manager' },
-    { id: 2, username: 'commonuser', role: 'common' }
+    { id: 1, username: 'manager', password: 'password123', role: 'manager' },
+    { id: 2, username: 'commonuser', password: 'password123', role: 'common' }
   ],
   participants: [
     { id: 1, name: 'John Doe', email: 'john.doe@example.com' },

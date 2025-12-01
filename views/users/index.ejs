@@ -25,7 +25,12 @@
             <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
                     style="height: 60px;"></a>
             <div>
-                <a class="btn btn-no-background" href="/login">Login</a>
+                <% if (user) { %>
+                    <span class="navbar-text me-3">Hi, <%= user.username %></span>
+                    <a class="btn btn-no-background" href="/logout">Logout</a>
+                <% } else { %>
+                    <a class="btn btn-no-background" href="/login">Login</a>
+                <% } %>
             </div>
         </div>
     </nav>
