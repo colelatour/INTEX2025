@@ -136,6 +136,10 @@ app.get('/', (req, res) => {
   res.render('index', { title: 'Ella Rises', user: req.session.user || null });
 });
 
+app.get('/teapot', (req, res) => {
+  res.status(418).send("I'm a teapot");
+});
+
 
 // Start the server
 app.listen(port, () => {
