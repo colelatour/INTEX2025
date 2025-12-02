@@ -78,7 +78,8 @@ app.get('/logout', (req, res) => {
       console.error('Error destroying session:', err);
       return res.redirect('/');
     }
-    res.redirect('/login');
+    // Redirect to the previous page or a default page if Referer is not available
+    res.redirect(req.get('Referer') || '/');
   });
 });
 
