@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const dummyData = require('../dummy-data'); // Require dummy data
 
 // GET users listing.
 router.get('/', function(req, res, next) {
-  // TODO: Fetch users from database
-  const users = [
-    { id: 1, username: 'admin', email: 'admin@ellarises.org', role: 'Admin' },
-    { id: 2, username: 'manager', email: 'manager@ellarises.org', role: 'Manager' },
-    { id: 3, username: 'user1', email: 'user1@ellarises.org', role: 'User' }
-  ];
+  // TODO: Fetch users from database (currently using dummyData)
+  const users = dummyData.users; // Use dummyData.users
+  console.log('Users data being sent to users/index.ejs:', users); // Debug log
   res.render('users/index', { users: users });
 });
 

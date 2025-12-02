@@ -46,19 +46,20 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  const user = dummyData.users.find(u => u.username === username);
+  const { email, password } = req.body; // Changed from username to email
+  const user = dummyData.users.find(u => u.email === email); // Find user by email
 
   if (user) {
-    // In a real app, passwords would be hashed. For dummy data, we compare plaintext.
-    // If you were hashing, it would look like: await bcrypt.compare(password, user.password)
-    if (password === user.password) {
-      req.session.user = { id: user.id, username: user.username, role: user.role };
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (passwordMatch) {
+      req.session.user = { id: user.id, username: user.username, firstName: user.firstName, role: user.role }; // Include firstName in session
+      console.log('User object after successful login:', user); // Debug log
+      console.log('Session user object after successful login:', req.session.user); // Debug log
       req.session.message = 'Login successful!'; // Set a success message
       return res.redirect('/');
     }
   }
-  req.session.message = 'Invalid username or password';
+  req.session.message = 'Invalid email or password'; // Updated message
   res.redirect('/login');
 });
 
@@ -66,20 +67,52 @@ app.get('/register', (req, res) => {
   res.render('register', { user: req.session.user || null });
 });
 
-app.post('/register', (req, res) => {
-  // TODO: Implement actual registration logic
-  req.session.message = 'Registration not yet implemented.';
-  res.redirect('/login');
+app.post('/register', async (req, res) => {
+  const { firstName, lastName, username, email, password } = req.body;
+
+  // Check if username or email already exists
+  const usernameExists = dummyData.users.some(user => user.username === username);
+  const emailExists = dummyData.users.some(user => user.email === email);
+
+  if (usernameExists) {
+    req.session.message = 'Username already taken.';
+    return res.redirect('/register');
+  }
+
+  if (emailExists) {
+    req.session.message = 'Email already registered.';
+    return res.redirect('/register');
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = {
+      id: dummyData.users.length > 0 ? Math.max(...dummyData.users.map(u => u.id)) + 1 : 1,
+      firstName,
+      lastName,
+      username,
+      email,
+      password: hashedPassword,
+      role: 'common' // Default role for new registrations
+    };
+    dummyData.users.push(newUser);
+    req.session.message = 'Registration successful! Please log in.';
+    res.redirect('/login');
+  } catch (error) {
+    console.error('Error during registration:', error);
+    req.session.message = 'Registration failed. Please try again.';
+    res.redirect('/register');
+  }
 });
 
 app.get('/logout', (req, res) => {
+  const redirectTo = req.query.redirect || req.get('Referer') || '/'; // Get redirect from query, then Referer, then default
   req.session.destroy(err => {
     if (err) {
       console.error('Error destroying session:', err);
       return res.redirect('/');
     }
-    // Redirect to the previous page or a default page if Referer is not available
-    res.redirect(req.get('Referer') || '/');
+    res.redirect(redirectTo);
   });
 });
 
