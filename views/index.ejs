@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>
-        <%= title %>
-    </title>
+    <title>Ella Rises</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
     <!-- Bootstrap icons-->
@@ -23,71 +21,100 @@
 
 <body>
     <!-- Navigation-->
-    <nav class="navbar navbar-light bg-light static-top">
-        <div class="container">
-            <a class="navbar-brand" href="#!"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
-                    style="height: 50px;"></a>
-            <div>
-                <a class="btn btn-primary" href="/login">Login</a>
-                <a class="btn btn-secondary" href="/dashboard">Dashboard</a>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
+                style="height: 60px;"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse text-end" id="navbarNav">
+            <ul class="navbar-nav ms-auto justify-content-end align-items-center">
+                <% if (user) { %>
+                    <li class="nav-item me-lg-3 my-1">
+                        <span class="navbar-text">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
+                    </li>
+                    <li class="nav-item mx-lg-1 my-1">
+                        <a class="btn btn-no-background" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item mx-lg-1 my-1">
+                        <a class="btn btn-no-background" href="/logout">Logout</a>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item mx-lg-1 my-1">
+                        <a class="btn btn-no-background" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item mx-lg-1 my-1">
+                        <a class="btn btn-no-background" href="/login">Login</a>
+                    </li>
+                <% } %>
+            </ul>
         </div>
-    </nav>
-    <!-- Masthead-->
-    <header class="masthead">
-        <div class="container position-relative">
-            <div class="row justify-content-center">
-                <div class="col-xl-6">
-                    <div class="text-center text-white">
-                        <!-- Page heading-->
-                        <h1 class="visually-hidden">Ella Rises</h1>
-                        <img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
-                            class="img-fluid mb-5 d-block mx-auto" style="max-height: 200px;">
-                    </div>
-                </div>
+    </div>
+</nav>
+    <!-- Header-->
+    <header class="bg-primary py-2">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center">
+                <h1 class="display-4 fw-bolder">Welcome to Ella Rises</h1>
+                <p class="lead fw-normal mb-0">
+                    Empowering young women to pursue higher education through high-impact multicultural activities focused on mariachi and STEAM
+                </p>
             </div>
         </div>
     </header>
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="text-center mb-5">What We Offer</h2>
+            <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
+                <div class="col mb-5">
+<div class="card text-decoration-none">
+                        <img class="card-img-top card-img-fixed-height" src="/images/classroom.avif" alt="Classroom" />
+                        <div class="card-body">
+                            <p class="card-text text-center">Education Opportunities</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+<div class="card text-decoration-none">
+                        <img class="card-img-top card-img-fixed-height" src="/images/steam.avif" alt="Steam" />
+                        <div class="card-body">
+                            <p class="card-text text-center">STEAM Activities</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+<div class="card text-decoration-none">
+                        <img class="card-img-top card-img-fixed-height" src="/images/ballet.avif" alt="Ballet" />
+                        <div class="card-body">
+                            <p class="card-text text-center">Ballet Folklorico</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+<div class="card text-decoration-none">
+                        <img class="card-img-top card-img-fixed-height img-focus-custom" src="/images/mariachi.avif" alt="Mariachi" />
+                        <div class="card-body">
+                            <p class="card-text text-center">Mariachi</p>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </section>
 
-    <!-- Icons Grid-->
-    <section class="features-icons bg-light text-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                        <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
-                        <h2>Fully Responsive</h2>
-                        <p class="lead mb-0">This theme will look great on any device, no matter the size!</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                        <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
-                        <h2>Bootstrap 5 Ready</h2>
-                        <p class="lead mb-0">Featuring the latest build of the new Bootstrap 5 framework!</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                        <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
-                        <h2>Easy to Use</h2>
-                        <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
-                    </div>
-                </div>
+        <!-- Tableau embed section -->
+        <section class="py-5 mb-5">
+            <div class="container px-4 px-lg-5 mt-3">
+                <h2 class="fw-bolder mb-3 text-center">Our Impact</h2>
+                <div class="ratio ratio-16x9">
+                    <iframe src="/dummy-tableau.html" title="Dummy Tableau Dashboard" style="border:0; width:100%; height:100%;" allowfullscreen></iframe>
             </div>
-        </div>
-    </section>
-    <!-- Call to Action-->
-    <section class="call-to-action text-white text-center" id="signup">
-        <div class="container position-relative">
-            <div class="row justify-content-center">
-                <div class="col-xl-6">
-                    <h2 class="mb-4">Ready to get started? Login now!</h2>
-                    <a class="btn btn-primary" href="/login">Login</a>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
     <!-- Footer-->
     <footer class="footer bg-dark">

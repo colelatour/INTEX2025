@@ -29,16 +29,22 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse text-end" id="navbarNav">
-                <ul class="navbar-nav ms-auto justify-content-end">
+                <ul class="navbar-nav ms-auto justify-content-end align-items-center">
                     <% if (user) { %>
-                        <li class="nav-item">
-                            <span class="navbar-text me-3">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
+                        <li class="nav-item me-lg-3 my-1">
+                            <span class="navbar-text">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mx-lg-1 my-1">
+                            <a class="btn btn-no-background" href="/">Home</a>
+                        </li>
+                        <li class="nav-item mx-lg-1 my-1">
                             <a class="btn btn-no-background" href="/logout">Logout</a>
                         </li>
                     <% } else { %>
-                        <li class="nav-item">
+                        <li class="nav-item mx-lg-1 my-1">
+                            <a class="btn btn-no-background" href="/">Home</a>
+                        </li>
+                        <li class="nav-item mx-lg-1 my-1">
                             <a class="btn btn-no-background" href="/login">Login</a>
                         </li>
                     <% } %>
@@ -232,16 +238,6 @@
             </div>
         </div>
     </section>
-
-        <!-- Tableau embed section -->
-        <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-3">
-                <h2 class="fw-bolder mb-3">Embedded Tableau Dashboard</h2>
-                <div class="ratio ratio-16x9">
-                    <iframe src="/dummy-tableau.html" title="Dummy Tableau Dashboard" style="border:0; width:100%; height:100%;" allowfullscreen></iframe>
-            </div>
-        </section>
-
     <!-- Footer-->
     <footer class="footer bg-dark">
         <div class="container">
