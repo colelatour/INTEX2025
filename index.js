@@ -127,9 +127,13 @@ app.use('/milestones', isAuthenticated, milestonesRouter);
 app.use('/donations', isAuthenticated, donationsRouter);
 
 
+app.get('/dashboard', (req, res) => {
+  res.render('dashboard', { title: 'Ella Rises Dashboard', user: req.session.user || null });
+});
+
 // Routes
 app.get('/', (req, res) => {
-  res.render('dashboard', { title: 'Ella Rises Dashboard', user: req.session.user || null });
+  res.render('index', { title: 'Ella Rises', user: req.session.user || null });
 });
 
 
