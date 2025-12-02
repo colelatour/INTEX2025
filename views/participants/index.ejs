@@ -26,7 +26,7 @@
                     style="height: 60px;"></a>
             <div>
                 <% if (user) { %>
-                    <span class="navbar-text me-3">Hi, <%= user.username %></span>
+                    <span class="navbar-text me-3">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
                     <a class="btn btn-no-background" href="/logout">Logout</a>
                 <% } else { %>
                     <a class="btn btn-no-background" href="/login">Login</a>
