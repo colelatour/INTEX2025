@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Edit Survey</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
+        type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/stylesheets/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
+                    style="height: 60px;"></a>
+            <div>
+                <% if (user) { %>
+                    <span class="navbar-text me-3">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
+                    <a class="btn btn-no-background" href="/logout">Logout</a>
+                <% } else { %>
+                    <a class="btn btn-no-background" href="/login">Login</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+    <!-- Header-->
+    <header class="bg-primary py-2 position-relative">
+        <a href="/surveys" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center">
+                <h1 class="display-4 fw-bolder">Edit Survey</h1>
+            </div>
+        </div>
+    </header>
+    <!-- Form Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-5">
+                            <form action="/surveys/edit/<%= survey.id %>" method="POST">
+                                <div class="mb-3">
+                                    <label for="participant_id" class="form-label">Participant</label>
+                                    <select class="form-select" id="participant_id" name="participant_id" required>
+                                        <% participants.forEach(function(participant) { %>
+                                            <option value="<%= participant.id %>" <%= survey.participant_id === participant.id ? 'selected' : '' %>>
+                                                <%= participant.firstName %> <%= participant.lastName %> (<%= participant.email %>)
+                                            </option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="event_id" class="form-label">Event</label>
+                                    <select class="form-select" id="event_id" name="event_id">
+                                        <option value="">-- Select Event (Optional) --</option>
+                                        <% events.forEach(function(event) { %>
+                                            <option value="<%= event.id %>" <%= survey.event_id === event.id ? 'selected' : '' %>>
+                                                <%= event.name %> (<%= event.date %>)
+                                            </option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">Survey Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="<%= survey.title %>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3"><%= survey.description %></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="satisfactionScore" class="form-label">Satisfaction Score (1-5)</label>
+                                    <input type="number" class="form-control" id="satisfactionScore" name="satisfactionScore" min="1" max="5" value="<%= survey.satisfactionScore %>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="usefulnessScore" class="form-label">Usefulness Score (1-5)</label>
+                                    <input type="number" class="form-control" id="usefulnessScore" name="usefulnessScore" min="1" max="5" value="<%= survey.usefulnessScore %>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="instructorScore" class="form-label">Instructor Score (1-5)</label>
+                                    <input type="number" class="form-control" id="instructorScore" name="instructorScore" min="1" max="5" value="<%= survey.instructorScore %>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="recommendationScore" class="form-label">Recommendation Score (0-10)</label>
+                                    <input type="number" class="form-control" id="recommendationScore" name="recommendationScore" min="0" max="10" value="<%= survey.recommendationScore %>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="overallScore" class="form-label">Overall Score (1-5, e.g. 4.2)</label>
+                                    <input type="number" step="0.1" class="form-control" id="overallScore" name="overallScore" min="1" max="5" value="<%= survey.overallScore %>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="npsBucket" class="form-label">NPS Bucket</label>
+                                    <select class="form-select" id="npsBucket" name="npsBucket">
+                                        <option value="">-- Select NPS Bucket --</option>
+                                        <option value="Promoter" <%= survey.npsBucket === 'Promoter' ? 'selected' : '' %>>Promoter</option>
+                                        <option value="Passive" <%= survey.npsBucket === 'Passive' ? 'selected' : '' %>>Passive</option>
+                                        <option value="Detractor" <%= survey.npsBucket === 'Detractor' ? 'selected' : '' %>>Detractor</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="comments" class="form-label">Comments</label>
+                                    <textarea class="form-control" id="comments" name="comments" rows="5"><%= survey.comments %></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="submissionDate" class="form-label">Submission Date</label>
+                                    <input type="date" class="form-control" id="submissionDate" name="submissionDate" value="<%= survey.submissionDate %>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="submissionTime" class="form-label">Submission Time</label>
+                                    <input type="time" class="form-control" id="submissionTime" name="submissionTime" value="<%= survey.submissionTime %>">
+                                </div>
+                                <button type="submit" class="btn btn-custom-view">Update Survey</button>
+                                <a href="/surveys" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="/javascripts/scripts.js"></script>
+</body>
+
+</html>

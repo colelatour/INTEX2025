@@ -36,7 +36,7 @@
     </nav>
     <!-- Header-->
     <header class="bg-primary py-2 position-relative">
-        <a href="javascript:history.back()" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
+        <a href="/dashboard" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center">
                 <h1 class="display-4 fw-bolder">Participants</h1>
@@ -79,41 +79,47 @@
                                     <%= participant.email %>
                                 </td>
                                 <td>
-                                    <%= participant.name.split(' ')[0] %>
+                                    <%= participant.firstName %>
                                 </td>
                                 <td>
-                                    <%= participant.name.split(' ')[1] %>
+                                    <%= participant.lastName %>
                                 </td>
                                 <td>
-                                    <%= "N/A" %>
+                                    <%= participant.dob %>
                                 </td>
                                 <td>
-                                    <%= "N/A" %>
+                                    <%= participant.phone %>
                                 </td>
                                 <td>
-                                    <%= "N/A" %>
+                                    <%= participant.city %>
                                 </td>
                                 <td>
-                                    <%= "N/A" %>
+                                    <%= participant.state %>
                                 </td>
                                 <td>
-                                    <%= "N/A" %>
+                                    <%= participant.zip %>
                                 </td>
                                 <td>
-                                    <%= "N/A" %>
+                                    <%= participant.schoolEmployer %>
                                 </td>
                                 <td>
-                                    <%= "N/A" %>
+                                    <%= participant.fieldOfInterest %>
                                 </td>
                                 <td>
-                                    <%= "N/A" %>
+                                    <%= participant.totalDonations %>
                                 </td>
                                 <% if (user && user.role === 'manager') { %>
                                 <td class="text-center">
-                                    <a class="me-2" href="/participants/edit/<%= participant.id %>"><i
-                                            class="bi-pencil text-secondary"></i></a>
-                                    <a href="/participants/delete/<%= participant.id %>"><i
-                                            class="bi-trash text-danger"></i></a>
+                                    <form action="/participants/edit/<%= participant.id %>" method="GET" class="d-inline">
+                                        <button type="submit" class="btn btn-link p-0 me-2" aria-label="Edit Participant">
+                                            <i class="bi-pencil text-secondary"></i>
+                                        </button>
+                                    </form>
+                                    <form action="/participants/delete/<%= participant.id %>" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this participant?');">
+                                        <button type="submit" class="btn btn-link p-0" aria-label="Delete Participant">
+                                            <i class="bi-trash text-danger"></i>
+                                        </button>
+                                    </form>
                                 </td>
                                 <% } %>
                             </tr>

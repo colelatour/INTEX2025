@@ -42,6 +42,16 @@ app.use((req, res, next) => {
 app.get('/login', (req, res) => {
   const message = req.session.message;
   req.session.message = null; // Clear the message after retrieving it for rendering
+
+  // Store the URL of the page the user was trying to access, excluding /login itself
+  if (req.headers.referer && !req.headers.referer.includes('/login')) {
+    req.session.returnTo = req.headers.referer;
+  } else if (req.query.returnTo) { // Handle explicit returnTo query parameter if present
+    req.session.returnTo = req.query.returnTo;
+  } else {
+    req.session.returnTo = '/'; // Default return to homepage
+  }
+
   res.render('login', { message: message, user: req.session.user || null });
 });
 
@@ -52,11 +62,13 @@ app.post('/login', async (req, res) => {
   if (user) {
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (passwordMatch) {
-      req.session.user = { id: user.id, username: user.username, firstName: user.firstName, role: user.role }; // Include firstName in session
+      req.session.user = { id: user.id, firstName: user.firstName, role: user.role }; // Include firstName in session
       console.log('User object after successful login:', user); // Debug log
       console.log('Session user object after successful login:', req.session.user); // Debug log
       req.session.message = 'Login successful!'; // Set a success message
-      return res.redirect('/');
+      const redirectUrl = req.session.returnTo || '/';
+      delete req.session.returnTo; // Clean up the session variable
+      return res.redirect(redirectUrl);
     }
   }
   req.session.message = 'Invalid email or password'; // Updated message
@@ -68,16 +80,10 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-  const { firstName, lastName, username, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
-  // Check if username or email already exists
-  const usernameExists = dummyData.users.some(user => user.username === username);
+  // Check if email already exists
   const emailExists = dummyData.users.some(user => user.email === email);
-
-  if (usernameExists) {
-    req.session.message = 'Username already taken.';
-    return res.redirect('/register');
-  }
 
   if (emailExists) {
     req.session.message = 'Email already registered.';
@@ -90,7 +96,6 @@ app.post('/register', async (req, res) => {
       id: dummyData.users.length > 0 ? Math.max(...dummyData.users.map(u => u.id)) + 1 : 1,
       firstName,
       lastName,
-      username,
       email,
       password: hashedPassword,
       role: 'common' // Default role for new registrations
