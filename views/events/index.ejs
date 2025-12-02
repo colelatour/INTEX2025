@@ -56,9 +56,13 @@
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
-                            <th>Name</th>
-                            <th>Date</th>
-                            <th>Description</th>
+                            <th>Event Name</th>
+                            <th>Event Date</th>
+                            <th>Event Time Start</th>
+                            <th>Event Time End</th>
+                            <th>Event Location</th>
+                            <th>Event Capacity</th>
+                            <th>Event Registration Deadline</th>
                             <% if (user && user.role === 'manager') { %>
                             <th>Actions</th>
                             <% } %>
@@ -74,7 +78,19 @@
                                     <%= event.date %>
                                 </td>
                                 <td>
-                                    <%= event.description %>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
                                 </td>
                                 <% if (user && user.role === 'manager') { %>
                                 <td class="text-center">

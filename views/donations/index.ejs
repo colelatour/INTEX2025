@@ -56,9 +56,8 @@
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
-                            <th>Donor Name</th>
-                            <th>Amount</th>
                             <th>Donation Date</th>
+                            <th>Donation Amount</th>
                             <% if (user && user.role === 'manager') { %>
                             <th>Actions</th>
                             <% } %>
@@ -68,13 +67,10 @@
                         <% donations.forEach(function(donation) { %>
                             <tr>
                                 <td>
-                                    <%= donation.donor_name %>
+                                    <%= donation.donation_date %>
                                 </td>
                                 <td>
                                     <%= donation.amount %>
-                                </td>
-                                <td>
-                                    <%= donation.donation_date %>
                                 </td>
                                 <% if (user && user.role === 'manager') { %>
                                 <td class="text-center">
