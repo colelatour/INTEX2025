@@ -11003,12 +11003,19 @@ footer.footer {
 
 /* Footer Link Styles */
 footer.footer a {
+  color: #F9F5EA; /* --ella-off-white for high contrast */
   text-decoration: none !important;
 }
 
 footer.footer a:hover {
+  color: #FFFFFF; /* Brighten on hover */
   text-decoration: none !important;
-  opacity: 0.8;
+  opacity: 0.9;
+}
+
+/* Muted text in footer */
+.footer .text-muted {
+    color: rgba(249, 245, 234, 0.75) !important; /* Lighter color for muted text */
 }
 
 /* Back Arrow Link Styles */
