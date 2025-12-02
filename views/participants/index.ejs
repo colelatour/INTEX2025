@@ -56,8 +56,17 @@
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
-                            <th>Name</th>
                             <th>Email</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>DOB</th>
+                            <th>Phone</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Zip</th>
+                            <th>School/Employer</th>
+                            <th>Field of Interest</th>
+                            <th>Total Donations</th>
                             <% if (user && user.role === 'manager') { %>
                             <th>Actions</th>
                             <% } %>
@@ -67,10 +76,37 @@
                         <% participants.forEach(function(participant) { %>
                             <tr>
                                 <td>
-                                    <%= participant.name %>
+                                    <%= participant.email %>
                                 </td>
                                 <td>
-                                    <%= participant.email %>
+                                    <%= participant.name.split(' ')[0] %>
+                                </td>
+                                <td>
+                                    <%= participant.name.split(' ')[1] %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
                                 </td>
                                 <% if (user && user.role === 'manager') { %>
                                 <td class="text-center">

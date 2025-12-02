@@ -56,9 +56,19 @@
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Participant ID</th>
+                            <th>Participant Email</th>
+                            <th>Event Name</th>
+                            <th>Event Date</th>
+                            <th>Event Time Start</th>
+                            <th>Satisfaction Score</th>
+                            <th>Usefulness Score</th>
+                            <th>Instructor Score</th>
+                            <th>Recommendation Score</th>
+                            <th>Overall Score</th>
+                            <th>NPS Bucket</th>
+                            <th>Comments</th>
+                            <th>Submission Date</th>
+                            <th>Submission Time</th>
                             <% if (user && user.role === 'manager') { %>
                             <th>Actions</th>
                             <% } %>
@@ -68,13 +78,43 @@
                         <% surveys.forEach(function(survey) { %>
                             <tr>
                                 <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
                                     <%= survey.title %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
                                 </td>
                                 <td>
                                     <%= survey.description %>
                                 </td>
                                 <td>
-                                    <%= survey.participant_id %>
+                                    <%= "N/A" %>
+                                </td>
+                                <td>
+                                    <%= "N/A" %>
                                 </td>
                                 <% if (user && user.role === 'manager') { %>
                                 <td class="text-center">

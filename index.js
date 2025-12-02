@@ -119,12 +119,12 @@ app.get('/logout', (req, res) => {
 // Apply isAuthenticated middleware to all routes that need protection
 
 // Protected Route Handlers (after authentication)
-app.use('/users', authorizeRoles(['manager']), usersRouter);
-app.use('/participants', participantsRouter);
-app.use('/events', eventsRouter);
-app.use('/surveys', surveysRouter);
-app.use('/milestones', milestonesRouter);
-app.use('/donations', authorizeRoles(['manager']), donationsRouter);
+app.use('/users', isAuthenticated, authorizeRoles(['manager']), usersRouter);
+app.use('/participants', isAuthenticated, participantsRouter);
+app.use('/events', isAuthenticated, eventsRouter);
+app.use('/surveys', isAuthenticated, surveysRouter);
+app.use('/milestones', isAuthenticated, milestonesRouter);
+app.use('/donations', isAuthenticated, donationsRouter);
 
 
 // Routes
