@@ -35,13 +35,14 @@ app.use(session({
 app.use((req, res, next) => {
   res.locals.user = req.session.user;
   res.locals.message = req.session.message; // Make message available to templates
-  req.session.message = null; // Clear message after displaying
   next();
 });
 
 // Public routes (no authentication required)
 app.get('/login', (req, res) => {
-  res.render('login', { message: req.session.message, user: req.session.user || null });
+  const message = req.session.message;
+  req.session.message = null; // Clear the message after retrieving it for rendering
+  res.render('login', { message: message, user: req.session.user || null });
 });
 
 app.post('/login', async (req, res) => {
