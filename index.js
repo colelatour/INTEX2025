@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const knex = require('./db');
-const { isAuthenticated, authorizeRoles } = require('./middleware/auth'); // Require auth middleware
+const { isAuthenticated, isFullyAuthenticated, authorizeRoles } = require('./middleware/auth'); // Require auth middleware
 
 const usersRouter = require('./routes/users');
 const participantsRouter = require('./routes/participants');
@@ -43,8 +43,8 @@ app.get('/login', (req, res) => {
   const message = req.session.message;
   req.session.message = null; // Clear the message after retrieving it for rendering
 
-  // Store the URL of the page the user was trying to access, excluding /login itself
-  if (req.headers.referer && !req.headers.referer.includes('/login')) {
+  // Store the URL of the page the user was trying to access, excluding /login and /register
+  if (req.headers.referer && !req.headers.referer.includes('/login') && !req.headers.referer.includes('/register')) {
     req.session.returnTo = req.headers.referer;
   } else if (req.query.returnTo) { // Handle explicit returnTo query parameter if present
     req.session.returnTo = req.query.returnTo;
@@ -94,7 +94,12 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, confirmPassword } = req.body;
+
+  if (password !== confirmPassword) {
+    req.session.message = 'Passwords do not match.';
+    return res.redirect('/register');
+  }
 
   // Check if email already exists
   const emailExists = await knex('users').where('useremail', email).first();
@@ -137,9 +142,9 @@ app.get('/logout', (req, res) => {
 
 // Protected Route Handlers (after authentication)
 app.use('/users', isAuthenticated, authorizeRoles(['manager']), usersRouter);
-app.use('/participants', isAuthenticated, participantsRouter);
+app.use('/participants', isFullyAuthenticated, participantsRouter);
 app.use('/events', isAuthenticated, eventsRouter);
-app.use('/surveys', isAuthenticated, surveysRouter);
+app.use('/surveys', isFullyAuthenticated, surveysRouter);
 app.use('/milestones', isAuthenticated, milestonesRouter);
 app.use('/donations', isAuthenticated, donationsRouter);
 

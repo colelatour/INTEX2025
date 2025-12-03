@@ -8,17 +8,45 @@ router.get('/', async function(req, res, next) {
   const page = parseInt(req.query.page) || 1;
   const pageSize = 10;
   const offset = (page - 1) * pageSize;
+  const searchTerm = req.query.search || '';
 
-  const totalParticipants = await knex('participants').count('participantid as count').first();
+  let query = knex('participants');
+  let countQuery = knex('participants');
+
+  if (searchTerm) {
+    const searchTerms = searchTerm.split(' ').filter(term => term);
+    if (searchTerms.length > 1) {
+      // Search for first name and last name
+      query = query.where(function() {
+        this.where('participantfirstname', 'ilike', `%${searchTerms[0]}%`)
+            .andWhere('participantlastname', 'ilike', `%${searchTerms[1]}%`);
+      });
+      countQuery = countQuery.where(function() {
+        this.where('participantfirstname', 'ilike', `%${searchTerms[0]}%`)
+            .andWhere('participantlastname', 'ilike', `%${searchTerms[1]}%`);
+      });
+    } else {
+      // Search for a single term in first name, last name, or email
+      query = query.where('participantfirstname', 'ilike', `%${searchTerm}%`)
+                   .orWhere('participantlastname', 'ilike', `%${searchTerm}%`)
+                   .orWhere('participantemail', 'ilike', `%${searchTerm}%`);
+      countQuery = countQuery.where('participantfirstname', 'ilike', `%${searchTerm}%`)
+                             .orWhere('participantlastname', 'ilike', `%${searchTerm}%`)
+                             .orWhere('participantemail', 'ilike', `%${searchTerm}%`);
+    }
+  }
+
+  const totalParticipants = await countQuery.count('participantid as count').first();
   const totalPages = Math.ceil(totalParticipants.count / pageSize);
 
-  const participants = await knex('participants').select('*').limit(pageSize).offset(offset);
+  const participants = await query.select('*').limit(pageSize).offset(offset);
   
   res.render('participants/index', { 
     participants: participants, 
     user: req.session.user,
     currentPage: page,
-    totalPages: totalPages
+    totalPages: totalPages,
+    searchTerm: searchTerm
   });
 });
 

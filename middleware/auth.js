@@ -13,6 +13,17 @@ exports.isAuthenticated = (req, res, next) => {
   }
 };
 
+exports.isFullyAuthenticated = (req, res, next) => {
+  if (req.session.user) {
+    return next();
+  }
+  
+  // If user is not authenticated, store the original URL and redirect to login
+  req.session.returnTo = req.originalUrl;
+  req.session.message = 'Please log in to view this page.';
+  res.redirect('/login');
+};
+
 exports.authorizeRoles = (roles) => {
   return (req, res, next) => {
     if (!req.session.user) {

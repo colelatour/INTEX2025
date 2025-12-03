@@ -47,7 +47,11 @@
     <!-- Section-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
-            <div class="d-flex justify-content-end mb-3">
+            <div class="d-flex justify-content-between mb-3">
+                <form action="/users" method="GET" class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search by name or email" aria-label="Search" name="search" value="<%= searchTerm || '' %>" style="width: 20em;">
+                    <button class="btn btn-custom-view" type="submit">Search</button>
+                </form>
                 <a class="btn btn-custom-view" href="/users/add">Add New User</a>
             </div>
             <div class="table-responsive-scroll">

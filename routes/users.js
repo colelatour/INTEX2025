@@ -9,17 +9,45 @@ router.get('/', isAuthenticated, authorizeRoles(['manager']), async function(req
   const page = parseInt(req.query.page) || 1;
   const pageSize = 10;
   const offset = (page - 1) * pageSize;
+  const searchTerm = req.query.search || '';
 
-  const totalUsers = await knex('users').count('userid as count').first();
+  let query = knex('users');
+  let countQuery = knex('users');
+
+  if (searchTerm) {
+    const searchTerms = searchTerm.split(' ').filter(term => term);
+    if (searchTerms.length > 1) {
+      // Search for first name and last name
+      query = query.where(function() {
+        this.where('userfirstname', 'ilike', `%${searchTerms[0]}%`)
+            .andWhere('userlastname', 'ilike', `%${searchTerms[1]}%`);
+      });
+      countQuery = countQuery.where(function() {
+        this.where('userfirstname', 'ilike', `%${searchTerms[0]}%`)
+            .andWhere('userlastname', 'ilike', `%${searchTerms[1]}%`);
+      });
+    } else {
+      // Search for a single term in first name, last name, or email
+      query = query.where('userfirstname', 'ilike', `%${searchTerm}%`)
+                   .orWhere('userlastname', 'ilike', `%${searchTerm}%`)
+                   .orWhere('useremail', 'ilike', `%${searchTerm}%`);
+      countQuery = countQuery.where('userfirstname', 'ilike', `%${searchTerm}%`)
+                             .orWhere('userlastname', 'ilike', `%${searchTerm}%`)
+                             .orWhere('useremail', 'ilike', `%${searchTerm}%`);
+    }
+  }
+
+  const totalUsers = await countQuery.count('userid as count').first();
   const totalPages = Math.ceil(totalUsers.count / pageSize);
 
-  const users = await knex('users').select('*').limit(pageSize).offset(offset);
+  const users = await query.select('*').limit(pageSize).offset(offset);
   
   res.render('users/index', { 
     users: users, 
     user: req.session.user,
     currentPage: page,
-    totalPages: totalPages
+    totalPages: totalPages,
+    searchTerm: searchTerm
   });
 });
 

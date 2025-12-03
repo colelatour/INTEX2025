@@ -47,19 +47,25 @@
     <!-- Section-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
-            <% if (user && user.role === 'manager') { %>
-            <div class="d-flex justify-content-end mb-3">
-                <a class="btn btn-custom-view" href="/donations/add">Add New Donation</a>
+            <div class="d-flex justify-content-between mb-3">
+                <form action="/donations" method="GET" class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search by name or date" aria-label="Search" name="search" value="<%= searchTerm || '' %>" style="width: 20em;">
+                    <button class="btn btn-custom-view" type="submit">Search</button>
+                </form>
+                <% if (user && user.role === 'manager') { %>
+                    <a class="btn btn-custom-view" href="/donations/add">Add New Donation</a>
+                <% } %>
             </div>
-            <% } %>
             <div class="table-responsive-scroll">
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
                             <th>Donation Date</th>
                             <th>Donation Amount</th>
+                            <% if (user) { %>
                             <th>Donor Name</th>
                             <th>Participant Email</th>
+                            <% } %>
                             <% if (user && user.role === 'manager') { %>
                             <th>Actions</th>
                             <% } %>
@@ -74,12 +80,14 @@
                                 <td>
                                     <%= donation.amount %>
                                 </td>
+                                <% if (user) { %>
                                 <td>
                                     <%= donation.participantfirstname %> <%= donation.participantlastname %>
                                 </td>
                                 <td>
                                     <%= donation.participantEmail %>
                                 </td>
+                                <% } %>
                                 <% if (user && user.role === 'manager') { %>
                                 <td class="text-center">
                                     <form action="/donations/edit/<%= donation.id %>" method="GET" class="d-inline">

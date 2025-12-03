@@ -8,11 +8,38 @@ router.get('/', isAuthenticated, async function(req, res, next) {
   const page = parseInt(req.query.page) || 1;
   const pageSize = 10;
   const offset = (page - 1) * pageSize;
+  const searchTerm = req.query.search || '';
 
-  const totalDonations = await knex('donations').count('donationid as count').first();
+  let query = knex('donations').join('participants', 'donations.participantid', '=', 'participants.participantid');
+  let countQuery = knex('donations').join('participants', 'donations.participantid', '=', 'participants.participantid');
+
+  if (searchTerm) {
+    const searchTerms = searchTerm.split(' ').filter(term => term);
+    if (searchTerms.length > 1) {
+      // Search for first name and last name
+      query = query.where(function() {
+        this.where('participants.participantfirstname', 'ilike', `%${searchTerms[0]}%`)
+            .andWhere('participants.participantlastname', 'ilike', `%${searchTerms[1]}%`);
+      });
+      countQuery = countQuery.where(function() {
+        this.where('participants.participantfirstname', 'ilike', `%${searchTerms[0]}%`)
+            .andWhere('participants.participantlastname', 'ilike', `%${searchTerms[1]}%`);
+      });
+    } else {
+      // Search for a single term in first name, last name, or date
+      query = query.where('participants.participantfirstname', 'ilike', `%${searchTerm}%`)
+                   .orWhere('participants.participantlastname', 'ilike', `%${searchTerm}%`)
+                   .orWhereRaw(`CAST(donations.donationdate AS TEXT) ILIKE ?`, [`%${searchTerm}%`]);
+      countQuery = countQuery.where('participants.participantfirstname', 'ilike', `%${searchTerm}%`)
+                             .orWhere('participants.participantlastname', 'ilike', `%${searchTerm}%`)
+                             .orWhereRaw(`CAST(donations.donationdate AS TEXT) ILIKE ?`, [`%${searchTerm}%`]);
+    }
+  }
+
+  const totalDonations = await countQuery.count('donationid as count').first();
   const totalPages = Math.ceil(totalDonations.count / pageSize);
 
-  const donations = await knex('donations')
+  const donations = await query
     .select(
       'donations.donationid as id',
       'donations.donationamount as amount',
@@ -21,7 +48,6 @@ router.get('/', isAuthenticated, async function(req, res, next) {
       'participants.participantfirstname',
       'participants.participantlastname'
     )
-    .join('participants', 'donations.participantid', '=', 'participants.participantid')
     .limit(pageSize)
     .offset(offset);
   
@@ -29,7 +55,8 @@ router.get('/', isAuthenticated, async function(req, res, next) {
     donations: donations, 
     user: req.session.user,
     currentPage: page,
-    totalPages: totalPages
+    totalPages: totalPages,
+    searchTerm: searchTerm
   });
 });
 
