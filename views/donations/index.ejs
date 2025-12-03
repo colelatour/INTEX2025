@@ -59,6 +59,7 @@
                             <th>Donation Date</th>
                             <th>Donation Amount</th>
                             <th>Donor Name</th>
+                            <th>Participant Email</th>
                             <% if (user && user.role === 'manager') { %>
                             <th>Actions</th>
                             <% } %>
@@ -68,13 +69,16 @@
                         <% donations.forEach(function(donation) { %>
                             <tr>
                                 <td>
-                                    <%= donation.donation_date %>
+                                    <%= donation.donationDate ? new Date(donation.donationDate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-') : '' %>
                                 </td>
                                 <td>
                                     <%= donation.amount %>
                                 </td>
                                 <td>
-                                    <%= donation.donor_name %>
+                                    <%= donation.participantfirstname %> <%= donation.participantlastname %>
+                                </td>
+                                <td>
+                                    <%= donation.participantEmail %>
                                 </td>
                                 <% if (user && user.role === 'manager') { %>
                                 <td class="text-center">
@@ -95,6 +99,25 @@
                     </tbody>
                 </table>
             </div>
+            <% if (totalPages > 1) { %>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="/donations?page=<%= currentPage - 1 %>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Page <%= currentPage %> of <%= totalPages %></span>
+                    </li>
+                    <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                        <a class="page-link" href="/donations?page=<%= currentPage + 1 %>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <% } %>
         </div>
     </section>
     <!-- Bootstrap core JS-->

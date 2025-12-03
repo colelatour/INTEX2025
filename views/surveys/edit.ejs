@@ -53,8 +53,8 @@
                                     <label for="participant_id" class="form-label">Participant</label>
                                     <select class="form-select" id="participant_id" name="participant_id" required>
                                         <% participants.forEach(function(participant) { %>
-                                            <option value="<%= participant.id %>" <%= survey.participant_id === participant.id ? 'selected' : '' %>>
-                                                <%= participant.firstName %> <%= participant.lastName %> (<%= participant.email %>)
+                                            <option value="<%= participant.participantid %>" <%= survey.participant_id === participant.participantid ? 'selected' : '' %>>
+                                                <%= participant.participantfirstname %> <%= participant.participantlastname %> (<%= participant.participantemail %>)
                                             </option>
                                         <% }); %>
                                     </select>
@@ -64,19 +64,11 @@
                                     <select class="form-select" id="event_id" name="event_id">
                                         <option value="">-- Select Event (Optional) --</option>
                                         <% events.forEach(function(event) { %>
-                                            <option value="<%= event.id %>" <%= survey.event_id === event.id ? 'selected' : '' %>>
-                                                <%= event.name %> (<%= event.date %>)
+                                            <option value="<%= event.eventoccurrenceid %>" <%= survey.event_id === event.eventoccurrenceid ? 'selected' : '' %>>
+                                                <%= event.eventname %> (<%= new Date(event.eventdate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-') %>)
                                             </option>
                                         <% }); %>
                                     </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="title" class="form-label">Survey Title</label>
-                                    <input type="text" class="form-control" id="title" name="title" value="<%= survey.title %>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="description" class="form-label">Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3"><%= survey.description %></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="satisfactionScore" class="form-label">Satisfaction Score (1-5)</label>

@@ -50,8 +50,14 @@
                         <div class="card-body p-5">
                             <form action="/donations/add" method="POST">
                                 <div class="mb-3">
-                                    <label for="donor_name" class="form-label">Donor Name</label>
-                                    <input type="text" class="form-control" id="donor_name" name="donor_name" required>
+                                    <label for="participant_id" class="form-label">Participant</label>
+                                    <select class="form-control" id="participant_id" name="participant_id" required>
+                                        <% participants.forEach(p => { %>
+                                            <option value="<%= p.ParticipantID %>">
+                                                <%= p.ParticipantFirstName %> <%= p.ParticipantLastName %> (<%= p.ParticipantEmail %>)
+                                            </option>
+                                        <% }); %>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="amount" class="form-label">Amount</label>
