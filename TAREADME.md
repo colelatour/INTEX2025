@@ -7,5 +7,5 @@ Manager Level
   password: password123
 
 User Level
-  email: commonuser@example.com
+  email: user@example.com
   password: password123
