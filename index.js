@@ -142,7 +142,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/teapot', (req, res) => {
-  res.status(418).send("I'm a teapot");
+  res.status(418).render('teapot');
 });
 
 

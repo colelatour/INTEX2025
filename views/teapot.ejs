@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="HTTP 418 I'm a teapot" />
+    <title>418 I'm a Teapot - Ella Rises</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
+        type="text/css" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
+        type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/stylesheets/styles.css" rel="stylesheet" />
+    <style>
+        .teapot-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 4rem 1rem;
+        }
+        .teapot-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            max-width: 600px;
+            text-align: center;
+        }
+        .teapot-icon {
+            font-size: 6rem;
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+        }
+        .status-code {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 0.5rem;
+        }
+        .status-message {
+            font-size: 1.75rem;
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+        }
+        .teapot-description {
+            color: #6c757d;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .btn-home {
+            background-color: #212529;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .btn-home:hover {
+            background-color: #495057;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .rfc-reference {
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: #adb5bd;
+        }
+        .rfc-reference a {
+            color: #6c757d;
+            text-decoration: none;
+        }
+        .rfc-reference a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
+                    style="height: 60px;"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Teapot Content -->
+    <div class="teapot-container">
+        <div class="teapot-card">
+            <div class="teapot-icon">
+                ☕
+            </div>
+            <div class="status-code">418</div>
+            <div class="status-message">I'm a Teapot</div>
+            <div class="teapot-description">
+                <p>The server refuses the attempt to brew coffee with a teapot.</p>
+                <p>This client error response code was defined as an April Fools' joke in 1998 
+                   and has since become a beloved part of HTTP status code lore.</p>
+            </div>
+            <a href="/" class="btn-home">Return Home</a>
+            <div class="rfc-reference">
+                Defined in <a href="https://datatracker.ietf.org/doc/html/rfc2324" target="_blank" rel="noopener">RFC 2324: Hyper Text Coffee Pot Control Protocol</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer-->
+    <footer class="footer bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                    <p class="text-muted small mb-4 mb-lg-0">&copy; Ella Rises <%= new Date().getFullYear() %>. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
