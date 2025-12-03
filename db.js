@@ -6,7 +6,7 @@ const knex = require('knex')({
     password: process.env.RDS_PASSWORD || 'clatour0',
     database: process.env.RDS_DB_NAME || 'ellarises',
     port: process.env.RDS_PORT || 5432,
-    ssl: { rejectUnauthorized: false }
+    ssl: process.env.RDS_HOSTNAME ? { rejectUnauthorized: false } : false
   },
   pool: {
     min: 2,
