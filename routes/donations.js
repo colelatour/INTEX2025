@@ -51,25 +51,156 @@ router.get('/', isAuthenticated, async function(req, res, next) {
     .limit(pageSize)
     .offset(offset);
   
-  res.render('donations/index', { 
-    donations: donations, 
-    user: req.session.user,
-    currentPage: page,
-    totalPages: totalPages,
-    searchTerm: searchTerm
-  });
-});
+  const userDonorSearchTerm = req.query.userDonorSearch || '';
 
-// GET route for adding a new donation
-router.get('/add', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
-  const participants = await knex('participants').select(
-    'participantid as ParticipantID',
-    'participantfirstname as ParticipantFirstName',
-    'participantlastname as ParticipantLastName',
-    'participantemail as ParticipantEmail'
-  );
-  res.render('donations/add', { user: req.session.user, participants });
-});
+  // Fetch userdonor data
+  let userDonors = [];
+  try {
+    let userDonorQuery = knex.raw('SELECT userdonorid, userdonorfirstname, userdonorlastname, userdonoramount, userdonordate FROM userdonor');
+
+    if (userDonorSearchTerm) {
+      userDonorQuery = knex.raw(
+        'SELECT userdonorid, userdonorfirstname, userdonorlastname, userdonoramount, userdonordate FROM userdonor WHERE userdonorfirstname ILIKE ? OR userdonorlastname ILIKE ?',
+        [`%${userDonorSearchTerm}%`, `%${userDonorSearchTerm}%`]
+      );
+    }
+    
+    userDonors = await userDonorQuery;
+    userDonors = userDonors.rows; // Knex.raw for PostgreSQL returns { rows: [], fields: [] }
+    console.log('Fetched userDonors data:', userDonors);
+  } catch (err) {
+    console.error('Error fetching userDonors:', err);
+    // If there's an error fetching userDonors, ensure it's an empty array
+    userDonors = [];
+  }
+  console.log('Rendering donations/index with userDonors:', userDonors);
+
+    res.render('donations/index', {
+      donations: donations,
+      user: req.session.user,
+      currentPage: page,
+      totalPages: totalPages,
+      searchTerm: searchTerm,
+      userDonors: userDonors, // Pass userDonors data to the template
+      userDonorSearchTerm: userDonorSearchTerm // Pass userDonorSearchTerm to the template
+    });
+  });
+  
+// GET route for editing a user donor
+  
+    router.get('/userdonor/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
+  
+      const userDonorId = parseInt(req.params.id);
+  
+      
+  
+      try {
+  
+        const userDonor = await knex.raw('SELECT userdonorid, userdonorfirstname, userdonorlastname, userdonoramount, userdonordate FROM userdonor WHERE userdonorid = ?', [userDonorId]);
+  
+        if (!userDonor.rows || userDonor.rows.length === 0) {
+  
+          req.session.message = 'User Donor not found.';
+  
+          return res.redirect('/donations');
+  
+        }
+  
+        const donor = userDonor.rows[0];
+  
+    
+  
+        // Format the date for the date input field
+  
+        if (donor.userdonordate) {
+  
+            donor.userdonordate = new Date(donor.userdonordate).toISOString().split('T')[0];
+  
+        }
+  
+    
+  
+        res.render('donations/userdonor/edit', { user: req.session.user, userDonor: donor });
+  
+      } catch (error) {
+  
+        console.error('Error fetching user donor for edit:', error);
+  
+        req.session.message = 'Error fetching user donor for edit: ' + error.message;
+  
+        res.redirect('/donations');
+  
+        }
+  
+      });
+  
+      
+  
+      // POST route for updating a user donor
+  
+      router.post('/userdonor/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
+  
+        const userDonorId = parseInt(req.params.id);
+  
+        const { userdonorfirstname, userdonorlastname, userdonoramount, userdonordate } = req.body;
+  
+      
+  
+        try {
+  
+          await knex.raw('UPDATE userdonor SET userdonorfirstname = ?, userdonorlastname = ?, userdonoramount = ?, userdonordate = ? WHERE userdonorid = ?', 
+  
+            [userdonorfirstname, userdonorlastname, parseFloat(userdonoramount) || 0.00, userdonordate, userDonorId]);
+  
+          req.session.message = 'User Donor updated successfully!';
+  
+          res.redirect('/donations');
+  
+        } catch (error) {
+  
+          console.error('Error updating user donor:', error);
+  
+          req.session.message = 'Error updating user donor: ' + error.message;
+  
+          res.redirect(`/donations/userdonor/edit/${userDonorId}`);
+  
+          }
+  
+        });
+  
+        
+  
+        // POST route for deleting a user donor
+  
+        router.post('/userdonor/delete/:id', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
+  
+          const userDonorId = parseInt(req.params.id);
+  
+        
+  
+          try {
+  
+            await knex.raw('DELETE FROM userdonor WHERE userdonorid = ?', [userDonorId]);
+  
+            req.session.message = 'User Donor deleted successfully!';
+  
+            res.redirect('/donations');
+  
+          } catch (error) {
+  
+            console.error('Error deleting user donor:', error);
+  
+            req.session.message = 'Error deleting user donor: ' + error.message;
+  
+            res.redirect('/donations');
+  
+          }
+  
+        });
+  
+        
+  
+        
 
 // POST route for adding a new donation
 router.post('/add', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {

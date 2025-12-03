@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Edit User Donor</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
+        type="text/css" />
+    <!-- Google fonts-->
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/stylesheets/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
+                    style="height: 60px;"></a>
+            <div>
+                <% if (user) { %>
+                    <span class="navbar-text me-3">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
+                    <a class="btn btn-no-background" href="/logout">Logout</a>
+                <% } else { %>
+                    <a class="btn btn-no-background" href="/login">Login</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+    <!-- Header-->
+    <header class="bg-primary py-2 position-relative">
+        <a href="/donations" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center">
+                <h1 class="display-4 fw-bolder">Edit User Donor</h1>
+            </div>
+        </div>
+    </header>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <% if (message) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= message %>
+                    </div>
+                <% } %>
+                <form action="/donations/userdonor/edit/<%= userDonor.userdonorid %>" method="POST">
+                    <div class="mb-3">
+                        <label for="userdonorfirstname" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="userdonorfirstname" name="userdonorfirstname" value="<%= userDonor.userdonorfirstname %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userdonorlastname" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="userdonorlastname" name="userdonorlastname" value="<%= userDonor.userdonorlastname %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userdonoramount" class="form-label">Donation Amount ($)</label>
+                        <input type="number" class="form-control" id="userdonoramount" name="userdonoramount" step="0.01" value="<%= userDonor.userdonoramount %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userdonordate" class="form-label">Donation Date</label>
+                        <input type="date" class="form-control" id="userdonordate" name="userdonordate" value="<%= userDonor.userdonordate %>" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update User Donor</button>
+                    <a href="/donations" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="/javascripts/scripts.js"></script>
+</body>
+
+</html>

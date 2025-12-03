@@ -47,6 +47,7 @@
     <!-- Section-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="mt-5">Participant Donors</h2>
             <div class="d-flex justify-content-between mb-3">
                 <form action="/donations" method="GET" class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search by name or date" aria-label="Search" name="search" value="<%= searchTerm || '' %>" style="width: 20em;">
@@ -63,8 +64,8 @@
                             <th>Donation Date</th>
                             <th>Donation Amount</th>
                             <% if (user) { %>
-                            <th>Donor</th>
-                            <th>Donor Email</th>
+                            <th>Participant Donor</th>
+                            <th>Participant Email</th>
                             <% } %>
                             <% if (user && user.role === 'manager') { %>
                             <th>Actions</th>
@@ -138,6 +139,51 @@
                 </div>
             </nav>
             <% } %>
+            
+            <h2 class="mt-5">User Donors</h2>
+            <div class="d-flex justify-content-between mb-3">
+                <form action="/donations" method="GET" class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search by name or email" aria-label="Search User Donors" name="userDonorSearch" value="<%= userDonorSearchTerm || '' %>" style="width: 20em;">
+                    <button class="btn btn-custom-view" type="submit">Search</button>
+                </form>
+            </div>
+            <div class="table-responsive-scroll">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% userDonors.forEach(function(donor) { %>
+                            <tr>
+                                <td><%= donor.userdonorid %></td>
+                                <td><%= donor.userdonorfirstname %></td>
+                                <td><%= donor.userdonorlastname %></td>
+                                <td><%= donor.userdonoramount %></td>
+                                <td><%= donor.userdonordate ? new Date(donor.userdonordate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-') : '' %></td>
+                                <td class="text-center">
+                                    <form action="/donations/userdonor/edit/<%= donor.userdonorid %>" method="GET" class="d-inline">
+                                        <button type="submit" class="btn btn-link p-0 me-2" aria-label="Edit User Donor">
+                                            <i class="bi-pencil text-secondary"></i>
+                                        </button>
+                                    </form>
+                                    <form action="/donations/userdonor/delete/<%= donor.userdonorid %>" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user donor?');">
+                                        <button type="submit" class="btn btn-link p-0" aria-label="Delete User Donor">
+                                            <i class="bi-trash text-danger"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
     <!-- Bootstrap core JS-->
