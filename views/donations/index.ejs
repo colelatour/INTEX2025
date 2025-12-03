@@ -63,8 +63,8 @@
                             <th>Donation Date</th>
                             <th>Donation Amount</th>
                             <% if (user) { %>
-                            <th>Donor Name</th>
-                            <th>Participant Email</th>
+                            <th>Donor</th>
+                            <th>Donor Email</th>
                             <% } %>
                             <% if (user && user.role === 'manager') { %>
                             <th>Actions</th>
@@ -82,10 +82,18 @@
                                 </td>
                                 <% if (user) { %>
                                 <td>
-                                    <%= donation.participantfirstname %> <%= donation.participantlastname %>
+                                    <% if (donation.donorName) { %>
+                                        <%= donation.donorName %>
+                                    <% } else { %>
+                                        <%= donation.participantfirstname %> <%= donation.participantlastname %>
+                                    <% } %>
                                 </td>
                                 <td>
-                                    <%= donation.participantEmail %>
+                                    <% if (donation.donorEmail) { %>
+                                        <%= donation.donorEmail %>
+                                    <% } else { %>
+                                        <%= donation.participantEmail %>
+                                    <% } %>
                                 </td>
                                 <% } %>
                                 <% if (user && user.role === 'manager') { %>

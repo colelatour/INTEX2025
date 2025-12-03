@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const knex = require('./db');
-const { isAuthenticated, isFullyAuthenticated, authorizeRoles } = require('./middleware/auth'); // Require auth middleware
+const { isAuthenticated, authorizeRoles } = require('./middleware/auth'); // Require auth middleware
 
 const usersRouter = require('./routes/users');
 const participantsRouter = require('./routes/participants');
@@ -79,13 +79,11 @@ app.post('/login', async (req, res) => {
       req.session.user = { id: user.userid, firstName: user.userfirstname, role: user.userrole };
       console.log('User object after successful login:', user);
       console.log('Session user object after successful login:', req.session.user);
-      req.session.message = 'Login successful!';
       const redirectUrl = req.session.returnTo || '/';
       delete req.session.returnTo;
       return res.redirect(redirectUrl);
     }
   }
-  req.session.message = 'Invalid email or password';
   res.redirect('/login');
 });
 
@@ -97,7 +95,6 @@ app.post('/register', async (req, res) => {
   const { firstName, lastName, email, password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
-    req.session.message = 'Passwords do not match.';
     return res.redirect('/register');
   }
 
@@ -105,7 +102,6 @@ app.post('/register', async (req, res) => {
   const emailExists = await knex('users').where('useremail', email).first();
 
   if (emailExists) {
-    req.session.message = 'Email already registered.';
     return res.redirect('/register');
   }
 
@@ -118,11 +114,9 @@ app.post('/register', async (req, res) => {
       password: hashedPassword,
       userrole: 'common' // Default role for new registrations
     }).returning('userid'); // Assuming UserID is the primary key and auto-increments
-    req.session.message = 'Registration successful! Please log in.';
     res.redirect('/login');
   } catch (error) {
     console.error('Error during registration:', error);
-    req.session.message = 'Registration failed. Please try again.';
     res.redirect('/register');
   }
 });
@@ -142,14 +136,14 @@ app.get('/logout', (req, res) => {
 
 // Protected Route Handlers (after authentication)
 app.use('/users', isAuthenticated, authorizeRoles(['manager']), usersRouter);
-app.use('/participants', isFullyAuthenticated, participantsRouter);
+app.use('/participants', isAuthenticated, participantsRouter);
 app.use('/events', isAuthenticated, eventsRouter);
-app.use('/surveys', isFullyAuthenticated, surveysRouter);
+app.use('/surveys', isAuthenticated, surveysRouter);
 app.use('/milestones', isAuthenticated, milestonesRouter);
 app.use('/donations', isAuthenticated, donationsRouter);
 
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', isAuthenticated, (req, res) => {
   res.render('dashboard', { title: 'Ella Rises Dashboard', user: req.session.user || null });
 });
 
