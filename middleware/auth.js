@@ -1,14 +1,9 @@
 exports.isAuthenticated = (req, res, next) => {
-  // Allow GET requests for public viewing
-  if (req.method === 'GET') {
-    return next();
-  }
-
-  // For all other methods, require authentication
   if (req.session.user) {
     next();
   } else {
-    req.session.message = 'Please log in to perform this action.';
+    req.session.message = 'Please log in to view this page.'; // Changed message to be more general
+    req.session.returnTo = req.originalUrl; // Store the URL the user was trying to access
     res.redirect('/login');
   }
 };
@@ -23,6 +18,9 @@ exports.isFullyAuthenticated = (req, res, next) => {
   req.session.message = 'Please log in to view this page.';
   res.redirect('/login');
 };
+
+
+
 
 exports.authorizeRoles = (roles) => {
   return (req, res, next) => {
