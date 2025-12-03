@@ -25,9 +25,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Session setup
 app.use(session({
-  secret: 'your_secret_key', // a comment to remind user to replace
+secret: process.env.SESSION_SECRET || 'fallback-secret-for-local-dev', // <--- CHANGE THIS
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: { secure: false } // Set to true if using https
 }));
 
