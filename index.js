@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const dummyData = require('./dummy-data'); // Require dummy data
+const knex = require('./db');
 const { isAuthenticated, authorizeRoles } = require('./middleware/auth'); // Require auth middleware
 
 const usersRouter = require('./routes/users');
@@ -56,22 +56,36 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  const { email, password } = req.body; // Changed from username to email
-  const user = dummyData.users.find(u => u.email === email); // Find user by email
+  const { email, password } = req.body;
+  const user = await knex('users').where('useremail', email).first();
 
   if (user) {
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    let passwordMatch = false;
+    // Check if the password looks like a bcrypt hash
+    if (user.password.startsWith('$2a$') || user.password.startsWith('$2b$')) {
+      passwordMatch = await bcrypt.compare(password, user.password);
+    } else {
+      // Plain text password comparison
+      passwordMatch = (password === user.password);
+    }
+
     if (passwordMatch) {
-      req.session.user = { id: user.id, firstName: user.firstName, role: user.role }; // Include firstName in session
-      console.log('User object after successful login:', user); // Debug log
-      console.log('Session user object after successful login:', req.session.user); // Debug log
-      req.session.message = 'Login successful!'; // Set a success message
+      // If the password was plain text, hash it and update the database
+      if (!user.password.startsWith('$2a$') && !user.password.startsWith('$2b$')) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await knex('users').where('userid', user.userid).update({ password: hashedPassword });
+      }
+
+      req.session.user = { id: user.userid, firstName: user.userfirstname, role: user.userrole };
+      console.log('User object after successful login:', user);
+      console.log('Session user object after successful login:', req.session.user);
+      req.session.message = 'Login successful!';
       const redirectUrl = req.session.returnTo || '/';
-      delete req.session.returnTo; // Clean up the session variable
+      delete req.session.returnTo;
       return res.redirect(redirectUrl);
     }
   }
-  req.session.message = 'Invalid email or password'; // Updated message
+  req.session.message = 'Invalid email or password';
   res.redirect('/login');
 });
 
@@ -83,7 +97,7 @@ app.post('/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
   // Check if email already exists
-  const emailExists = dummyData.users.some(user => user.email === email);
+  const emailExists = await knex('users').where('useremail', email).first();
 
   if (emailExists) {
     req.session.message = 'Email already registered.';
@@ -92,15 +106,13 @@ app.post('/register', async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = {
-      id: dummyData.users.length > 0 ? Math.max(...dummyData.users.map(u => u.id)) + 1 : 1,
-      firstName,
-      lastName,
-      email,
+    const [newUserId] = await knex('users').insert({
+      userfirstname: firstName,
+      userlastname: lastName,
+      useremail: email,
       password: hashedPassword,
-      role: 'common' // Default role for new registrations
-    };
-    dummyData.users.push(newUser);
+      userrole: 'common' // Default role for new registrations
+    }).returning('userid'); // Assuming UserID is the primary key and auto-increments
     req.session.message = 'Registration successful! Please log in.';
     res.redirect('/login');
   } catch (error) {

@@ -50,12 +50,18 @@
                         <div class="card-body p-5">
                             <form action="/milestones/edit/<%= milestone.id %>" method="POST">
                                 <div class="mb-3">
-                                    <label for="title" class="form-label">Milestone Title</label>
-                                    <input type="text" class="form-control" id="title" name="title" value="<%= milestone.title %>" required>
+                                    <label for="participant_id" class="form-label">Participant</label>
+                                    <select class="form-control" id="participant_id" name="participant_id" required>
+                                        <% participants.forEach(p => { %>
+                                            <option value="<%= p.participantid %>" <%= milestone.participant_id === p.participantid ? 'selected' : '' %>>
+                                                <%= p.participantfirstname %> <%= p.participantlastname %> (<%= p.participantemail %>)
+                                            </option>
+                                        <% }); %>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3"><%= milestone.description %></textarea>
+                                    <label for="title" class="form-label">Milestone Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="<%= milestone.title %>" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="milestoneDate" class="form-label">Milestone Date</label>

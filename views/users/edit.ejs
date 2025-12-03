@@ -48,18 +48,18 @@
                 <div class="col-lg-8 col-md-10">
                     <div class="card shadow-sm border-0">
                         <div class="card-body p-5">
-                            <form action="/users/edit/<%= targetUser.id %>" method="POST">
+                            <form action="/users/edit/<%= targetUser.userid %>" method="POST">
                                 <div class="mb-3">
                                     <label for="firstName" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" value="<%= targetUser.firstName %>" required>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" value="<%= targetUser.userfirstname %>" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="lastName" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="lastName" name="lastName" value="<%= targetUser.lastName %>" required>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" value="<%= targetUser.userlastname %>" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" value="<%= targetUser.email %>" required>
+                                    <input type="email" class="form-control" id="email" name="email" value="<%= targetUser.useremail %>" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password (leave blank to keep current)</label>
@@ -68,8 +68,8 @@
                                 <div class="mb-3">
                                     <label for="role" class="form-label">Role</label>
                                     <select class="form-select" id="role" name="role" required>
-                                        <option value="common" <%= targetUser.role === 'common' ? 'selected' : '' %>>Common User</option>
-                                        <option value="manager" <%= targetUser.role === 'manager' ? 'selected' : '' %>>Manager</option>
+                                        <option value="common" <%= targetUser.userrole === 'common' ? 'selected' : '' %>>Common User</option>
+                                        <option value="manager" <%= targetUser.userrole === 'manager' ? 'selected' : '' %>>Manager</option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-custom-view">Update User</button>

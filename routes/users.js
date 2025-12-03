@@ -1,13 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const dummyData = require('../dummy-data'); // Require dummy data
+const knex = require('../db');
 const bcrypt = require('bcrypt'); // Require bcrypt for password hashing
 const { isAuthenticated, authorizeRoles } = require('../middleware/auth'); // Require auth middleware
 
 // GET users listing.
-router.get('/', isAuthenticated, authorizeRoles(['manager']), function(req, res, next) {
-  const users = dummyData.users; // Use dummyData.users
-  res.render('users/index', { users: users, user: req.session.user });
+router.get('/', isAuthenticated, authorizeRoles(['manager']), async function(req, res, next) {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = 10;
+  const offset = (page - 1) * pageSize;
+
+  const totalUsers = await knex('users').count('userid as count').first();
+  const totalPages = Math.ceil(totalUsers.count / pageSize);
+
+  const users = await knex('users').select('*').limit(pageSize).offset(offset);
+  
+  res.render('users/index', { 
+    users: users, 
+    user: req.session.user,
+    currentPage: page,
+    totalPages: totalPages
+  });
 });
 
 // GET route for adding a new user
@@ -18,63 +31,56 @@ router.get('/add', isAuthenticated, authorizeRoles(['manager']), (req, res) => {
 // POST route for adding a new user
 router.post('/add', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
   const { firstName, lastName, email, password, role } = req.body;
-  const newId = dummyData.users.length > 0 ? Math.max(...dummyData.users.map(u => u.id)) + 1 : 1;
   const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = {
-    id: newId,
-    firstName,
-    lastName,
-    email,
+  await knex('users').insert({
+    userfirstname: firstName,
+    userlastname: lastName,
+    useremail: email,
     password: hashedPassword,
-    role
-  };
-  dummyData.users.push(newUser);
+    userrole: role
+  });
   res.redirect('/users');
 });
 
 // GET route for editing a user
-router.get('/edit/:id', isAuthenticated, authorizeRoles(['manager']), (req, res) => {
+router.get('/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
   const userId = parseInt(req.params.id);
-  const targetUser = dummyData.users.find(u => u.id === userId); // Renamed to targetUser
+  const targetUser = await knex('users').where('userid', userId).first();
   if (!targetUser) {
     return res.redirect('/users');
   }
-  res.render('users/edit', { targetUser: targetUser, user: req.session.user }); // Pass targetUser
+  res.render('users/edit', { targetUser: targetUser, user: req.session.user });
 });
 
 // POST route for updating a user
 router.post('/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
   const userId = parseInt(req.params.id);
   const { firstName, lastName, email, password, role } = req.body;
-  const userIndex = dummyData.users.findIndex(u => u.id === userId);
 
-  if (userIndex !== -1) {
-    let hashedPassword = dummyData.users[userIndex].password;
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, 10);
-    }
+  const updateData = {
+    userfirstname: firstName,
+    userlastname: lastName,
+    useremail: email,
+    userrole: role
+  };
 
-    dummyData.users[userIndex] = {
-      ...dummyData.users[userIndex],
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      role
-    };
+  if (password) {
+    updateData.password = await bcrypt.hash(password, 10);
   }
+
+  await knex('users').where('userid', userId).update(updateData);
   res.redirect('/users');
 });
 
 // POST route for deleting a user
-router.post('/delete/:id', isAuthenticated, authorizeRoles(['manager']), (req, res) => {
+router.post('/delete/:id', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
   const userId = parseInt(req.params.id);
   // Prevent a manager from deleting their own account
   if (req.session.user && req.session.user.id === userId) {
     req.session.message = 'You cannot delete your own account.';
     return res.redirect('/users');
   }
-  dummyData.users = dummyData.users.filter(u => u.id !== userId);
+  await knex('users').where('userid', userId).del();
   res.redirect('/users');
 });
 

@@ -50,8 +50,14 @@
                         <div class="card-body p-5">
                             <form action="/donations/edit/<%= donation.id %>" method="POST">
                                 <div class="mb-3">
-                                    <label for="donor_name" class="form-label">Donor Name</label>
-                                    <input type="text" class="form-control" id="donor_name" name="donor_name" value="<%= donation.donor_name %>" required>
+                                    <label for="participant_id" class="form-label">Participant</label>
+                                    <select class="form-control" id="participant_id" name="participant_id" required>
+                                        <% participants.forEach(p => { %>
+                                            <option value="<%= p.participantid %>" <%= donation.participant_id === p.participantid ? 'selected' : '' %>>
+                                                <%= p.participantfirstname %> <%= p.participantlastname %> (<%= p.participantemail %>)
+                                            </option>
+                                        <% }); %>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="amount" class="form-label">Amount</label>
@@ -59,7 +65,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="donation_date" class="form-label">Donation Date</label>
-                                    <input type="date" class="form-control" id="donation_date" name="donation_date" value="<%= donation.donation_date %>">
+                                    <input type="date" class="form-control" id="donation_date" name="donation_date" value="<%= donation.donationDate %>">
                                 </div>
                                 <button type="submit" class="btn btn-custom-view">Update Donation</button>
                                 <a href="/donations" class="btn btn-secondary">Cancel</a>

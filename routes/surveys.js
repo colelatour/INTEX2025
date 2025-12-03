@@ -1,117 +1,220 @@
 const express = require('express');
 const router = express.Router();
-const data = require('../dummy-data');
+const knex = require('../db');
 const { isAuthenticated, authorizeRoles } = require('../middleware/auth');
 
 // GET surveys listing.
-router.get('/', function(req, res, next) {
-  res.render('surveys/index', { surveys: data.surveys, user: req.session.user });
+router.get('/', async function(req, res, next) {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = 10;
+  const offset = (page - 1) * pageSize;
+
+  const totalSurveys = await knex('surveys').count('surveyid as count').first();
+  const totalPages = Math.ceil(totalSurveys.count / pageSize);
+
+  const surveys = await knex('surveys')
+    .select(
+      'surveys.surveyid as id',
+      'surveys.participantemail as participantEmail',
+      'surveys.eventname as eventName',
+      'surveys.eventdate as eventDate',
+      'surveys.eventtimestart as eventTimeStart',
+      'surveys.surveysatisfactionscore as satisfactionScore',
+      'surveys.surveyusefulnessscore as usefulnessScore',
+      'surveys.surveyinstructorscore as instructorScore',
+      'surveys.surveyrecommendationscore as recommendationScore',
+      'surveys.surveyoverallscore as overallScore',
+      'surveys.surveynpsbucket as npsBucket',
+      'surveys.surveycomments as comments',
+      'surveys.surveysubmissiondate as submissionDate',
+      'surveys.surveysubmissiontime as submissionTime',
+      'registrations.participantid as participant_id',
+      'registrations.eventoccurrenceid as event_id'
+    )
+    .join('registrations', 'surveys.registrationid', '=', 'registrations.registrationid')
+    .limit(pageSize)
+    .offset(offset);
+  
+  res.render('surveys/index', { 
+    surveys: surveys, 
+    user: req.session.user,
+    currentPage: page,
+    totalPages: totalPages
+  });
 });
 
 // GET route for adding a new survey
-router.get('/add', isAuthenticated, authorizeRoles(['manager']), (req, res) => {
+router.get('/add', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
+  const participants = await knex('participants').select('participantid', 'participantfirstname', 'participantlastname', 'participantemail');
+  const events = await knex('eventoccurrences').select('eventoccurrenceid', 'eventname', 'eventdate', 'eventtimestart');
   res.render('surveys/add', {
     user: req.session.user,
-    participants: data.participants,
-    events: data.events
+    participants: participants,
+    events: events
   });
 });
 
 // POST route for adding a new survey
-router.post('/add', isAuthenticated, authorizeRoles(['manager']), (req, res) => {
+router.post('/add', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
   const {
-    participant_id, event_id, title, description,
+    participant_id, event_id,
     satisfactionScore, usefulnessScore, instructorScore,
     recommendationScore, overallScore, npsBucket, comments,
     submissionDate, submissionTime
   } = req.body;
 
-  const newId = data.surveys.length > 0 ? Math.max(...data.surveys.map(s => s.id)) + 1 : 1;
-  const participant = data.participants.find(p => p.id == participant_id);
-  const event = event_id ? data.events.find(e => e.id == event_id) : null;
+  const participant = await knex('participants').where('participantid', participant_id).first();
+  const eventOccurrence = await knex('eventoccurrences').where('eventoccurrenceid', event_id).first();
 
-  const newSurvey = {
-    id: newId,
-    participant_id: parseInt(participant_id),
-    participantEmail: participant ? participant.email : '',
-    event_id: event ? parseInt(event_id) : null,
-    eventName: event ? event.name : '',
-    eventDate: event ? event.date : '',
-    eventTimeStart: event ? event.timeStart : '',
-    title,
-    description,
-    satisfactionScore: parseInt(satisfactionScore) || 0,
-    usefulnessScore: parseInt(usefulnessScore) || 0,
-    instructorScore: parseInt(instructorScore) || 0,
-    recommendationScore: parseInt(recommendationScore) || 0,
-    overallScore: parseFloat(overallScore) || 0.0,
-    npsBucket,
-    comments,
-    submissionDate,
-    submissionTime
-  };
-  data.surveys.push(newSurvey);
+  if (!participant || !eventOccurrence) {
+    req.session.message = 'Invalid Participant or Event selected.';
+    return res.redirect('/surveys/add');
+  }
+
+  const registration = await knex('registrations')
+    .where({
+      participantid: participant_id,
+      eventoccurrenceid: event_id,
+      participantemail: participant.participantemail,
+      eventname: eventOccurrence.eventname,
+      eventdate: eventOccurrence.eventdate,
+      eventtimestart: eventOccurrence.eventtimestart
+    })
+    .first();
+
+  if (!registration) {
+    req.session.message = 'No matching registration found for the selected participant and event.';
+    return res.redirect('/surveys/add');
+  }
+
+  await knex('surveys').insert({
+    registrationid: registration.registrationid,
+    participantemail: participant.participantemail,
+    eventname: eventOccurrence.eventname,
+    eventdate: eventOccurrence.eventdate,
+    eventtimestart: eventOccurrence.eventtimestart,
+    surveysatisfactionscore: parseInt(satisfactionScore) || null,
+    surveyusefulnessscore: parseInt(usefulnessScore) || null,
+    surveyinstructorscore: parseInt(instructorScore) || null,
+    surveyrecommendationscore: parseInt(recommendationScore) || null,
+    surveyoverallscore: parseFloat(overallScore) || null,
+    surveynpsbucket: npsBucket,
+    surveycomments: comments,
+    surveysubmissiondate: submissionDate,
+    surveysubmissiontime: submissionTime
+  });
   res.redirect('/surveys');
 });
 
 // GET route for editing a survey
-router.get('/edit/:id', isAuthenticated, authorizeRoles(['manager']), (req, res) => {
+router.get('/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
   const surveyId = parseInt(req.params.id);
-  const survey = data.surveys.find(s => s.id === surveyId);
+  const survey = await knex('surveys')
+    .select(
+      'surveys.surveyid as id',
+      'surveys.registrationid',
+      'surveys.participantemail',
+      'surveys.eventname',
+      'surveys.eventdate',
+      'surveys.eventtimestart',
+      'surveys.surveysatisfactionscore as satisfactionScore',
+      'surveys.surveyusefulnessscore as usefulnessScore',
+      'surveys.surveyinstructorscore as instructorScore',
+      'surveys.surveyrecommendationscore as recommendationScore',
+      'surveys.surveyoverallscore as overallScore',
+      'surveys.surveynpsbucket as npsBucket',
+      'surveys.surveycomments as comments',
+      'surveys.surveysubmissiondate as submissionDate',
+      'surveys.surveysubmissiontime as submissionTime',
+      'registrations.participantid as participant_id',
+      'registrations.eventoccurrenceid as event_id'
+    )
+    .join('registrations', 'surveys.registrationid', '=', 'registrations.registrationid')
+    .where('surveys.surveyid', surveyId)
+    .first();
+
   if (!survey) {
     return res.redirect('/surveys');
   }
+
+  // Format the dates for the date input fields
+  if (survey.eventdate) {
+    survey.eventdate = new Date(survey.eventdate).toISOString().split('T')[0];
+  }
+  if (survey.submissionDate) {
+    survey.submissionDate = new Date(survey.submissionDate).toISOString().split('T')[0];
+  }
+
+  const participants = await knex('participants').select('participantid', 'participantfirstname', 'participantlastname', 'participantemail');
+  const events = await knex('eventoccurrences').select('eventoccurrenceid', 'eventname', 'eventdate', 'eventtimestart');
+
   res.render('surveys/edit', {
     survey,
     user: req.session.user,
-    participants: data.participants,
-    events: data.events
+    participants,
+    events
   });
 });
 
 // POST route for updating a survey
-router.post('/edit/:id', isAuthenticated, authorizeRoles(['manager']), (req, res) => {
+router.post('/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
   const surveyId = parseInt(req.params.id);
   const {
-    participant_id, event_id, title, description,
+    participant_id, event_id,
     satisfactionScore, usefulnessScore, instructorScore,
     recommendationScore, overallScore, npsBucket, comments,
     submissionDate, submissionTime
   } = req.body;
 
-  const surveyIndex = data.surveys.findIndex(s => s.id === surveyId);
-  const participant = data.participants.find(p => p.id == participant_id);
-  const event = event_id ? data.events.find(e => e.id == event_id) : null;
+  const participant = await knex('participants').where('participantid', participant_id).first();
+  const eventOccurrence = await knex('eventoccurrences').where('eventoccurrenceid', event_id).first();
 
-  if (surveyIndex !== -1) {
-    data.surveys[surveyIndex] = {
-      ...data.surveys[surveyIndex],
-      participant_id: parseInt(participant_id),
-      participantEmail: participant ? participant.email : '',
-      event_id: event ? parseInt(event_id) : null,
-      eventName: event ? event.name : '',
-      eventDate: event ? event.date : '',
-      eventTimeStart: event ? event.timeStart : '',
-      title,
-      description,
-      satisfactionScore: parseInt(satisfactionScore) || 0,
-      usefulnessScore: parseInt(usefulnessScore) || 0,
-      instructorScore: parseInt(instructorScore) || 0,
-      recommendationScore: parseInt(recommendationScore) || 0,
-      overallScore: parseFloat(overallScore) || 0.0,
-      npsBucket,
-      comments,
-      submissionDate,
-      submissionTime
-    };
+  if (!participant || !eventOccurrence) {
+    req.session.message = 'Invalid Participant or Event selected.';
+    return res.redirect(`/surveys/edit/${surveyId}`);
   }
+
+  const registration = await knex('registrations')
+    .where({
+      participantid: participant_id,
+      eventoccurrenceid: event_id,
+      participantemail: participant.participantemail,
+      eventname: eventOccurrence.eventname,
+      eventdate: eventOccurrence.eventdate,
+      eventtimestart: eventOccurrence.eventtimestart
+    })
+    .first();
+
+  if (!registration) {
+    req.session.message = 'No matching registration found for the selected participant and event.';
+    return res.redirect(`/surveys/edit/${surveyId}`);
+  }
+
+  await knex('surveys')
+    .where('surveyid', surveyId)
+    .update({
+      registrationid: registration.registrationid,
+      participantemail: participant.participantemail,
+      eventname: eventOccurrence.eventname,
+      eventdate: eventOccurrence.eventdate,
+      eventtimestart: eventOccurrence.eventtimestart,
+      surveysatisfactionscore: parseInt(satisfactionScore) || null,
+      surveyusefulnessscore: parseInt(usefulnessScore) || null,
+      surveyinstructorscore: parseInt(instructorScore) || null,
+      surveyrecommendationscore: parseInt(recommendationScore) || null,
+      surveyoverallscore: parseFloat(overallScore) || null,
+      surveynpsbucket: npsBucket,
+      surveycomments: comments,
+      surveysubmissiondate: submissionDate,
+      surveysubmissiontime: submissionTime
+    });
   res.redirect('/surveys');
 });
 
 // POST route for deleting a survey
-router.post('/delete/:id', isAuthenticated, authorizeRoles(['manager']), (req, res) => {
+router.post('/delete/:id', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
   const surveyId = parseInt(req.params.id);
-  data.surveys = data.surveys.filter(s => s.id !== surveyId);
+  await knex('surveys').where('surveyid', surveyId).del();
   res.redirect('/surveys');
 });
 

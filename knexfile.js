@@ -10,7 +10,7 @@ module.exports = {
     connection: {
       database: 'ellarises',
       user:     'postgres', // a comment to remind user to replace
-      password: 'Butterfingers24.'  // a comment to remind user to replace
+      password: 'clatour0'  // a comment to remind user to replace
     },
     migrations: {
       tableName: 'knex_migrations'
@@ -22,7 +22,7 @@ module.exports = {
     connection: {
       database: 'ellarises',
       user:     'postgres',
-      password: 'Butterfingers24.'
+      password: 'clatour0'
     },
     pool: {
       min: 2,

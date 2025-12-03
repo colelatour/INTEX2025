@@ -84,7 +84,7 @@
                                     <%= survey.eventName %>
                                 </td>
                                 <td>
-                                    <%= survey.eventDate %>
+                                    <%= survey.eventDate ? new Date(survey.eventDate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-') : '' %>
                                 </td>
                                 <td>
                                     <%= survey.eventTimeStart %>
@@ -111,7 +111,7 @@
                                     <%= survey.comments %>
                                 </td>
                                 <td>
-                                    <%= survey.submissionDate %>
+                                    <%= survey.submissionDate ? new Date(survey.submissionDate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-') : '' %>
                                 </td>
                                 <td>
                                     <%= survey.submissionTime %>
@@ -135,6 +135,25 @@
                     </tbody>
                 </table>
             </div>
+            <% if (totalPages > 1) { %>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="/surveys?page=<%= currentPage - 1 %>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Page <%= currentPage %> of <%= totalPages %></span>
+                    </li>
+                    <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                        <a class="page-link" href="/surveys?page=<%= currentPage + 1 %>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <% } %>
         </div>
     </section>
     <!-- Bootstrap core JS-->
