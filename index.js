@@ -132,6 +132,28 @@ app.get('/logout', (req, res) => {
   });
 });
 
+// Public Donation Routes (accessible to all users)
+app.get('/donations/userdonor/add', async (req, res) => {
+  const message = req.session.message;
+  delete req.session.message; // Clear the message after retrieving it
+  res.render('donations/userdonor/add', { user: req.session.user, message: message });
+});
+
+app.post('/donations/userdonor/add', async (req, res) => {
+  const { userdonorfirstname, userdonorlastname, userdonoramount, userdonordate } = req.body;
+  try {
+    await knex.raw('INSERT INTO userdonor (userdonorfirstname, userdonorlastname, userdonoramount, userdonordate) VALUES (?, ?, ?, ?)',
+      [userdonorfirstname, userdonorlastname, parseFloat(userdonoramount) || 0.00, userdonordate]);
+    req.session.message = 'User Donor added successfully!';
+    res.redirect('/donations/userdonor/add');
+  } catch (error) {
+    console.error('Error adding user donor:', error);
+    req.session.message = 'Error adding user donor: ' + error.message;
+    res.redirect('/donations/userdonor/add');
+  }
+});
+
+
 // Apply isAuthenticated middleware to all routes that need protection
 
 // Protected Route Handlers (after authentication)
@@ -144,7 +166,9 @@ app.use('/donations', isAuthenticated, donationsRouter);
 
 
 app.get('/dashboard', isAuthenticated, (req, res) => {
-  res.render('dashboard', { title: 'Ella Rises Dashboard', user: req.session.user || null });
+  const message = req.session.message;
+  req.session.message = null; // Clear the message after retrieving it for rendering
+  res.render('dashboard', { title: 'Ella Rises Dashboard', user: req.session.user || null, message: message });
 });
 
 // Routes
