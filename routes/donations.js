@@ -62,7 +62,12 @@ router.get('/', isAuthenticated, async function(req, res, next) {
 
 // GET route for adding a new donation
 router.get('/add', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
-  const participants = await knex('participants').select('participantid', 'participantfirstname', 'participantlastname', 'participantemail');
+  const participants = await knex('participants').select(
+    'participantid as ParticipantID',
+    'participantfirstname as ParticipantFirstName',
+    'participantlastname as ParticipantLastName',
+    'participantemail as ParticipantEmail'
+  );
   res.render('donations/add', { user: req.session.user, participants });
 });
 

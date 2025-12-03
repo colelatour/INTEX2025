@@ -54,10 +54,61 @@ router.get('/', async function(req, res, next) {
   });
 });
 
+// GET route for viewing a single survey
+router.get('/view/:id', isAuthenticated, async (req, res) => {
+  const surveyId = parseInt(req.params.id);
+  const survey = await knex('surveys')
+    .select(
+      'surveys.surveyid as id',
+      'surveys.registrationid',
+      'surveys.participantemail',
+      'surveys.eventname',
+      'surveys.eventdate',
+      'surveys.eventtimestart',
+      'surveys.surveysatisfactionscore as satisfactionScore',
+      'surveys.surveyusefulnessscore as usefulnessScore',
+      'surveys.surveyinstructorscore as instructorScore',
+      'surveys.surveyrecommendationscore as recommendationScore',
+      'surveys.surveyoverallscore as overallScore',
+      'surveys.surveynpsbucket as npsBucket',
+      'surveys.surveycomments as comments',
+      'surveys.surveysubmissiondate as submissionDate',
+      'surveys.surveysubmissiontime as submissionTime',
+      'registrations.participantid as participant_id',
+      'registrations.eventoccurrenceid as event_id'
+    )
+    .join('registrations', 'surveys.registrationid', '=', 'registrations.registrationid')
+    .where('surveys.surveyid', surveyId)
+    .first();
+
+  if (!survey) {
+    return res.redirect('/surveys'); // Or render an error page
+  }
+
+  if (survey.submissionDate) {
+    survey.submissionDate = new Date(survey.submissionDate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+  }
+
+  res.render('surveys/view', {
+    survey,
+    user: req.session.user
+  });
+});
+
 // GET route for adding a new survey
 router.get('/add', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
-  const participants = await knex('participants').select('participantid', 'participantfirstname', 'participantlastname', 'participantemail');
-  const events = await knex('eventoccurrences').select('eventoccurrenceid', 'eventname', 'eventdate', 'eventtimestart');
+  const participants = await knex('participants').select(
+    'participantid as id',
+    'participantfirstname as firstName',
+    'participantlastname as lastName',
+    'participantemail as email'
+  );
+  const events = await knex('eventoccurrences').select(
+    'eventoccurrenceid as id',
+    'eventname as name',
+    'eventdate as date',
+    'eventtimestart as timeStart'
+  );
   res.render('surveys/add', {
     user: req.session.user,
     participants: participants,

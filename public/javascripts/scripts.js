@@ -185,7 +185,37 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => ripple.remove(), 600);
         });
     });
+
+    // Handle "Go to page" functionality
+    const goToPageBtn = document.getElementById('goToPageBtn');
+    const pageNumberInput = document.getElementById('pageNumberInput');
+
+    if (goToPageBtn && pageNumberInput) {
+        goToPageBtn.addEventListener('click', function() {
+            const pageNumber = parseInt(pageNumberInput.value);
+            const totalPages = parseInt(pageNumberInput.max); // Using max attribute for total pages
+
+            if (isNaN(pageNumber) || pageNumber < 1 || pageNumber > totalPages) {
+                alert(`Please enter a valid page number between 1 and ${totalPages}.`);
+                pageNumberInput.value = ''; // Clear invalid input
+            } else {
+                const currentPath = window.location.pathname.split('?')[0]; // Get path without query string
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('page', pageNumber);
+                window.location.href = `${currentPath}?${urlParams.toString()}`;
+            }
+        });
+
+        // Allow pressing Enter key to go to page
+        pageNumberInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent form submission if input is inside a form
+                goToPageBtn.click(); // Trigger the button click
+            }
+        });
+    }
 });
+
 
 // Add keyframe animations via JavaScript
 const style = document.createElement('style');
