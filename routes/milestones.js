@@ -8,11 +8,38 @@ router.get('/', isAuthenticated, async function(req, res, next) {
   const page = parseInt(req.query.page) || 1;
   const pageSize = 10;
   const offset = (page - 1) * pageSize;
+  const searchTerm = req.query.search || '';
 
-  const totalMilestones = await knex('milestones').count('milestoneid as count').first();
+  let query = knex('milestones').join('participants', 'milestones.participantid', '=', 'participants.participantid');
+  let countQuery = knex('milestones').join('participants', 'milestones.participantid', '=', 'participants.participantid');
+
+  if (searchTerm) {
+    const searchTerms = searchTerm.split(' ').filter(term => term);
+    if (searchTerms.length > 1) {
+      // Search for first name and last name
+      query = query.where(function() {
+        this.where('participants.participantfirstname', 'ilike', `%${searchTerms[0]}%`)
+            .andWhere('participants.participantlastname', 'ilike', `%${searchTerms[1]}%`);
+      });
+      countQuery = countQuery.where(function() {
+        this.where('participants.participantfirstname', 'ilike', `%${searchTerms[0]}%`)
+            .andWhere('participants.participantlastname', 'ilike', `%${searchTerms[1]}%`);
+      });
+    } else {
+      // Search for a single term in title, first name, or last name
+      query = query.where('milestones.milestonetitle', 'ilike', `%${searchTerm}%`)
+                   .orWhere('participants.participantfirstname', 'ilike', `%${searchTerm}%`)
+                   .orWhere('participants.participantlastname', 'ilike', `%${searchTerm}%`);
+      countQuery = countQuery.where('milestones.milestonetitle', 'ilike', `%${searchTerm}%`)
+                             .orWhere('participants.participantfirstname', 'ilike', `%${searchTerm}%`)
+                             .orWhere('participants.participantlastname', 'ilike', `%${searchTerm}%`);
+    }
+  }
+
+  const totalMilestones = await countQuery.count('milestoneid as count').first();
   const totalPages = Math.ceil(totalMilestones.count / pageSize);
 
-  const milestones = await knex('milestones')
+  const milestones = await query
     .select(
       'milestones.milestoneid as id',
       'milestones.milestonetitle as title',
@@ -21,7 +48,6 @@ router.get('/', isAuthenticated, async function(req, res, next) {
       'participants.participantfirstname',
       'participants.participantlastname'
     )
-    .join('participants', 'milestones.participantid', '=', 'participants.participantid')
     .limit(pageSize)
     .offset(offset);
   
@@ -29,7 +55,8 @@ router.get('/', isAuthenticated, async function(req, res, next) {
     milestones: milestones, 
     user: req.session.user,
     currentPage: page,
-    totalPages: totalPages
+    totalPages: totalPages,
+    searchTerm: searchTerm
   });
 });
 

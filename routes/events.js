@@ -8,12 +8,22 @@ router.get('/', async function(req, res, next) {
   const page = parseInt(req.query.page) || 1;
   const pageSize = 10;
   const offset = (page - 1) * pageSize;
+  const searchTerm = req.query.search || '';
 
-  const totalEvents = await knex('eventoccurrences').count('eventoccurrenceid as count').first();
+  let query = knex('eventoccurrences').join('eventtemplates', 'eventoccurrences.eventtemplateid', '=', 'eventtemplates.eventtemplateid');
+  let countQuery = knex('eventoccurrences');
+
+  if (searchTerm) {
+    query = query.where('eventoccurrences.eventname', 'ilike', `%${searchTerm}%`)
+                 .orWhere('eventoccurrences.eventlocation', 'ilike', `%${searchTerm}%`);
+    countQuery = countQuery.where('eventname', 'ilike', `%${searchTerm}%`)
+                           .orWhere('eventlocation', 'ilike', `%${searchTerm}%`);
+  }
+
+  const totalEvents = await countQuery.count('eventoccurrenceid as count').first();
   const totalPages = Math.ceil(totalEvents.count / pageSize);
 
-  const events = await knex('eventoccurrences')
-    .join('eventtemplates', 'eventoccurrences.eventtemplateid', '=', 'eventtemplates.eventtemplateid')
+  const events = await query
     .select(
       'eventoccurrences.eventoccurrenceid as id',
       'eventoccurrences.eventname as name',
@@ -33,7 +43,8 @@ router.get('/', async function(req, res, next) {
     events: events, 
     user: req.session.user,
     currentPage: page,
-    totalPages: totalPages
+    totalPages: totalPages,
+    searchTerm: searchTerm
   });
 });
 
