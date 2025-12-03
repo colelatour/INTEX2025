@@ -8,9 +8,12 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      database: 'ellarises',
-      user:     'postgres', // a comment to remind user to replace
-      password: 'clatour0'  // a comment to remind user to replace
+      host: process.env.RDS_HOSTNAME || 'localhost',
+      user: process.env.RDS_USERNAME || 'postgres',
+      password: process.env.RDS_PASSWORD || 'clatour0',
+      database: process.env.RDS_DB_NAME || 'ellarises',
+      port: process.env.RDS_PORT || 5432,
+      ssl: process.env.RDS_HOSTNAME ? { rejectUnauthorized: false } : false
     },
     migrations: {
       tableName: 'knex_migrations'
