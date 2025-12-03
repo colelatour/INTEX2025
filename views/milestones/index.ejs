@@ -100,8 +100,8 @@
                 </table>
             </div>
             <% if (totalPages > 1) { %>
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
+            <nav aria-label="Page navigation" class="d-flex flex-column align-items-center">
+                <ul class="pagination justify-content-center mb-3">
                     <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
                         <a class="page-link" href="/milestones?page=<%= currentPage - 1 %>" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
@@ -116,6 +116,10 @@
                         </a>
                     </li>
                 </ul>
+                <div class="input-group mb-3" style="width: 200px;">
+                    <input type="number" class="form-control" id="pageNumberInput" placeholder="Go to page" min="1" max="<%= totalPages %>" aria-label="Page number">
+                    <button class="btn btn-outline-secondary" type="button" id="goToPageBtn">Go</button>
+                </div>
             </nav>
             <% } %>
         </div>

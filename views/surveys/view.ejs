@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Survey Details</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
+        type="text/css" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
+        type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/stylesheets/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
+                    style="height: 60px;"></a>
+            <div>
+                <% if (user) { %>
+                    <span class="navbar-text me-3">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
+                    <a class="btn btn-no-background" href="/logout">Logout</a>
+                <% } else { %>
+                    <a class="btn btn-no-background" href="/login">Login</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+    <!-- Header-->
+    <header class="bg-primary py-2 position-relative">
+        <a href="/surveys" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center">
+                <h1 class="display-4 fw-bolder">Survey Details</h1>
+                <p class="lead fw-normal mb-0">View survey information</p>
+            </div>
+        </div>
+    </header>
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-xl-6">
+                    <div class="card p-4">
+                        <div class="mb-3">
+                            <strong>Participant Email:</strong>
+                            <p><%= survey.participantemail %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Event Name:</strong>
+                            <p><%= survey.eventname %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Event Date:</strong>
+                            <p><%= survey.eventdate ? new Date(survey.eventdate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-') : '' %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Event Time Start:</strong>
+                            <p><%= survey.eventtimestart %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Satisfaction Score:</strong>
+                            <p><%= survey.satisfactionScore %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Usefulness Score:</strong>
+                            <p><%= survey.usefulnessScore %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Instructor Score:</strong>
+                            <p><%= survey.instructorScore %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Recommendation Score:</strong>
+                            <p><%= survey.recommendationScore %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Overall Score:</strong>
+                            <p><%= survey.overallScore %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>NPS Bucket:</strong>
+                            <p><%= survey.npsBucket %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Comments:</strong>
+                            <p><%= survey.comments %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Submission Date:</strong>
+                            <p><%= survey.submissionDate ? new Date(survey.submissionDate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-') : '' %></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Submission Time:</strong>
+                            <p><%= survey.submissionTime %></p>
+                        </div>
+                        <div class="text-center">
+                            <a class="btn btn-secondary" href="/surveys">Back to Surveys</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="/javascripts/scripts.js"></script>
+</body>
+
+</html>
