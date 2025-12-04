@@ -70,15 +70,6 @@ app.use(session({
 
 // This runs on every request
 app.use((req, res, next) => {
-  // TEMPORARY: Auto-login as manager for development
-  if (!req.session.user) {
-    req.session.user = {
-      id: 1,
-      firstName: 'Manager',
-      role: 'manager'
-    };
-  }
-
   // Expose user info to templates (if logged in)
   res.locals.user = req.session.user;
 
@@ -317,7 +308,7 @@ app.get('/', async (req, res) => {
       title: 'Ella Rises', 
       user: req.session.user || null,
       participantCount: participantCount?.count || 0,
-      totalDonations: totalDonations.toFixed(2)
+      totalDonations: totalDonations.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     });
   } catch (error) {
     console.error('Error fetching homepage data:', error);

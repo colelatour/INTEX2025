@@ -82,7 +82,7 @@
             </div>
             <% if (user && user.role === 'manager') { %>
                 <a href="/donations/add" class="px-6 py-2.5 rounded-xl font-semibold transition-all bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink shadow-lg flex items-center gap-2">
-                    <i class="bi bi-plus-lg"></i> Add Participant
+                    <i class="bi bi-plus-lg"></i> Add Donation
                 </a>
             <% } %>
         </div>
@@ -91,87 +91,201 @@
             <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl mb-8"><%= message %></div>
         <% } %>
 
-        <!-- Search Bar -->
-        <form action="/donations" method="GET" class="bg-white rounded-2xl shadow-sm p-4 mb-8 flex items-center gap-4 border border-gray-100">
-            <i class="bi bi-search text-gray-400 text-xl pl-2"></i>
-            <input type="search" name="search" placeholder="Search by name or email..." value="<%= searchTerm || '' %>" class="flex-grow bg-transparent border-none focus:ring-0 text-gray-700 placeholder-gray-400 font-sans outline-none"/>
-            <button type="submit" class="px-6 py-2 rounded-xl font-semibold bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink transition-all">Search</button>
-        </form>
+        <!-- Participant Donations Table -->
+        <div class="mb-8">
+            <h2 class="font-serif text-2xl text-ella-dark-gray mb-4">Participant Donations</h2>
+            
+            <!-- Search Bar -->
+            <form action="/donations" method="GET" class="bg-white rounded-2xl shadow-sm p-4 mb-6 flex items-center gap-4 border border-gray-100">
+                <i class="bi bi-search text-gray-400 text-xl pl-2"></i>
+                <input type="search" name="search" placeholder="Search by participant name or date..." value="<%= searchTerm || '' %>" class="flex-grow bg-transparent border-none focus:ring-0 text-gray-700 placeholder-gray-400 font-sans outline-none"/>
+                <button type="submit" class="px-6 py-2 rounded-xl font-semibold bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink transition-all">Search</button>
+            </form>
 
-        <!-- Table Card -->
-        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100/50">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-gradient-to-r from-ella-off-white to-white border-b border-gray-100">
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Name</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Email</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">City</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">State</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Interest</th>
-                            <% if (user && user.role === 'manager') { %>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg text-right">Actions</th>
-                            <% } %>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% if (participants && participants.length > 0) { %>
-                            <% participants.forEach(function(p) { %>
-                                <tr class="group hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-none">
-                                    <td class="p-6">
-                                        <div class="font-bold text-gray-800"><%= p.participantfirstname %> <%= p.participantlastname %></div>
-                                    </td>
-                                    <td class="p-6 text-gray-600"><%= p.participantemail %></td>
-                                    <td class="p-6"><span class="px-3 py-1 rounded-full bg-ella-light-blue/10 text-ella-dark-gray text-xs font-semibold"><%= p.participantcity || 'N/A' %></span></td>
-                                    <td class="p-6 text-gray-600"><%= p.participantstate || 'N/A' %></td>
-                                    <td class="p-6 text-gray-600"><%= p.participantfieldofinterest || 'N/A' %></td>
-                                    <% if (user && user.role === 'manager') { %>
-                                    <td class="p-6 text-right">
-                                        <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <form action="/donations/edit/<%= p.participantid %>" method="GET" class="inline">
-                                                <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-dark-gray text-ella-dark-gray hover:bg-ella-dark-gray hover:text-white transition-all">
-                                                    <i class="bi bi-pencil-fill"></i>
-                                                </button>
-                                            </form>
-                                            <form action="/donations/delete/<%= p.participantid %>" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
-                                                <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-red text-ella-red hover:bg-ella-red hover:text-white transition-all">
-                                                    <i class="bi bi-trash-fill"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                    <% } %>
-                                </tr>
-                            <% }); %>
-                        <% } else { %>
-                            <tr>
-                                <td colspan="<%= (user && user.role === 'manager') ? '6' : '5' %>" class="p-12 text-center text-gray-400">
-                                    <i class="bi bi-inbox text-4xl mb-4 block"></i>
-                                    No participants found.
-                                </td>
+            <!-- Table Card -->
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100/50 mb-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-ella-off-white to-white border-b border-gray-100">
+                                <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Donor Name</th>
+                                <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Email</th>
+                                <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Amount</th>
+                                <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Date</th>
+                                <% if (user && user.role === 'manager') { %>
+                                <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg text-right">Actions</th>
+                                <% } %>
                             </tr>
-                        <% } %>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <% if (donations && donations.length > 0) { %>
+                                <% donations.forEach(function(d) { %>
+                                    <tr class="group hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-none">
+                                        <td class="p-6">
+                                            <div class="font-bold text-gray-800"><%= d.participantfirstname %> <%= d.participantlastname %></div>
+                                        </td>
+                                        <td class="p-6 text-gray-600"><%= d.participantEmail %></td>
+                                        <td class="p-6">
+                                            <span class="px-3 py-1 rounded-full bg-ella-green/10 text-ella-dark-gray text-sm font-semibold">
+                                                $<%= parseFloat(d.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                            </span>
+                                        </td>
+                                        <td class="p-6 text-gray-600"><%= d.donationDate ? new Date(d.donationDate).toLocaleDateString('en-US') : 'N/A' %></td>
+                                        <% if (user && user.role === 'manager') { %>
+                                        <td class="p-6 text-right">
+                                            <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <form action="/donations/edit/<%= d.id %>" method="GET" class="inline">
+                                                    <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-dark-gray text-ella-dark-gray hover:bg-ella-dark-gray hover:text-white transition-all">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="/donations/delete/<%= d.id %>" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
+                                                    <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-red text-ella-red hover:bg-ella-red hover:text-white transition-all">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <% } %>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="<%= (user && user.role === 'manager') ? '5' : '4' %>" class="p-12 text-center text-gray-400">
+                                        <i class="bi bi-inbox text-4xl mb-4 block"></i>
+                                        No donations found.
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <% if (totalPages > 1) { %>
+            <div class="flex justify-center items-center mt-6 gap-3">
+                <a href="/donations?page=<%= Math.max(1, currentPage - 1) %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+                   class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                
+                <div class="flex gap-2">
+                    <% 
+                    const startPage = currentPage;
+                    const endPage = Math.min(currentPage + 2, totalPages);
+                    for(let i = startPage; i <= endPage; i++) { 
+                    %>
+                        <a href="/donations?page=<%= i %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+                           class="w-10 h-10 rounded-full shadow flex items-center justify-center transition-colors font-bold <%= currentPage === i ? 'bg-ella-pink text-white' : 'bg-white text-gray-600 hover:bg-gray-50' %>">
+                            <%= i %>
+                        </a>
+                    <% } %>
+                    <% if (endPage < totalPages) { %>
+                        <span class="w-10 h-10 flex items-center justify-center text-gray-400">...</span>
+                        <a href="/donations?page=<%= totalPages %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+                           class="w-10 h-10 rounded-full shadow flex items-center justify-center transition-colors font-bold bg-white text-gray-600 hover:bg-gray-50">
+                            <%= totalPages %>
+                        </a>
+                    <% } %>
+                </div>
+
+                <a href="/donations?page=<%= Math.min(totalPages, currentPage + 1) %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+                   class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+
+                <form action="/donations" method="GET" class="flex items-center gap-2 ml-4">
+                    <% if (searchTerm) { %>
+                        <input type="hidden" name="search" value="<%= searchTerm %>">
+                    <% } %>
+                    <span class="text-sm text-gray-600">Go to:</span>
+                    <input type="number" name="page" min="1" max="<%= totalPages %>" 
+                           placeholder="<%= currentPage %>" 
+                           class="w-16 h-10 px-2 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-ella-pink focus:border-transparent"
+                           onkeypress="if(event.key === 'Enter') this.form.submit();">
+                    <button type="submit" class="px-4 h-10 rounded-lg bg-ella-pink text-white hover:bg-white hover:text-ella-pink border-2 border-ella-pink transition-all text-sm font-semibold">
+                        Go
+                    </button>
+                </form>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- User Donors Table -->
+        <div class="mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-4 gap-4">
+                <h2 class="font-serif text-2xl text-ella-dark-gray">User Donors</h2>
+                <a href="/donations/userdonor/add" class="px-6 py-2.5 rounded-xl font-semibold transition-all bg-ella-purple text-white hover:bg-white hover:text-ella-purple border-2 border-ella-purple shadow-lg flex items-center gap-2">
+                    <i class="bi bi-plus-lg"></i> Add User Donor
+                </a>
+            </div>
+
+            <!-- User Donor Search Bar -->
+            <form action="/donations" method="GET" class="bg-white rounded-2xl shadow-sm p-4 mb-6 flex items-center gap-4 border border-gray-100">
+                <i class="bi bi-search text-gray-400 text-xl pl-2"></i>
+                <input type="search" name="userDonorSearch" placeholder="Search user donors..." value="<%= userDonorSearchTerm || '' %>" class="flex-grow bg-transparent border-none focus:ring-0 text-gray-700 placeholder-gray-400 font-sans outline-none"/>
+                <button type="submit" class="px-6 py-2 rounded-xl font-semibold bg-ella-purple text-white hover:bg-white hover:text-ella-purple border-2 border-ella-purple transition-all">Search</button>
+            </form>
+
+            <!-- User Donor Table Card -->
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100/50">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-ella-off-white to-white border-b border-gray-100">
+                                <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Donor Name</th>
+                                <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Amount</th>
+                                <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Date</th>
+                                <% if (user && user.role === 'manager') { %>
+                                <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg text-right">Actions</th>
+                                <% } %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (userDonors && userDonors.length > 0) { %>
+                                <% userDonors.forEach(function(ud) { %>
+                                    <tr class="group hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-none">
+                                        <td class="p-6">
+                                            <div class="font-bold text-gray-800"><%= ud.userdonorfirstname %> <%= ud.userdonorlastname %></div>
+                                        </td>
+                                        <td class="p-6">
+                                            <span class="px-3 py-1 rounded-full bg-ella-purple/10 text-ella-dark-gray text-sm font-semibold">
+                                                $<%= parseFloat(ud.userdonoramount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                            </span>
+                                        </td>
+                                        <td class="p-6 text-gray-600"><%= ud.userdonordate ? new Date(ud.userdonordate).toLocaleDateString('en-US') : 'N/A' %></td>
+                                        <% if (user && user.role === 'manager') { %>
+                                        <td class="p-6 text-right">
+                                            <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <form action="/donations/userdonor/edit/<%= ud.userdonorid %>" method="GET" class="inline">
+                                                    <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-dark-gray text-ella-dark-gray hover:bg-ella-dark-gray hover:text-white transition-all">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="/donations/userdonor/delete/<%= ud.userdonorid %>" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
+                                                    <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-red text-ella-red hover:bg-ella-red hover:text-white transition-all">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <% } %>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="<%= (user && user.role === 'manager') ? '4' : '3' %>" class="p-12 text-center text-gray-400">
+                                        <i class="bi bi-inbox text-4xl mb-4 block"></i>
+                                        No user donors found.
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
-        <!-- Pagination -->
-        <% if (totalPages > 1) { %>
-        <div class="flex justify-center mt-8 gap-2">
-            <a href="/donations?page=<%= Math.max(1, currentPage - 1) %><%= searchTerm ? '&search=' + searchTerm : '' %>" class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
-                <i class="bi bi-chevron-left"></i>
-            </a>
-            <% for(let i = 1; i <= totalPages; i++) { %>
-                <a href="/donations?page=<%= i %><%= searchTerm ? '&search=' + searchTerm : '' %>" class="w-10 h-10 rounded-full shadow flex items-center justify-center transition-colors font-bold <%= currentPage === i ? 'bg-ella-pink text-white' : 'bg-white text-gray-600 hover:bg-gray-50' %>">
-                    <%= i %>
-                </a>
-            <% } %>
-            <a href="/donations?page=<%= Math.min(totalPages, currentPage + 1) %><%= searchTerm ? '&search=' + searchTerm : '' %>" class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
-                <i class="bi bi-chevron-right"></i>
-            </a>
-        </div>
-        <% } %>
     </div>
 
     <!-- Footer-->
@@ -215,4 +329,3 @@
     </script>
 </body>
 </html>
-

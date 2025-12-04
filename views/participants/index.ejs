@@ -158,18 +158,54 @@
 
         <!-- Pagination -->
         <% if (totalPages > 1) { %>
-        <div class="flex justify-center mt-8 gap-2">
-            <a href="/participants?page=<%= Math.max(1, currentPage - 1) %><%= searchTerm ? '&search=' + searchTerm : '' %>" class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
+        <div class="flex justify-center items-center mt-8 gap-3">
+            <!-- Previous Button -->
+            <a href="/participants?page=<%= Math.max(1, currentPage - 1) %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+               class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
                 <i class="bi bi-chevron-left"></i>
             </a>
-            <% for(let i = 1; i <= totalPages; i++) { %>
-                <a href="/participants?page=<%= i %><%= searchTerm ? '&search=' + searchTerm : '' %>" class="w-10 h-10 rounded-full shadow flex items-center justify-center transition-colors font-bold <%= currentPage === i ? 'bg-ella-pink text-white' : 'bg-white text-gray-600 hover:bg-gray-50' %>">
-                    <%= i %>
-                </a>
-            <% } %>
-            <a href="/participants?page=<%= Math.min(totalPages, currentPage + 1) %><%= searchTerm ? '&search=' + searchTerm : '' %>" class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
+            
+            <!-- Current Page and Next 2 Pages -->
+            <div class="flex gap-2">
+                <% 
+                const startPage = currentPage;
+                const endPage = Math.min(currentPage + 2, totalPages);
+                for(let i = startPage; i <= endPage; i++) { 
+                %>
+                    <a href="/participants?page=<%= i %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+                       class="w-10 h-10 rounded-full shadow flex items-center justify-center transition-colors font-bold <%= currentPage === i ? 'bg-ella-pink text-white' : 'bg-white text-gray-600 hover:bg-gray-50' %>">
+                        <%= i %>
+                    </a>
+                <% } %>
+                <% if (endPage < totalPages) { %>
+                    <span class="w-10 h-10 flex items-center justify-center text-gray-400">...</span>
+                    <a href="/participants?page=<%= totalPages %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+                       class="w-10 h-10 rounded-full shadow flex items-center justify-center transition-colors font-bold bg-white text-gray-600 hover:bg-gray-50">
+                        <%= totalPages %>
+                    </a>
+                <% } %>
+            </div>
+
+            <!-- Next Button -->
+            <a href="/participants?page=<%= Math.min(totalPages, currentPage + 1) %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+               class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
                 <i class="bi bi-chevron-right"></i>
             </a>
+
+            <!-- Page Input -->
+            <form action="/participants" method="GET" class="flex items-center gap-2 ml-4">
+                <% if (searchTerm) { %>
+                    <input type="hidden" name="search" value="<%= searchTerm %>">
+                <% } %>
+                <span class="text-sm text-gray-600">Go to:</span>
+                <input type="number" name="page" min="1" max="<%= totalPages %>" 
+                       placeholder="<%= currentPage %>" 
+                       class="w-16 h-10 px-2 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-ella-pink focus:border-transparent"
+                       onkeypress="if(event.key === 'Enter') this.form.submit();">
+                <button type="submit" class="px-4 h-10 rounded-lg bg-ella-pink text-white hover:bg-white hover:text-ella-pink border-2 border-ella-pink transition-all text-sm font-semibold">
+                    Go
+                </button>
+            </form>
         </div>
         <% } %>
     </div>

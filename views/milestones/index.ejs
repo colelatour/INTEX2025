@@ -104,36 +104,38 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-gradient-to-r from-ella-off-white to-white border-b border-gray-100">
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Name</th>
+                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Participant Name</th>
+                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Milestone Title</th>
+                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Date</th>
                             <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Email</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">City</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">State</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Interest</th>
                             <% if (user && user.role === 'manager') { %>
                             <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg text-right">Actions</th>
                             <% } %>
                         </tr>
                     </thead>
                     <tbody>
-                        <% if (participants && participants.length > 0) { %>
-                            <% participants.forEach(function(p) { %>
+                        <% if (milestones && milestones.length > 0) { %>
+                            <% milestones.forEach(function(m) { %>
                                 <tr class="group hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-none">
                                     <td class="p-6">
-                                        <div class="font-bold text-gray-800"><%= p.participantfirstname %> <%= p.participantlastname %></div>
+                                        <div class="font-bold text-gray-800"><%= m.participantfirstname %> <%= m.participantlastname %></div>
                                     </td>
-                                    <td class="p-6 text-gray-600"><%= p.participantemail %></td>
-                                    <td class="p-6"><span class="px-3 py-1 rounded-full bg-ella-light-blue/10 text-ella-dark-gray text-xs font-semibold"><%= p.participantcity || 'N/A' %></span></td>
-                                    <td class="p-6 text-gray-600"><%= p.participantstate || 'N/A' %></td>
-                                    <td class="p-6 text-gray-600"><%= p.participantfieldofinterest || 'N/A' %></td>
+                                    <td class="p-6">
+                                        <span class="px-3 py-1 rounded-full bg-ella-orange/10 text-ella-dark-gray text-sm font-semibold">
+                                            <%= m.title %>
+                                        </span>
+                                    </td>
+                                    <td class="p-6 text-gray-600"><%= m.milestoneDate ? new Date(m.milestoneDate).toLocaleDateString('en-US') : 'N/A' %></td>
+                                    <td class="p-6 text-gray-600"><%= m.participantEmail %></td>
                                     <% if (user && user.role === 'manager') { %>
                                     <td class="p-6 text-right">
                                         <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <form action="/milestones/edit/<%= p.participantid %>" method="GET" class="inline">
+                                            <form action="/milestones/edit/<%= m.id %>" method="GET" class="inline">
                                                 <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-dark-gray text-ella-dark-gray hover:bg-ella-dark-gray hover:text-white transition-all">
                                                     <i class="bi bi-pencil-fill"></i>
                                                 </button>
                                             </form>
-                                            <form action="/milestones/delete/<%= p.participantid %>" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
+                                            <form action="/milestones/delete/<%= m.id %>" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
                                                 <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-red text-ella-red hover:bg-ella-red hover:text-white transition-all">
                                                     <i class="bi bi-trash-fill"></i>
                                                 </button>
@@ -145,9 +147,9 @@
                             <% }); %>
                         <% } else { %>
                             <tr>
-                                <td colspan="<%= (user && user.role === 'manager') ? '6' : '5' %>" class="p-12 text-center text-gray-400">
+                                <td colspan="<%= (user && user.role === 'manager') ? '5' : '4' %>" class="p-12 text-center text-gray-400">
                                     <i class="bi bi-inbox text-4xl mb-4 block"></i>
-                                    No participants found.
+                                    No milestones found.
                                 </td>
                             </tr>
                         <% } %>
@@ -158,18 +160,50 @@
 
         <!-- Pagination -->
         <% if (totalPages > 1) { %>
-        <div class="flex justify-center mt-8 gap-2">
-            <a href="/milestones?page=<%= Math.max(1, currentPage - 1) %><%= searchTerm ? '&search=' + searchTerm : '' %>" class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
+        <div class="flex justify-center items-center mt-8 gap-3">
+            <a href="/milestones?page=<%= Math.max(1, currentPage - 1) %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+               class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
                 <i class="bi bi-chevron-left"></i>
             </a>
-            <% for(let i = 1; i <= totalPages; i++) { %>
-                <a href="/milestones?page=<%= i %><%= searchTerm ? '&search=' + searchTerm : '' %>" class="w-10 h-10 rounded-full shadow flex items-center justify-center transition-colors font-bold <%= currentPage === i ? 'bg-ella-pink text-white' : 'bg-white text-gray-600 hover:bg-gray-50' %>">
-                    <%= i %>
-                </a>
-            <% } %>
-            <a href="/milestones?page=<%= Math.min(totalPages, currentPage + 1) %><%= searchTerm ? '&search=' + searchTerm : '' %>" class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
+            
+            <div class="flex gap-2">
+                <% 
+                const startPage = currentPage;
+                const endPage = Math.min(currentPage + 2, totalPages);
+                for(let i = startPage; i <= endPage; i++) { 
+                %>
+                    <a href="/milestones?page=<%= i %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+                       class="w-10 h-10 rounded-full shadow flex items-center justify-center transition-colors font-bold <%= currentPage === i ? 'bg-ella-pink text-white' : 'bg-white text-gray-600 hover:bg-gray-50' %>">
+                        <%= i %>
+                    </a>
+                <% } %>
+                <% if (endPage < totalPages) { %>
+                    <span class="w-10 h-10 flex items-center justify-center text-gray-400">...</span>
+                    <a href="/milestones?page=<%= totalPages %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+                       class="w-10 h-10 rounded-full shadow flex items-center justify-center transition-colors font-bold bg-white text-gray-600 hover:bg-gray-50">
+                        <%= totalPages %>
+                    </a>
+                <% } %>
+            </div>
+
+            <a href="/milestones?page=<%= Math.min(totalPages, currentPage + 1) %><%= searchTerm ? '&search=' + encodeURIComponent(searchTerm) : '' %>" 
+               class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center <%= currentPage === totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-ella-pink hover:text-white' %> transition-colors">
                 <i class="bi bi-chevron-right"></i>
             </a>
+
+            <form action="/milestones" method="GET" class="flex items-center gap-2 ml-4">
+                <% if (searchTerm) { %>
+                    <input type="hidden" name="search" value="<%= searchTerm %>">
+                <% } %>
+                <span class="text-sm text-gray-600">Go to:</span>
+                <input type="number" name="page" min="1" max="<%= totalPages %>" 
+                       placeholder="<%= currentPage %>" 
+                       class="w-16 h-10 px-2 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-ella-pink focus:border-transparent"
+                       onkeypress="if(event.key === 'Enter') this.form.submit();">
+                <button type="submit" class="px-4 h-10 rounded-lg bg-ella-pink text-white hover:bg-white hover:text-ella-pink border-2 border-ella-pink transition-all text-sm font-semibold">
+                    Go
+                </button>
+            </form>
         </div>
         <% } %>
     </div>
