@@ -47,6 +47,11 @@
     <!-- Section-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
+            <% if (typeof message !== 'undefined' && message) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= message %>
+                </div>
+            <% } %>
             <div class="d-flex justify-content-between mb-3">
                 <form action="/surveys" method="GET" class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search by email or event" aria-label="Search" name="search" value="<%= searchTerm || '' %>" style="width: 20em;">
@@ -145,11 +150,10 @@
                     </tbody>
                 </table>
             </div>
-            <% if (totalPages > 1) { %>
             <nav aria-label="Page navigation" class="d-flex flex-column align-items-center">
                 <ul class="pagination justify-content-center mb-3">
                     <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-                        <a class="page-link" href="/surveys?page=<%= currentPage - 1 %>" aria-label="Previous">
+                        <a class="page-link" href="/surveys?page=<%= currentPage - 1 %><%= searchTerm ? '&search=' + searchTerm : '' %>" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -157,7 +161,7 @@
                         <span class="page-link">Page <%= currentPage %> of <%= totalPages %></span>
                     </li>
                     <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-                        <a class="page-link" href="/surveys?page=<%= currentPage + 1 %>" aria-label="Next">
+                        <a class="page-link" href="/surveys?page=<%= currentPage + 1 %><%= searchTerm ? '&search=' + searchTerm : '' %>" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -167,7 +171,6 @@
                     <button class="btn btn-outline-secondary" type="button" id="goToPageBtn">Go</button>
                 </div>
             </nav>
-            <% } %>
         </div>
     </section>
     <!-- Bootstrap core JS-->

@@ -1,10 +1,22 @@
+// bcrypt is used to securely hash and compare passwords
 const bcrypt = require('bcrypt');
-const express = require('express');
-const session = require('express-session');
-const path = require('path');
-const knex = require('./db');
-const { isAuthenticated, authorizeRoles } = require('./middleware/auth'); // Require auth middleware
 
+// Express is the main web framework handling routing and middleware
+const express = require('express');
+
+// express-session manages user sessions (keeps users logged in)
+const session = require('express-session');
+
+// path helps build file paths in a safe way
+const path = require('path');
+
+// Knex is your SQL query builder/connection to the database
+const knex = require('./db');
+
+// Custom middleware for authentication and role-based authorization
+const { isAuthenticated, authorizeRoles } = require('./middleware/auth');
+
+// Route handlers (modularized for organization)
 const usersRouter = require('./routes/users');
 const participantsRouter = require('./routes/participants');
 const eventsRouter = require('./routes/events');
@@ -13,120 +25,193 @@ const milestonesRouter = require('./routes/milestones');
 const donationsRouter = require('./routes/donations');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000; // Default to port 3000 if none is set
 
-// View engine setup
+// ---------------------------
+// VIEW ENGINE SETUP
+// ---------------------------
+
+// Tells Express where your EJS templates are located
 app.set('views', path.join(__dirname, 'views'));
+
+// Tells Express you’re using EJS as your template engine
 app.set('view engine', 'ejs');
 
+// ---------------------------
+// GLOBAL MIDDLEWARE
+// ---------------------------
+
+// Parse incoming JSON request bodies
 app.use(express.json());
+
+// Parse URL-encoded form data (like HTML forms)
 app.use(express.urlencoded({ extended: false }));
+
+// Expose the "public" folder for static files (CSS, images, JS)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Session setup
+// ---------------------------
+// SESSION CONFIGURATION
+// ---------------------------
+
+// Sets up sessions so users remain logged in across requests
 app.use(session({
-secret: process.env.SESSION_SECRET || 'fallback-secret-for-local-dev', // <--- CHANGE THIS
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false } // Set to true if using https
+  // IMPORTANT: should be changed in production for security
+  secret: process.env.SESSION_SECRET || 'fallback-secret-for-local-dev', 
+
+  resave: false,              // Don’t force session to save if nothing changed
+  saveUninitialized: false,   // Don’t save new empty sessions
+  cookie: { secure: false }   // secure: true requires HTTPS — good for production
 }));
 
-// Middleware to make user data available to all templates
+// ---------------------------
+// MAKE USER DATA AVAILABLE IN ALL VIEWS
+// ---------------------------
+
+// This runs on every request
 app.use((req, res, next) => {
+  // Expose user info to templates (if logged in)
   res.locals.user = req.session.user;
-  res.locals.message = req.session.message; // Make message available to templates
+
+  // Expose flash message if one exists
+  res.locals.message = req.session.message;
+
   next();
 });
 
-// Public routes (no authentication required)
+// ---------------------------
+// PUBLIC ROUTES (NO LOGIN REQUIRED)
+// ---------------------------
+
+// Login page
 app.get('/login', (req, res) => {
   const message = req.session.message;
-  req.session.message = null; // Clear the message after retrieving it for rendering
+  req.session.message = null; // Clear flash message after showing it
 
-  // Store the URL of the page the user was trying to access, excluding /login and /register
-  if (req.headers.referer && !req.headers.referer.includes('/login') && !req.headers.referer.includes('/register')) {
+  // Store the last page the user tried to access, so we redirect back after login
+  if (req.headers.referer &&
+      !req.headers.referer.includes('/login') &&
+      !req.headers.referer.includes('/register')) {
+
     req.session.returnTo = req.headers.referer;
-  } else if (req.query.returnTo) { // Handle explicit returnTo query parameter if present
+  } 
+  else if (req.query.returnTo) {
     req.session.returnTo = req.query.returnTo;
-  } else {
-    req.session.returnTo = '/'; // Default return to homepage
+  } 
+  else {
+    req.session.returnTo = '/'; // Default redirect destination
   }
 
-  res.render('login', { message: message, user: req.session.user || null });
+  res.render('login', { message, user: req.session.user || null });
 });
 
+// Login form submission
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
+
+  // Try to find user in the database
   const user = await knex('users').where('useremail', email).first();
 
   if (user) {
     let passwordMatch = false;
-    // Check if the password looks like a bcrypt hash
+
+    // If stored password is a bcrypt hash
     if (user.password.startsWith('$2a$') || user.password.startsWith('$2b$')) {
+
       passwordMatch = await bcrypt.compare(password, user.password);
+
     } else {
-      // Plain text password comparison
+      // TEMPORARY: Plain-text comparison (backward compatibility)
       passwordMatch = (password === user.password);
     }
 
     if (passwordMatch) {
-      // If the password was plain text, hash it and update the database
+
+      // If password used to be plain text, upgrade it to bcrypt
       if (!user.password.startsWith('$2a$') && !user.password.startsWith('$2b$')) {
         const hashedPassword = await bcrypt.hash(password, 10);
-        await knex('users').where('userid', user.userid).update({ password: hashedPassword });
+        await knex('users')
+          .where('userid', user.userid)
+          .update({ password: hashedPassword });
       }
 
-      req.session.user = { id: user.userid, firstName: user.userfirstname, role: user.userrole };
+      // Store minimal user info in the session
+      req.session.user = {
+        id: user.userid,
+        firstName: user.userfirstname,
+        role: user.userrole
+      };
+
       console.log('User object after successful login:', user);
       console.log('Session user object after successful login:', req.session.user);
+
+      // Redirect user back to where they started
       const redirectUrl = req.session.returnTo || '/';
       delete req.session.returnTo;
       return res.redirect(redirectUrl);
+
     } else {
-        req.session.message = 'Incorrect email or password.';
+      req.session.message = 'Incorrect email or password.';
     }
+
   } else {
     req.session.message = 'Incorrect email or password.';
   }
+
   res.redirect('/login');
 });
 
+// Registration page
 app.get('/register', (req, res) => {
   res.render('register', { user: req.session.user || null });
 });
 
+// Registration handler
 app.post('/register', async (req, res) => {
   const { firstName, lastName, email, password, confirmPassword } = req.body;
 
+  // Basic client-side-like validation
   if (password !== confirmPassword) {
     return res.redirect('/register');
   }
 
-  // Check if email already exists
-  const emailExists = await knex('users').where('useremail', email).first();
+  // Check if email already exists in DB
+  const emailExists = await knex('users')
+    .where('useremail', email)
+    .first();
 
   if (emailExists) {
     return res.redirect('/register');
   }
 
   try {
+    // Hash password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
-    const [newUserId] = await knex('users').insert({
-      userfirstname: firstName,
-      userlastname: lastName,
-      useremail: email,
-      password: hashedPassword,
-      userrole: 'common' // Default role for new registrations
-    }).returning('userid'); // Assuming UserID is the primary key and auto-increments
+
+    // Insert new user into DB
+    await knex('users')
+      .insert({
+        userfirstname: firstName,
+        userlastname: lastName,
+        useremail: email,
+        password: hashedPassword,
+        userrole: 'common' // All new users start with basic permissions
+      })
+      .returning('userid');
+
     res.redirect('/login');
+
   } catch (error) {
     console.error('Error during registration:', error);
     res.redirect('/register');
   }
 });
 
+// Logout
 app.get('/logout', (req, res) => {
-  const redirectTo = req.query.redirect || req.get('Referer') || '/'; // Get redirect from query, then Referer, then default
+  const redirectTo = req.query.redirect || req.get('Referer') || '/';
+
+  // Destroy session and redirect
   req.session.destroy(err => {
     if (err) {
       console.error('Error destroying session:', err);
@@ -136,56 +221,84 @@ app.get('/logout', (req, res) => {
   });
 });
 
-// Public Donation Routes (accessible to all users)
-app.get('/donations/userdonor/add', async (req, res) => {
+// ---------------------------
+// PUBLIC DONATION ROUTES
+// Anyone can add a donor — no login required
+// ---------------------------
+
+// Render donation form
+app.get('/donations/userdonor/add', (req, res) => {
   const message = req.session.message;
-  delete req.session.message; // Clear the message after retrieving it
-  res.render('donations/userdonor/add', { user: req.session.user, message: message });
+  delete req.session.message;
+
+  res.render('donations/userdonor/add', {
+    user: req.session.user,
+    message
+  });
 });
 
+// Handle donation form submission
 app.post('/donations/userdonor/add', async (req, res) => {
   const { userdonorfirstname, userdonorlastname, userdonoramount, userdonordate } = req.body;
+
   try {
-    await knex.raw('INSERT INTO userdonor (userdonorfirstname, userdonorlastname, userdonoramount, userdonordate) VALUES (?, ?, ?, ?)',
-      [userdonorfirstname, userdonorlastname, parseFloat(userdonoramount) || 0.00, userdonordate]);
+    // Insert donor record using raw SQL
+    await knex.raw(
+      'INSERT INTO userdonor (userdonorfirstname, userdonorlastname, userdonoramount, userdonordate) VALUES (?, ?, ?, ?)',
+      [userdonorfirstname, userdonorlastname, parseFloat(userdonoramount) || 0.00, userdonordate]
+    );
+
     req.session.message = 'User Donor added successfully!';
     res.redirect('/donations/userdonor/add');
+
   } catch (error) {
     console.error('Error adding user donor:', error);
+
     req.session.message = 'Error adding user donor: ' + error.message;
     res.redirect('/donations/userdonor/add');
   }
 });
 
+// ---------------------------
+// PROTECTED ROUTES (LOGIN REQUIRED)
+// ---------------------------
 
-// Apply isAuthenticated middleware to all routes that need protection
-
-// Protected Route Handlers (after authentication)
+// Only managers can access /users routes
 app.use('/users', isAuthenticated, authorizeRoles(['manager']), usersRouter);
+
+// All other modules require basic authentication
 app.use('/participants', isAuthenticated, participantsRouter);
 app.use('/events', isAuthenticated, eventsRouter);
 app.use('/surveys', isAuthenticated, surveysRouter);
 app.use('/milestones', isAuthenticated, milestonesRouter);
 app.use('/donations', isAuthenticated, donationsRouter);
 
-
+// Dashboard view (must be logged in)
 app.get('/dashboard', isAuthenticated, (req, res) => {
   const message = req.session.message;
-  req.session.message = null; // Clear the message after retrieving it for rendering
-  res.render('dashboard', { title: 'Ella Rises Dashboard', user: req.session.user || null, message: message });
+  req.session.message = null;
+
+  res.render('dashboard', {
+    title: 'Ella Rises Dashboard',
+    user: req.session.user || null,
+    message
+  });
 });
 
-// Routes
+// Homepage route
 app.get('/', (req, res) => {
   res.render('index', { title: 'Ella Rises', user: req.session.user || null });
 });
 
+// Fun “I'm a teapot” route
 app.get('/teapot', (req, res) => {
   res.status(418).render('teapot');
 });
 
+// ---------------------------
+// START THE SERVER
+// ---------------------------
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

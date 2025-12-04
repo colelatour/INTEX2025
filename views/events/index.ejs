@@ -115,11 +115,10 @@
                     </tbody>
                 </table>
             </div>
-            <% if (totalPages > 1) { %>
             <nav aria-label="Page navigation" class="d-flex flex-column align-items-center">
                 <ul class="pagination justify-content-center mb-3">
                     <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-                        <a class="page-link" href="/events?page=<%= currentPage - 1 %>" aria-label="Previous">
+                        <a class="page-link" href="/events?page=<%= currentPage - 1 %><%= searchTerm ? '&search=' + searchTerm : '' %>" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -127,7 +126,7 @@
                         <span class="page-link">Page <%= currentPage %> of <%= totalPages %></span>
                     </li>
                     <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-                        <a class="page-link" href="/events?page=<%= currentPage + 1 %>" aria-label="Next">
+                        <a class="page-link" href="/events?page=<%= currentPage + 1 %><%= searchTerm ? '&search=' + searchTerm : '' %>" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -137,7 +136,6 @@
                     <button class="btn btn-outline-secondary" type="button" id="goToPageBtn">Go</button>
                 </div>
             </nav>
-            <% } %>
         </div>
     </section>
     <!-- Bootstrap core JS-->

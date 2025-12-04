@@ -48,12 +48,17 @@
                 <div class="col-lg-8 col-md-10">
                     <div class="card shadow-sm border-0">
                         <div class="card-body p-5">
+                            <% if (typeof error !== 'undefined' && error) { %>
+                                <div class="alert alert-danger" role="alert">
+                                    <%= error %>
+                                </div>
+                            <% } %>
                             <form action="/milestones/add" method="POST">
                                 <div class="mb-3">
                                     <label for="participant_id" class="form-label">Participant</label>
                                     <select class="form-control" id="participant_id" name="participant_id" required>
                                         <% participants.forEach(p => { %>
-                                            <option value="<%= p.ParticipantID %>">
+                                            <option value="<%= p.ParticipantID %>" <%= (typeof formData !== 'undefined' && formData.participant_id == p.ParticipantID) ? 'selected' : '' %>>
                                                 <%= p.ParticipantFirstName %> <%= p.ParticipantLastName %> (<%= p.ParticipantEmail %>)
                                             </option>
                                         <% }); %>
@@ -61,11 +66,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Milestone Title</label>
-                                    <input type="text" class="form-control" id="title" name="title" required>
+                                    <input type="text" class="form-control" id="title" name="title" value="<%= (typeof formData !== 'undefined' && formData.title) ? formData.title : '' %>" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="milestoneDate" class="form-label">Milestone Date</label>
-                                    <input type="date" class="form-control" id="milestoneDate" name="milestoneDate">
+                                    <input type="date" class="form-control" id="milestoneDate" name="milestoneDate" value="<%= (typeof formData !== 'undefined' && formData.milestoneDate) ? formData.milestoneDate : '' %>">
                                 </div>
                                 <button type="submit" class="btn btn-custom-view">Add Milestone</button>
                                 <a href="/milestones" class="btn btn-secondary">Cancel</a>
