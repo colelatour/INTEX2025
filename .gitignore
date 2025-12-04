@@ -7,3 +7,19 @@ node_modules/
 
 # Zip Files
 *.zip
+
+# Project Documentation (not needed in final upload)
+Fall 2025 INTEX Project Description.pdf
+Fall 2025 INTEX Grading - Master Rubric.pdf
+Database ER diagram (crow's foot) (1).pdf
+colorfontscheme.txt
+GEMINI.md
+check_db.js
+
+# SQL Scripts and Database Files
+*.sql
+
+# ERD Files
+*.erd
+*.mwb
+*.drawio
