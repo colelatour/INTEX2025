@@ -70,7 +70,7 @@ CREATE TABLE Users (
     CONSTRAINT chk_user_role CHECK (UserRole IN ('manager', 'common'))
 );
 
-CREATE TABLE donoruser (
+CREATE TABLE userdonor (
     donoruserid SERIAL PRIMARY KEY,
     donoruserfirstname VARCHAR(255) NOT NULL UNIQUE,
     userdonorlastname VARCHAR(100) NOT NULL,
