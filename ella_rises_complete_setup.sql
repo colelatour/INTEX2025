@@ -397,20 +397,6 @@ CREATE INDEX idx_donations_amount ON Donations(DonationAmount);
 
 
 -- ============================================================================
--- INSERT DATA: Users
--- ============================================================================
--- Inserting 5 records into Users
--- ============================================================================
-
-INSERT INTO Users (UserEmail, UserFirstName, UserLastName, Password, UserRole) VALUES
-('admin@ellarises.org', 'Admin', 'Administrator', 'admin123', 'manager'),
-('manager@ellarises.org', 'Sarah', 'Johnson', 'manager123', 'manager'),
-('user@ellarises.org', 'John', 'Smith', 'user123', 'common'),
-('volunteer@ellarises.org', 'Emily', 'Davis', 'volunteer123', 'common'),
-('staff@ellarises.org', 'Michael', 'Brown', 'staff123', 'common');
-
-
--- ============================================================================
 -- INSERT DATA: Participants
 -- ============================================================================
 -- Inserting 1176 records into Participants
