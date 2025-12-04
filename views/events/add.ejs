@@ -50,24 +50,30 @@
                         <div class="card-body p-5">
                             <form action="/events/add" method="POST">
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Event Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" required>
+                                    <label for="template_id" class="form-label">Event Template</label>
+                                    <select class="form-select" id="template_id" name="template_id" required>
+                                        <option value="">Select an Event Template</option>
+                                        <% templates.forEach(template => { %>
+                                            <option value="<%= template.eventtemplateid %>"><%= template.eventtype %> - <%= template.eventdescription %></option>
+                                        <% }); %>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="date" class="form-label">Event Date</label>
-                                    <input type="date" class="form-control" id="date" name="date" required>
+                                    <label for="event_name" class="form-label">Event Name</label>
+                                    <input type="text" class="form-control" id="event_name" name="event_name" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="event_date" class="form-label">Event Date</label>
+                                    <input type="date" class="form-control" id="event_date" name="event_date" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                    <label for="time_start" class="form-label">Time Start</label>
+                                    <input type="time" class="form-control" id="time_start" name="time_start">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="timeStart" class="form-label">Time Start</label>
-                                    <input type="time" class="form-control" id="timeStart" name="timeStart">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="timeEnd" class="form-label">Time End</label>
-                                    <input type="time" class="form-control" id="timeEnd" name="timeEnd">
+                                    <label for="time_end" class="form-label">Time End</label>
+                                    <input type="time" class="form-control" id="time_end" name="time_end">
                                 </div>
                                 <div class="mb-3">
                                     <label for="location" class="form-label">Location</label>
@@ -78,8 +84,8 @@
                                     <input type="number" class="form-control" id="capacity" name="capacity">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="registrationDeadline" class="form-label">Registration Deadline</label>
-                                    <input type="date" class="form-control" id="registrationDeadline" name="registrationDeadline">
+                                    <label for="registration_deadline" class="form-label">Registration Deadline</label>
+                                    <input type="date" class="form-control" id="registration_deadline" name="registration_deadline">
                                 </div>
                                 <button type="submit" class="btn btn-custom-view">Add Event</button>
                                 <a href="/events" class="btn btn-secondary">Cancel</a>
