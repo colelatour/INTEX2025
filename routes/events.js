@@ -178,6 +178,7 @@ router.get('/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (req
       'eventoccurrences.eventlocation as location',
       'eventoccurrences.eventcapacity as capacity',
       'eventoccurrences.eventregistrationdeadline as registrationDeadline',
+      'eventoccurrences.eventtemplateid as templateId',
       'eventtemplates.eventtype as eventType',
       'eventtemplates.eventdescription as description'
     )
@@ -198,9 +199,14 @@ router.get('/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (req
     event.registrationDeadline = new Date(event.registrationDeadline).toISOString().split('T')[0];
   }
 
+  // Fetch all templates for the dropdown
+  const templates = await knex('eventtemplates')
+    .select('eventtemplateid', 'eventtype', 'eventdescription');
+
   // Render the edit form with the event data pre-filled
   res.render('events/edit', { 
     event,                           // The event being edited
+    templates,                       // All templates for dropdown
     user: req.session.user           // Current logged-in user (for nav)
   });
 });
@@ -217,32 +223,25 @@ router.post('/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (re
   const eventOccurrenceId = parseInt(req.params.id);
   
   // Extract all the form fields
-  const { name, date, description, timeStart, timeEnd, location, capacity, registrationDeadline } = req.body;
+  const { event_name, event_date, time_start, time_end, location, capacity, registration_deadline, template_id } = req.body;
 
-  // Look up the event template by the (potentially new) name
-  // If the user changed the name, this will link to a different template
-  const eventTemplate = await knex('eventtemplates').where('eventname', name).first();
-
-  // If no matching template exists, show error and stay on edit page
-  if (!eventTemplate) {
-    req.session.message = `Event Template for "${name}" not found. Please ensure it exists.`;
-    return res.redirect(`/events/edit/${eventOccurrenceId}`);
+  // Validate that a template was selected
+  if (!template_id) {
+    return res.status(400).send("Event Template is required");
   }
 
   // Update the event occurrence
-  // Note: The description from the form is actually ignored here!
-  // Description comes from the template, not the occurrence
   await knex('eventoccurrences')
     .where('eventoccurrenceid', eventOccurrenceId)
     .update({
-      eventtemplateid: eventTemplate.eventtemplateid,   // May link to a different template now
-      eventname: name,                                   // Update denormalized name
-      eventdate: date,
-      eventtimestart: timeStart,
-      eventtimeend: timeEnd,
+      eventtemplateid: parseInt(template_id),
+      eventname: event_name,
+      eventdate: event_date,
+      eventtimestart: time_start,
+      eventtimeend: time_end,
       eventlocation: location,
       eventcapacity: parseInt(capacity) || null,
-      eventregistrationdeadline: registrationDeadline
+      eventregistrationdeadline: registration_deadline
     });
   
   // Success! Redirect back to the events list

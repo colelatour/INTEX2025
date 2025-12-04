@@ -88,24 +88,29 @@
 
             <form action="/events/edit/<%= event.id %>" method="POST" class="space-y-6">
                                 <div class="mb-6">
-                                    <label for="name" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Event Name</label>
-                                    <input type="text" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="name" name="name" value="<%= event.name %>" required>
+                                    <label for="template_id" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Event Template</label>
+                                    <select class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all text-gray-700" id="template_id" name="template_id" required>
+                                        <option value="">Select an Event Template</option>
+                                        <% templates.forEach(template => { %>
+                                            <option value="<%= template.eventtemplateid %>" <%= event.templateId === template.eventtemplateid ? 'selected' : '' %>><%= template.eventtype %> - <%= template.eventdescription %></option>
+                                        <% }); %>
+                                    </select>
                                 </div>
                                 <div class="mb-6">
-                                    <label for="date" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Event Date</label>
-                                    <input type="date" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="date" name="date" value="<%= event.date %>" required>
+                                    <label for="event_name" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Event Name</label>
+                                    <input type="text" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="event_name" name="event_name" value="<%= event.name %>" required>
                                 </div>
                                 <div class="mb-6">
-                                    <label for="description" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Description</label>
-                                    <textarea class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="description" name="description" rows="3"><%= event.description %></textarea>
+                                    <label for="event_date" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Event Date</label>
+                                    <input type="date" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="event_date" name="event_date" value="<%= event.date %>" required>
                                 </div>
                                 <div class="mb-6">
-                                    <label for="timeStart" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Time Start</label>
-                                    <input type="time" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="timeStart" name="timeStart" value="<%= event.timeStart %>">
+                                    <label for="time_start" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Time Start</label>
+                                    <input type="time" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="time_start" name="time_start" value="<%= event.timeStart %>">
                                 </div>
                                 <div class="mb-6">
-                                    <label for="timeEnd" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Time End</label>
-                                    <input type="time" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="timeEnd" name="timeEnd" value="<%= event.timeEnd %>">
+                                    <label for="time_end" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Time End</label>
+                                    <input type="time" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="time_end" name="time_end" value="<%= event.timeEnd %>">
                                 </div>
                                 <div class="mb-6">
                                     <label for="location" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Location</label>
@@ -116,8 +121,8 @@
                                     <input type="number" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="capacity" name="capacity" value="<%= event.capacity %>">
                                 </div>
                                 <div class="mb-6">
-                                    <label for="registrationDeadline" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Registration Deadline</label>
-                                    <input type="date" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="registrationDeadline" name="registrationDeadline" value="<%= event.registrationDeadline %>">
+                                    <label for="registration_deadline" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Registration Deadline</label>
+                                    <input type="date" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="registration_deadline" name="registration_deadline" value="<%= event.registrationDeadline %>">
                                 </div>
                                 <div class="flex gap-4 mt-8">
                                     <button type="submit" class="px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink shadow-lg">Update Event</button>
