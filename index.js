@@ -163,15 +163,32 @@ app.post('/login', async (req, res) => {
 
 // Registration page
 app.get('/register', (req, res) => {
-  res.render('register', { user: req.session.user || null });
+  res.render('register', { 
+    user: req.session.user || null,
+    message: req.session.message || null
+  });
+  delete req.session.message;
 });
 
 // Registration handler
 app.post('/register', async (req, res) => {
   const { firstName, lastName, email, password, confirmPassword } = req.body;
 
-  // Basic client-side-like validation
+  // Validate all fields are provided
+  if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    req.session.message = 'All fields are required.';
+    return res.redirect('/register');
+  }
+
+  // Check password match
   if (password !== confirmPassword) {
+    req.session.message = 'Passwords do not match.';
+    return res.redirect('/register');
+  }
+
+  // Check password length
+  if (password.length < 6) {
+    req.session.message = 'Password must be at least 6 characters long.';
     return res.redirect('/register');
   }
 
@@ -181,6 +198,7 @@ app.post('/register', async (req, res) => {
     .first();
 
   if (emailExists) {
+    req.session.message = 'An account with this email already exists.';
     return res.redirect('/register');
   }
 
@@ -199,10 +217,12 @@ app.post('/register', async (req, res) => {
       })
       .returning('userid');
 
+    req.session.message = 'Account created successfully! Please login.';
     res.redirect('/login');
 
   } catch (error) {
     console.error('Error during registration:', error);
+    req.session.message = 'An error occurred during registration. Please try again.';
     res.redirect('/register');
   }
 });

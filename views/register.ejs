@@ -83,20 +83,41 @@
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-ella-pink to-ella-purple"></div>
             
             <div class="text-center mb-10">
-                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-ella-pink to-ella-purple text-white text-3xl font-serif flex items-center justify-center mx-auto mb-6 shadow-lg transform rotate-3">
-                    E
+                <div class="w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                    <img src="/assets/img/EllaRises.png" alt="Ella Rises Logo" class="w-full h-full object-contain" />
                 </div>
                 <h2 class="font-serif text-3xl text-ella-dark-gray mb-2">Join Ella Rises</h2>
                 <p class="text-gray-500">Create your account to get started</p>
             </div>
 
-            <form action="/Login" method="post" class="space-y-6">
-                <% if (message && message !== 'Login successful!') { %>
+            <form action="/register" method="post" class="space-y-6">
+                <% if (message) { %>
                 <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl" role="alert">
                     <%= message %>
                 </div>
                 <% } %>
                 
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide">First Name</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ella-pink transition-colors">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <input type="text" name="firstName" required class="w-full pl-11 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="Jane"/>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide">Last Name</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ella-pink transition-colors">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <input type="text" name="lastName" required class="w-full pl-11 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="Doe"/>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="space-y-2">
                     <label class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide">Email Address</label>
                     <div class="relative group">
@@ -108,15 +129,22 @@
                 </div>
 
                 <div class="space-y-2">
-                    <div class="flex justify-between items-center">
-                        <label class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide">Password</label>
-                        <a href="#" class="text-xs text-ella-pink hover:text-ella-purple font-semibold">Forgot?</a>
-                    </div>
+                    <label class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide">Password</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ella-pink transition-colors">
                             <i class="bi bi-lock-fill"></i>
                         </div>
-                        <input type="password" name="password" required class="w-full pl-11 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="••••••••"/>
+                        <input type="password" name="password" required minlength="6" class="w-full pl-11 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="••••••••"/>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide">Confirm Password</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ella-pink transition-colors">
+                            <i class="bi bi-lock-fill"></i>
+                        </div>
+                        <input type="password" name="confirmPassword" required minlength="6" class="w-full pl-11 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="••••••••"/>
                     </div>
                 </div>
 
