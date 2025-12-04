@@ -51,13 +51,6 @@ router.get('/', async function(req, res, next) {
   const totalEvents = parseInt(totalEventsResult ? totalEventsResult.count : 0); // Ensure it's a number, handle null/undefined
   const totalPages = Math.ceil(totalEvents / pageSize);
 
-  console.log('--- Pagination Debug ---');
-  console.log('Search Term:', searchTerm);
-  console.log('Total Events (countQuery result):', totalEvents);
-  console.log('Page Size:', pageSize);
-  console.log('Total Pages calculated:', totalPages);
-  console.log('--- End Pagination Debug ---');
-
   // Fetch the actual event data for the current page
   // We're pulling data from both tables and aliasing to camelCase for cleaner JavaScript
   const events = await query

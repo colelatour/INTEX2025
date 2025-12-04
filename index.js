@@ -143,21 +143,14 @@ app.post('/login', async (req, res) => {
           .first();
         
         if (participant) {
-          console.log('Found participant:', participant.participantemail);
           const surveyCount = await knex('surveys')
             .where('participantemail', email)
             .count('* as count')
             .first();
           
-          console.log('Survey count result:', surveyCount);
-          console.log('Parsed count:', parseInt(surveyCount.count));
-          
           if (surveyCount && parseInt(surveyCount.count) >= 3) {
             showConfetti = true;
-            console.log('Setting showConfetti to true');
           }
-        } else {
-          console.log('No participant found for email:', email);
         }
       } catch (error) {
         console.error('Error checking confetti eligibility:', error);
@@ -170,9 +163,6 @@ app.post('/login', async (req, res) => {
         role: user.userrole,
         showConfetti: showConfetti
       };
-
-      console.log('User object after successful login:', user);
-      console.log('Session user object after successful login:', req.session.user);
 
       // Redirect user back to where they started
       const redirectUrl = req.session.returnTo || '/';

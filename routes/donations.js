@@ -105,14 +105,12 @@ router.get('/', isAuthenticated, async function(req, res, next) {
     // Execute the raw query. Knex.raw, especially with PostgreSQL, returns an object with a 'rows' array.
     userDonors = await userDonorQuery;
     userDonors = userDonors.rows; // Extract the actual array of results.
-    console.log('Fetched userDonors data:', userDonors);
   } catch (err) {
     // Handle any error during the fetching of user donors gracefully.
     console.error('Error fetching userDonors:', err);
     // Ensure `userDonors` is an empty array so the template doesn't crash.
     userDonors = [];
   }
-  console.log('Rendering donations/index with userDonors:', userDonors);
 
   const message = req.session.message;
   delete req.session.message;

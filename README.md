@@ -29,5 +29,9 @@ User Level
   email: user@example.com
   password: password123
 
+User with Confetti
+  email: victoria.lee9@ellarises.org
+  password: password123
+
 Teapot Page Link: https://ellarises27.is404.net/teapot
 There is a link in the page footer
