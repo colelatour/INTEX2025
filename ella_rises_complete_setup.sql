@@ -47,6 +47,7 @@ DROP TABLE IF EXISTS EventOccurrences CASCADE;
 DROP TABLE IF EXISTS EventTemplates CASCADE;
 DROP TABLE IF EXISTS Participants CASCADE;
 DROP TABLE IF EXISTS Users CASCADE;
+DROP TABLE IF EXISTS donoruser CASCADE;
 
 -- ============================================================================
 -- TABLE: Users
@@ -67,6 +68,14 @@ CREATE TABLE Users (
     -- Constraints
     CONSTRAINT chk_user_email_format CHECK (UserEmail ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
     CONSTRAINT chk_user_role CHECK (UserRole IN ('manager', 'common'))
+);
+
+CREATE TABLE donoruser (
+    donoruserid SERIAL PRIMARY KEY,
+    donoruserfirstname VARCHAR(255) NOT NULL UNIQUE,
+    userdonorlastname VARCHAR(100) NOT NULL,
+    userdonoramount INTEGER NOT NULL,
+    userdonordate DATE NOT NULL
 );
 
 -- Comments
