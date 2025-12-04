@@ -11091,3 +11091,321 @@ header.bg-primary {
 .img-focus-custom {
   object-position: center 33%;
 }
+/* Custom Navigation Link Styles */
+.nav-link-custom {
+  position: relative;
+  color: var(--ella-dark-gray) !important;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.nav-link-custom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ella-red) 0%, var(--ella-pink) 100%);
+  transition: width 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.nav-link-custom:hover {
+  color: var(--ella-red) !important;
+}
+
+.nav-link-custom:hover::after {
+  width: 100%;
+}
+
+#our-impact {
+  scroll-margin-top: 80px;
+}
+
+/* Center navigation on desktop */
+@media (min-width: 992px) {
+  .nav-center-desktop {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Mobile navigation styles */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    text-align: left;
+  }
+  
+  .nav-link-custom {
+    padding: 0.5rem 0;
+    display: block;
+  }
+  
+  .navbar-nav {
+    margin-bottom: 0.5rem;
+  }
+  
+  .navbar-text {
+    padding: 0.5rem 0;
+  }
+}
+
+/* Mobile dropdown alignment and styling */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    text-align: right;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 0.5rem;
+  }
+  
+  .nav-link-custom {
+    padding: 0.75rem 1rem;
+    display: block;
+    text-align: right;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .nav-link-custom:last-child {
+    border-bottom: none;
+  }
+  
+  .navbar-nav {
+    margin-bottom: 0.5rem;
+  }
+  
+  .navbar-text {
+    padding: 0.75rem 1rem;
+    display: block;
+    text-align: right;
+  }
+  
+  .btn-no-background {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  
+
+
+
+/* Mobile dropdown - overlay style */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    position: absolute;
+    top: 100%;
+    right: 1rem;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    margin-top: 0.5rem;
+    min-width: 250px;
+    max-width: 300px;
+    z-index: 1000;
+  }
+  
+  .navbar-collapse.show,
+  .navbar-collapse.collapsing {
+    text-align: right;
+  }
+  
+  .nav-link-custom {
+    padding: 0.75rem 1rem;
+    display: block;
+    text-align: right;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .nav-link-custom:last-child {
+    border-bottom: none;
+  }
+  
+  .navbar-nav {
+    margin-bottom: 0.5rem;
+  }
+  
+  .navbar-text {
+    padding: 0.75rem 1rem;
+    display: block;
+    text-align: right;
+  }
+  
+  .btn-no-background {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  
+  /* Hamburger to up arrow animation */
+  .navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+    position: relative;
+  }
+  
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+  
+  .navbar-toggler-icon {
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Keep the default 3 bars but animate them */
+  .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    transform: rotate(180deg);
+  }
+}
+
+  
+
+
+  
+
+
+  
+
+
+  
+
+
+  
+  /* Custom Hamburger to Connected Chevron */
+  .navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+  
+  .navbar-toggler-icon {
+    background-image: none;
+    position: relative;
+    display: block;
+    width: 26px;
+    height: 20px;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Three bars for hamburger */
+  .navbar-toggler-icon::before,
+  .navbar-toggler-icon::after,
+  .navbar-toggler-icon span {
+    content: '';
+    position: absolute;
+    height: 3px;
+    background-color: var(--ella-dark-gray);
+    transition: all 0.3s ease;
+    left: 0;
+  }
+  
+  .navbar-toggler-icon::before {
+    top: 0;
+    width: 100%;
+  }
+  
+  .navbar-toggler-icon span {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+  }
+  
+  .navbar-toggler-icon::after {
+    bottom: 0;
+    width: 100%;
+  }
+  
+  /* Transform to connected chevron when expanded */
+  .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    transform: rotate(180deg);
+  }
+  
+  .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+    background: transparent;
+    width: 13px;
+    height: 13px;
+    border-left: 3px solid var(--ella-dark-gray);
+    border-top: 3px solid var(--ella-dark-gray);
+    transform: rotate(-135deg);
+    top: 8px;
+    left: 6px;
+  }
+  
+  .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+    opacity: 0;
+  }
+  
+  .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon span {
+    opacity: 0;
+  }
+}
+
+/* Tableau Dashboard Mobile Responsive Styles */
+.tableau-responsive-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Mobile hint message - hidden by default */
+.mobile-dashboard-hint {
+  display: none;
+}
+
+/* Mobile: Allow horizontal scroll for dashboard */
+@media (max-width: 767px) {
+  .tableau-responsive-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+  }
+
+  .tableauPlaceholder {
+    min-width: 600px;
+  }
+
+  #our-impact h2 {
+    font-size: 1.5rem;
+  }
+  
+  /* Show hint only on mobile */
+  .mobile-dashboard-hint {
+    display: block;
+    padding: 1rem;
+    background-color: #fff3cd;
+    border-radius: 0.5rem;
+    border: 1px solid #ffc107;
+  }
+  
+  .mobile-dashboard-hint i {
+    color: #856404;
+  }
+  
+  .mobile-dashboard-hint .text-muted {
+    color: #856404 !important;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 991px) {
+  .tableau-responsive-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
