@@ -71,10 +71,10 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE userdonor (
-    donoruserid SERIAL PRIMARY KEY,
-    donoruserfirstname VARCHAR(255) NOT NULL UNIQUE,
-    userdonorlastname VARCHAR(100) NOT NULL,
-    userdonoramount INTEGER NOT NULL,
+    userdonorid SERIAL PRIMARY KEY,
+    userdonorfirstname VARCHAR(255) NOT NULL,
+    userdonorlastname VARCHAR(255) NOT NULL,
+    userdonoramount DECIMAL(10, 2) NOT NULL,
     userdonordate DATE NOT NULL
 );
 
