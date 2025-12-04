@@ -82,7 +82,11 @@ app.post('/login', async (req, res) => {
       const redirectUrl = req.session.returnTo || '/';
       delete req.session.returnTo;
       return res.redirect(redirectUrl);
+    } else {
+        req.session.message = 'Incorrect email or password.';
     }
+  } else {
+    req.session.message = 'Incorrect email or password.';
   }
   res.redirect('/login');
 });

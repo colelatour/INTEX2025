@@ -202,6 +202,16 @@ router.get('/', isAuthenticated, async function(req, res, next) {
   
         
 
+// GET route for adding a new donation
+router.get('/add', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
+  const message = req.session.message;
+  delete req.session.message; // Clear the message after retrieving it
+
+  const participants = await knex('participants').select('participantid', 'participantfirstname', 'participantlastname', 'participantemail');
+  
+  res.render('donations/add', { user: req.session.user, participants, message });
+});
+
 // POST route for adding a new donation
 router.post('/add', isAuthenticated, authorizeRoles(['manager']), async (req, res) => {
   const { participant_id, amount, donation_date } = req.body;
