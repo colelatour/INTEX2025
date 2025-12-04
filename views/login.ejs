@@ -113,7 +113,10 @@
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ella-pink transition-colors">
                             <i class="bi bi-lock-fill"></i>
                         </div>
-                        <input type="password" name="password" required class="w-full pl-11 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="••••••••"/>
+                        <input type="password" id="password" name="password" required class="w-full pl-11 pr-12 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="••••••••"/>
+                        <button type="button" onclick="togglePassword('password', 'toggleIcon')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-ella-pink transition-colors">
+                            <i id="toggleIcon" class="bi bi-eye-fill"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -131,6 +134,22 @@
         </div>
     </div>
 
+    <script>
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
+            }
+        }
+    </script>
+
     <!-- Footer-->
     <footer class="bg-ella-dark-gray text-white pt-16 pb-8 relative overflow-hidden mt-12">
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-ella-light-blue via-ella-pink to-ella-purple"></div>
@@ -138,7 +157,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
                 <div class="text-left">
                     <h3 class="font-serif text-2xl mb-2 text-ella-pink">Ella Rises</h3>
-                    <p class="text-gray-400 max-w-xs text-sm">Empowering young Hispanic women through education, culture, and community.</p>
+                    <p class="text-gray-400 max-w-xs text-sm">Empowering young women through education, culture, and community.</p>
                 </div>
                 <div class="flex gap-8">
                     <a href="https://www.facebook.com/share/1ALmigc75W/?mibextid=wwXIfr" aria-label="Facebook" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink hover:text-ella-dark-gray transition-all duration-300">
