@@ -11361,6 +11361,172 @@ header.bg-primary {
   }
 }
 
+/* Carousel Slideshow Styles */
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.carousel-container {
+  overflow: hidden;
+  flex: 1;
+  padding: 0 1rem 2rem 1rem;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 2rem;
+  padding-bottom: 1rem;
+}
+
+.carousel-item-custom {
+  flex: 0 0 calc(33.333% - 1.333rem);
+  min-width: 0;
+  margin-bottom: 1rem;
+}
+
+.carousel-item-custom .card {
+  height: 100%;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.carousel-item-custom .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-item-custom .card-img-top {
+  border-radius: 1rem 1rem 0 0;
+}
+
+.carousel-item-custom .card-body {
+  padding: 1.5rem;
+}
+
+.carousel-item-custom .card-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ella-dark-gray);
+  margin: 0;
+}
+
+.carousel-nav {
+  background: var(--ella-pink);
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.carousel-nav:hover:not(:disabled) {
+  background: var(--ella-red);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-nav:disabled {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.carousel-nav i {
+  font-size: 1.5rem;
+  color: var(--ella-dark-gray);
+}
+
+.carousel-nav:hover:not(:disabled) i {
+  color: #fff;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+}
+
+.carousel-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ella-light-pink);
+  border: 2px solid var(--ella-pink);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-dot:hover {
+  background: var(--ella-pink);
+}
+
+.carousel-dot.active {
+  background: var(--ella-red);
+  border-color: var(--ella-red);
+  transform: scale(1.2);
+}
+
+/* Tablet responsive - show 2 items */
+@media (max-width: 991px) {
+  .carousel-item-custom {
+    flex: 0 0 calc(50% - 1rem);
+  }
+  
+  .carousel-nav {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .carousel-nav i {
+    font-size: 1.25rem;
+  }
+}
+
+/* Mobile responsive - show 1 item */
+@media (max-width: 767px) {
+  .carousel-wrapper {
+    gap: 0.5rem;
+  }
+  
+  .carousel-item-custom {
+    flex: 0 0 100%;
+  }
+  
+  .carousel-container {
+    padding: 0;
+  }
+  
+  .carousel-track {
+    gap: 1rem;
+  }
+  
+  .carousel-nav {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .carousel-nav i {
+    font-size: 1.1rem;
+  }
+}
+
 /* Tableau Dashboard Mobile Responsive Styles */
 .tableau-responsive-wrapper {
   width: 100%;
