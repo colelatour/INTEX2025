@@ -11134,6 +11134,14 @@ header.bg-primary {
   }
 }
 
+/* Mobile greeting positioning */
+.mobile-greeting {
+  color: var(--ella-dark-gray);
+  font-weight: 500;
+  margin-right: auto;
+  padding-left: 1rem;
+}
+
 /* Mobile navigation styles */
 @media (max-width: 991px) {
   .navbar-collapse {

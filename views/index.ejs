@@ -25,6 +25,9 @@
     <div class="container-fluid px-4">
         <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
                 style="height: 60px;"></a>
+        <% if (user) { %>
+            <span class="navbar-text d-lg-none mobile-greeting">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
+        <% } %>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"><span></span></span>
@@ -43,7 +46,7 @@
             </ul>
             <ul class="navbar-nav ms-lg-auto align-items-lg-center">
                 <% if (user) { %>
-                    <li class="nav-item me-lg-3">
+                    <li class="nav-item me-lg-3 d-none d-lg-block">
                         <span class="navbar-text">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
                     </li>
                     <li class="nav-item">
