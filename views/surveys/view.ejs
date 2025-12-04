@@ -1,121 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Survey Details</title>
-    <!-- Favicon-->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Survey Details - Ella Rises</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
-        type="text/css" />
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
-        type="text/css" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/stylesheets/styles.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ella: {
+                'light-blue': '#99B7C6', 'purple': '#978Ec4', 'off-white': '#F9F5EA',
+                'light-pink': '#FFD8D1', 'pink': '#F9AFB1', 'green': '#9AB59D',
+                'dark-gray': '#3A3F3B', 'orange': '#F4B092', 'red': '#CE325B',
+              }
+            },
+            fontFamily: {
+              serif: ['"DM Serif Display"', 'serif'],
+              sans: ['"Montserrat"', 'sans-serif'],
+            },
+            animation: { 'fade-in': 'fadeIn 0.8s ease-out forwards', },
+            keyframes: {
+              fadeIn: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' }, }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body { background-color: #F9F5EA; font-family: 'Montserrat', sans-serif; }
+    </style>
 </head>
 
-<body>
+<body class="font-sans selection:bg-ella-pink selection:text-white">
     <!-- Navigation-->
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
-                    style="height: 60px;"></a>
-            <div>
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b border-white/20 shadow-sm">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="/" class="flex items-center gap-2 group">
+                    <img src="/assets/img/EllaRises.png" alt="Ella Rises Logo" class="w-12 h-12 transition-transform group-hover:scale-110" />
+                    <span class="font-serif text-2xl font-bold tracking-wide text-ella-dark-gray">Ella<span class="text-ella-pink">Rises</span></span>
+                </a>
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="/" class="text-sm tracking-widest uppercase text-ella-dark-gray hover:text-ella-pink transition-colors">Home</a>
+                    <a href="/dashboard" class="text-sm tracking-widest uppercase text-ella-dark-gray hover:text-ella-pink transition-colors">Dashboard</a>
+                    <a href="/#our-impact" class="text-sm tracking-widest uppercase text-ella-dark-gray hover:text-ella-pink transition-colors">Impact</a>
+                </div>
+                <div class="hidden lg:flex items-center gap-4">
+                    <% if (user) { %>
+                        <span class="text-sm font-medium text-ella-dark-gray/80">Hi, <%= user.firstName %></span>
+                        <a href="/logout" class="px-4 py-1.5 text-sm rounded-xl font-semibold transition-all bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray hover:bg-ella-dark-gray hover:text-white">Logout</a>
+                    <% } else { %>
+                        <a href="/login" class="px-6 py-2 text-sm rounded-xl font-semibold bg-ella-pink text-ella-dark-gray border-2 border-ella-pink shadow-md">Login</a>
+                    <% } %>
+                </div>
+                <button id="mobileMenuBtn" class="lg:hidden p-2 text-ella-dark-gray"><i class="bi bi-list text-2xl" id="menuIcon"></i></button>
+            </div>
+        </div>
+        <div id="mobileMenu" class="lg:hidden overflow-hidden transition-all duration-300 bg-white/95 backdrop-blur-xl border-t border-ella-light-pink/30 max-h-0">
+            <div class="px-4 py-6 space-y-4 flex flex-col items-center">
+                <a href="/" class="text-lg font-medium">Home</a>
+                <a href="/dashboard" class="text-lg font-medium">Dashboard</a>
                 <% if (user) { %>
-                    <span class="navbar-text me-3">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
-                    <a class="btn btn-no-background" href="/logout">Logout</a>
-                <% } else { %>
-                    <a class="btn btn-no-background" href="/login">Login</a>
+                    <span class="text-sm text-gray-500">Logged in as <%= user.firstName %></span>
+                    <a href="/logout" class="w-full max-w-xs text-center px-6 py-2.5 rounded-xl font-semibold bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray">Logout</a>
                 <% } %>
             </div>
         </div>
     </nav>
-    <!-- Header-->
-    <header class="bg-primary py-2 position-relative">
-        <a href="/surveys" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center">
-                <h1 class="display-4 fw-bolder">Survey Details</h1>
-                <p class="lead fw-normal mb-0">View survey information</p>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-16 animate-fade-in max-w-4xl">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="font-serif text-4xl text-ella-dark-gray mb-2">Survey Response</h1>
+                <p class="text-gray-500">Detailed survey feedback and scores.</p>
             </div>
+            <a href="/surveys" class="px-6 py-2.5 rounded-xl font-semibold transition-all bg-white text-ella-dark-gray border-2 border-gray-300 hover:border-ella-pink hover:text-ella-pink shadow-sm flex items-center gap-2">
+                <i class="bi bi-arrow-left"></i> Back to Surveys
+            </a>
         </div>
-    </header>
-    <!-- Section-->
-    <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-xl-6">
-                    <div class="card p-4">
-                        <div class="mb-3">
-                            <strong>Participant Email:</strong>
-                            <p><%= survey.participantemail %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Event Name:</strong>
-                            <p><%= survey.eventname %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Event Date:</strong>
-                            <p><%= survey.eventdate ? new Date(survey.eventdate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-') : '' %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Event Time Start:</strong>
-                            <p><%= survey.eventtimestart %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Satisfaction Score:</strong>
-                            <p><%= survey.satisfactionScore %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Usefulness Score:</strong>
-                            <p><%= survey.usefulnessScore %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Instructor Score:</strong>
-                            <p><%= survey.instructorScore %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Recommendation Score:</strong>
-                            <p><%= survey.recommendationScore %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Overall Score:</strong>
-                            <p><%= survey.overallScore %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>NPS Bucket:</strong>
-                            <p><%= survey.npsBucket %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Comments:</strong>
-                            <p><%= survey.comments %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Submission Date:</strong>
-                            <p><%= survey.submissionDate ? new Date(survey.submissionDate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-') : '' %></p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Submission Time:</strong>
-                            <p><%= survey.submissionTime %></p>
-                        </div>
-                        <div class="text-center">
-                            <a class="btn btn-secondary" href="/surveys">Back to Surveys</a>
-                        </div>
+
+        <!-- Survey Details Card -->
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100/50 mb-8">
+            <div class="bg-gradient-to-r from-ella-off-white to-white p-8 border-b border-gray-100">
+                <h2 class="font-serif text-2xl text-ella-dark-gray mb-4">Event Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Event Name</label>
+                        <p class="text-lg text-ella-dark-gray mt-1"><%= survey.eventname %></p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Participant Email</label>
+                        <p class="text-lg text-ella-dark-gray mt-1"><%= survey.participantemail %></p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Event Date</label>
+                        <p class="text-lg text-ella-dark-gray mt-1"><%= survey.eventdate ? new Date(survey.eventdate).toLocaleDateString('en-US') : 'N/A' %></p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Event Time</label>
+                        <p class="text-lg text-ella-dark-gray mt-1"><%= survey.eventtimestart || 'N/A' %></p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="/javascripts/scripts.js"></script>
-</body>
 
+            <div class="p-8">
+                <h2 class="font-serif text-2xl text-ella-dark-gray mb-6">Survey Scores</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="p-4 rounded-xl bg-ella-light-blue/10 border border-ella-light-blue/20">
+                        <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">Satisfaction Score</label>
+                        <p class="text-3xl font-bold text-ella-dark-gray"><%= survey.satisfactionScore || 'N/A' %></p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-ella-purple/10 border border-ella-purple/20">
+                        <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">Usefulness Score</label>
+                        <p class="text-3xl font-bold text-ella-dark-gray"><%= survey.usefulnessScore || 'N/A' %></p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-ella-pink/10 border border-ella-pink/20">
+                        <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">Instructor Score</label>
+                        <p class="text-3xl font-bold text-ella-dark-gray"><%= survey.instructorScore || 'N/A' %></p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-ella-orange/10 border border-ella-orange/20">
+                        <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">Recommendation Score</label>
+                        <p class="text-3xl font-bold text-ella-dark-gray"><%= survey.recommendationScore || 'N/A' %></p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="p-6 rounded-xl bg-ella-green/10 border-2 border-ella-green/30">
+                        <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">Overall Score</label>
+                        <p class="text-4xl font-bold text-ella-dark-gray"><%= survey.overallScore || 'N/A' %></p>
+                    </div>
+                    <div class="p-6 rounded-xl <%= survey.npsBucket === 'Promoter' ? 'bg-green-50 border-2 border-green-300' : survey.npsBucket === 'Passive' ? 'bg-orange-50 border-2 border-orange-300' : 'bg-red-50 border-2 border-red-300' %>">
+                        <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">NPS Bucket</label>
+                        <p class="text-3xl font-bold <%= survey.npsBucket === 'Promoter' ? 'text-green-700' : survey.npsBucket === 'Passive' ? 'text-orange-700' : 'text-red-700' %>">
+                            <%= survey.npsBucket || 'N/A' %>
+                        </p>
+                    </div>
+                </div>
+
+                <% if (survey.comments) { %>
+                <div class="border-t border-gray-100 pt-6">
+                    <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-3">Comments</label>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                        <p class="text-gray-700 whitespace-pre-wrap"><%= survey.comments %></p>
+                    </div>
+                </div>
+                <% } %>
+
+                <div class="border-t border-gray-100 mt-6 pt-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-500">
+                        <div>
+                            <span class="font-semibold">Submitted on:</span> <%= survey.submissionDate || 'N/A' %>
+                        </div>
+                        <div>
+                            <span class="font-semibold">Submitted at:</span> <%= survey.submissionTime || 'N/A' %>
+                        </div>
+                    </div>
+                </div>
+
+                <% if (user && user.role === 'manager') { %>
+                <div class="flex gap-4 mt-8 pt-6 border-t border-gray-100">
+                    <a href="/surveys/edit/<%= survey.id %>" class="flex-1 px-6 py-3 rounded-xl font-semibold transition-all bg-ella-pink text-white hover:bg-white hover:text-ella-pink border-2 border-ella-pink shadow-lg text-center">
+                        <i class="bi bi-pencil-fill mr-2"></i> Edit Survey
+                    </a>
+                    <form action="/surveys/delete/<%= survey.id %>" method="POST" class="flex-1" onsubmit="return confirm('Are you sure you want to delete this survey?');">
+                        <button type="submit" class="w-full px-6 py-3 rounded-xl font-semibold transition-all bg-white text-ella-red hover:bg-ella-red hover:text-white border-2 border-ella-red shadow-lg">
+                            <i class="bi bi-trash-fill mr-2"></i> Delete Survey
+                        </button>
+                    </form>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer-->
+    <footer class="bg-ella-dark-gray text-white pt-16 pb-8 relative overflow-hidden mt-12">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-ella-light-blue via-ella-pink to-ella-purple"></div>
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+                <div class="text-left">
+                    <h3 class="font-serif text-2xl mb-2 text-ella-pink">Ella Rises</h3>
+                    <p class="text-gray-400 max-w-xs text-sm">Empowering young women through education, culture, and community.</p>
+                </div>
+                <div class="flex gap-8">
+                    <a href="https://www.facebook.com/share/1ALmigc75W/?mibextid=wwXIfr" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink transition-all"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.instagram.com/ellarises?igsh=YTVtZzBrbDJ0eTBx" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink transition-all"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+                <p>&copy; 2025 Ella Rises. All Rights Reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="https://www.ellarises.org/team" class="hover:text-white transition-colors">About</a>
+                    <a href="https://www.ellarises.org/contact-us" class="hover:text-white transition-colors">Contact</a>
+                    <a href="/teapot" class="hover:text-white transition-colors">Teapot</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                const isOpen = mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== '0px';
+                mobileMenu.style.maxHeight = isOpen ? '0' : '400px';
+                menuIcon.classList.toggle('bi-list');
+                menuIcon.classList.toggle('bi-x-lg');
+            });
+        }
+    </script>
+</body>
 </html>
+

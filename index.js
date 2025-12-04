@@ -135,15 +135,35 @@ app.post('/login', async (req, res) => {
           .update({ password: hashedPassword });
       }
 
+      // Check if user email matches a participant and has 3+ surveys
+      let showConfetti = false;
+      try {
+        const participant = await knex('participants')
+          .where('participantemail', email)
+          .first();
+        
+        if (participant) {
+          const surveyCount = await knex('surveys')
+            .where('participantemail', email)
+            .count('* as count')
+            .first();
+          
+          if (surveyCount && parseInt(surveyCount.count) >= 3) {
+            showConfetti = true;
+          }
+        }
+      } catch (error) {
+        console.error('Error checking confetti eligibility:', error);
+      }
+
       // Store minimal user info in the session
       req.session.user = {
         id: user.userid,
         firstName: user.userfirstname,
-        role: user.userrole
+        role: user.userrole,
+        showConfetti: showConfetti,
+        confettiShown: false
       };
-
-      console.log('User object after successful login:', user);
-      console.log('Session user object after successful login:', req.session.user);
 
       // Redirect user back to where they started
       const redirectUrl = req.session.returnTo || '/';
@@ -163,15 +183,32 @@ app.post('/login', async (req, res) => {
 
 // Registration page
 app.get('/register', (req, res) => {
-  res.render('register', { user: req.session.user || null });
+  res.render('register', { 
+    user: req.session.user || null,
+    message: req.session.message || null
+  });
+  delete req.session.message;
 });
 
 // Registration handler
 app.post('/register', async (req, res) => {
   const { firstName, lastName, email, password, confirmPassword } = req.body;
 
-  // Basic client-side-like validation
+  // Validate all fields are provided
+  if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    req.session.message = 'All fields are required.';
+    return res.redirect('/register');
+  }
+
+  // Check password match
   if (password !== confirmPassword) {
+    req.session.message = 'Passwords do not match.';
+    return res.redirect('/register');
+  }
+
+  // Check password length
+  if (password.length < 6) {
+    req.session.message = 'Password must be at least 6 characters long.';
     return res.redirect('/register');
   }
 
@@ -181,6 +218,7 @@ app.post('/register', async (req, res) => {
     .first();
 
   if (emailExists) {
+    req.session.message = 'An account with this email already exists.';
     return res.redirect('/register');
   }
 
@@ -199,10 +237,12 @@ app.post('/register', async (req, res) => {
       })
       .returning('userid');
 
+    req.session.message = 'Account created successfully! Please login.';
     res.redirect('/login');
 
   } catch (error) {
     console.error('Error during registration:', error);
+    req.session.message = 'An error occurred during registration. Please try again.';
     res.redirect('/register');
   }
 });
@@ -278,16 +318,63 @@ app.get('/dashboard', isAuthenticated, (req, res) => {
   const message = req.session.message;
   req.session.message = null;
 
+  // Check if we should show confetti (only once per session)
+  let shouldShowConfetti = false;
+  if (req.session.user && req.session.user.showConfetti && !req.session.user.confettiShown) {
+    shouldShowConfetti = true;
+    req.session.user.confettiShown = true;
+  }
+
   res.render('dashboard', {
     title: 'Ella Rises Dashboard',
     user: req.session.user || null,
+    shouldShowConfetti: shouldShowConfetti,
     message
   });
 });
 
 // Homepage route
-app.get('/', (req, res) => {
-  res.render('index', { title: 'Ella Rises', user: req.session.user || null });
+app.get('/', async (req, res) => {
+  try {
+    // Check if we should show confetti (only once per session)
+    let shouldShowConfetti = false;
+    if (req.session.user && req.session.user.showConfetti && !req.session.user.confettiShown) {
+      shouldShowConfetti = true;
+      req.session.user.confettiShown = true;
+    }
+    
+    // Get participant count
+    const participantCount = await knex('participants').count('* as count').first();
+    
+    // Get total donations (sum from both participant donations and user donations)
+    const participantDonations = await knex('participants')
+      .sum('totaldonations as total')
+      .first();
+    
+    const userDonations = await knex('userdonor')
+      .sum('userdonoramount as total')
+      .first();
+    
+    const totalDonations = 
+      (parseFloat(participantDonations?.total) || 0) + 
+      (parseFloat(userDonations?.total) || 0);
+    
+    res.render('index', { 
+      title: 'Ella Rises', 
+      user: req.session.user || null,
+      shouldShowConfetti: shouldShowConfetti,
+      participantCount: participantCount?.count || 0,
+      totalDonations: totalDonations.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    });
+  } catch (error) {
+    console.error('Error fetching homepage data:', error);
+    res.render('index', { 
+      title: 'Ella Rises', 
+      user: req.session.user || null,
+      participantCount: 0,
+      totalDonations: '0.00'
+    });
+  }
 });
 
 // Fun “I'm a teapot” route

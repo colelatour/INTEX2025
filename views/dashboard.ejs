@@ -1,292 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Dashboard</title>
-    <!-- Favicon-->
+    <title>Dashboard - Ella Rises</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
-        type="text/css" />
-    <!-- Google fonts-->
-
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/stylesheets/styles.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ella: {
+                'light-blue': '#99B7C6',
+                'purple': '#978Ec4',
+                'off-white': '#F9F5EA',
+                'light-pink': '#FFD8D1',
+                'pink': '#F9AFB1',
+                'green': '#9AB59D',
+                'dark-gray': '#3A3F3B',
+                'orange': '#F4B092',
+                'red': '#CE325B',
+              }
+            },
+            fontFamily: {
+              serif: ['"DM Serif Display"', 'serif'],
+              sans: ['"Montserrat"', 'sans-serif'],
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.8s ease-out forwards',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #F9F5EA;
+        font-family: 'Montserrat', sans-serif;
+      }
+    </style>
 </head>
 
-<body>
+<body class="font-sans selection:bg-ella-pink selection:text-white">
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
-                    style="height: 60px;"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"><span></span></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav nav-center-desktop">
-                    <li class="nav-item mx-lg-3">
-                        <a class="nav-link-custom" href="/">Home</a>
-                    </li>
-                    <li class="nav-item mx-lg-3">
-                        <a class="nav-link-custom" href="/#our-impact">Impact</a>
-                    </li>
-                    <li class="nav-item mx-lg-3">
-                        <a class="nav-link-custom" href="/donations/userdonor/add">Donate</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-lg-auto align-items-lg-center">
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b border-white/20 shadow-sm">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="/" class="flex items-center gap-2 group">
+                    <img src="/assets/img/EllaRises.png" alt="Ella Rises Logo" class="w-12 h-12 transition-transform group-hover:scale-110" />
+                    <span class="font-serif text-2xl font-bold tracking-wide text-ella-dark-gray">
+                        Ella<span class="text-ella-pink">Rises</span>
+                    </span>
+                </a>
+
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="/" class="text-sm tracking-widest uppercase text-ella-dark-gray hover:text-ella-pink transition-colors">Home</a>
+                    <a href="/dashboard" class="text-sm tracking-widest uppercase text-ella-pink font-bold transition-colors">Dashboard</a>
+                    <a href="/#our-impact" class="text-sm tracking-widest uppercase text-ella-dark-gray hover:text-ella-pink transition-colors">Impact</a>
+                    <a href="/donations/userdonor/add" class="text-sm tracking-widest uppercase text-ella-dark-gray hover:text-ella-pink transition-colors">Donate</a>
+                </div>
+
+                <div class="hidden lg:flex items-center gap-4">
                     <% if (user) { %>
-                        <li class="nav-item me-lg-3">
-                            <span class="navbar-text">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-no-background" href="/logout">Logout</a>
-                        </li>
+                        <span class="text-sm font-medium text-ella-dark-gray/80">
+                            Hi, <span class="<%= user.showConfetti ? 'user-name-confetti' : '' %>"><%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
+                        </span>
+                        <a href="/logout" class="px-4 py-1.5 text-sm rounded-xl font-semibold transition-all duration-300 bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray hover:bg-ella-dark-gray hover:text-white">
+                            Logout
+                        </a>
                     <% } else { %>
-                        <li class="nav-item">
-                            <a class="btn btn-no-background" href="/login">Login</a>
-                        </li>
+                        <a href="/login" class="px-6 py-2 text-sm rounded-xl font-semibold transition-all duration-300 bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink shadow-md">
+                            Login
+                        </a>
                     <% } %>
-                </ul>
+                </div>
+
+                <button id="mobileMenuBtn" class="lg:hidden p-2 text-ella-dark-gray hover:text-ella-pink transition-colors focus:outline-none focus:ring-2 focus:ring-ella-pink focus:ring-offset-2" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu">
+                    <i class="bi bi-list text-2xl" id="menuIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white/95 backdrop-blur-xl border-t border-ella-light-pink/30 max-h-0" role="navigation" aria-label="Mobile navigation">
+            <div class="px-4 py-6 space-y-4 flex flex-col items-center">
+                <a href="/" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Home</a>
+                <a href="/dashboard" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Dashboard</a>
+                <a href="/#our-impact" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Impact</a>
+                <div class="pt-4 border-t border-gray-100 w-full flex flex-col items-center gap-3">
+                    <% if (user) { %>
+                        <span class="text-sm text-gray-500">Logged in as <span class="<%= user.showConfetti ? 'user-name-confetti' : '' %>"><%= user.firstName %></span></span>
+                        <a href="/logout" class="w-full max-w-xs text-center px-6 py-2.5 rounded-xl font-semibold bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray hover:bg-ella-dark-gray hover:text-white">
+                            Logout
+                        </a>
+                    <% } else { %>
+                        <a href="/login" class="w-full max-w-xs text-center px-6 py-2.5 rounded-xl font-semibold bg-ella-pink text-ella-dark-gray border-2 border-ella-pink">
+                            Login
+                        </a>
+                    <% } %>
+                </div>
             </div>
         </div>
     </nav>
-    <!-- Header-->
-    <header class="bg-primary py-2">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center">
-                <h1 class="display-4 fw-bolder">Dashboard</h1>
-                <p class="lead fw-normal mb-0">
-                    <% if (user && user.role === 'manager') { %>
-                        View and manage your data
-                    <% } else { %>
-                        View the data
-                    <% } %>
-                </p>
-            </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-16 animate-fade-in">
+        <div class="mb-12">
+            <h1 class="font-serif text-4xl text-ella-dark-gray mb-2">Dashboard</h1>
+            <p class="text-gray-500">Welcome back, <span class="<%= user && user.showConfetti ? 'user-name-confetti' : '' %>"><%= user ? user.firstName : 'Guest' %></span>. Here's what's happening today.</p>
         </div>
-    </header>
-    <!-- Message display area -->
-    <div class="container px-4 px-lg-5 mt-3">
+
         <% if (message) { %>
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-xl mb-8" role="alert">
                 <%= message %>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <% } %>
-    </div>
-    <!-- Section-->
-    <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-            <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
-                <% if (user) { %>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <div class="card-body text-center">
-                            <i class="bi-people-fill fs-1" style="color: #F9AFB1;"></i>
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h2 class="fw-bolder">Participants</h2>
-                                    <!-- Product price-->
-                                    <p class="card-text">
-                                        <% if (user && user.role === 'manager') { %>
-                                            View and manage participants.
-                                        <% } else { %>
-                                            View participants.
-                                        <% } %>
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-custom-view mt-auto"
-                                        href="/participants" aria-label="View Participants">View</a></div>
-                            </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <% if (user) { %>
+            <a href="/participants" class="group">
+                <div class="h-full bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-gray-100 transform hover:-translate-y-2 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-10 bg-ella-pink transition-colors duration-300"></div>
+                    <div class="flex flex-col items-center text-center h-full">
+                        <div class="w-20 h-20 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 shadow-inner transition-colors duration-300 group-hover:bg-ella-pink group-hover:text-white">
+                            <i class="bi bi-people-fill text-4xl text-ella-pink group-hover:text-white transition-colors duration-300 animate-float"></i>
                         </div>
+                        <h3 class="font-serif text-2xl mb-3 text-ella-dark-gray">Participants</h3>
+                        <p class="text-gray-500 text-sm mb-8 flex-grow">
+                            <% if (user.role === 'manager') { %>
+                                View and manage participants data.
+                            <% } else { %>
+                                View participant directory.
+                            <% } %>
+                        </p>
+                        <span class="inline-flex items-center gap-2 font-bold text-sm uppercase tracking-wider text-ella-pink group-hover:opacity-80">
+                            Access Module <i class="bi bi-arrow-right"></i>
+                        </span>
                     </div>
                 </div>
-                <% } %>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <div class="card-body text-center">
-                            <i class="bi-calendar-event-fill fs-1" style="color: #F9AFB1;"></i>
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h2 class="fw-bolder">Events</h2>
-                                    <!-- Product price-->
-                                    <p class="card-text">
-                                        <% if (user && user.role === 'manager') { %>
-                                            View and manage events.
-                                        <% } else { %>
-                                            View events.
-                                        <% } %>
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-custom-view mt-auto" href="/events" aria-label="View Events">View</a>
-                                </div>
-                            </div>
+            </a>
+            <% } %>
+
+            <a href="/events" class="group">
+                <div class="h-full bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-gray-100 transform hover:-translate-y-2 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-10 bg-ella-purple transition-colors duration-300"></div>
+                    <div class="flex flex-col items-center text-center h-full">
+                        <div class="w-20 h-20 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 shadow-inner transition-colors duration-300 group-hover:bg-ella-purple group-hover:text-white">
+                            <i class="bi bi-calendar-event-fill text-4xl text-ella-purple group-hover:text-white transition-colors duration-300 animate-float"></i>
                         </div>
+                        <h3 class="font-serif text-2xl mb-3 text-ella-dark-gray">Events</h3>
+                        <p class="text-gray-500 text-sm mb-8 flex-grow">Check upcoming events and schedules.</p>
+                        <span class="inline-flex items-center gap-2 font-bold text-sm uppercase tracking-wider text-ella-purple group-hover:opacity-80">
+                            Access Module <i class="bi bi-arrow-right"></i>
+                        </span>
                     </div>
                 </div>
-                <% if (user) { %>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <div class="card-body text-center">
-                            <i class="bi-card-checklist fs-1" style="color: #F9AFB1;"></i>
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h2 class="fw-bolder">Surveys</h2>
-                                    <!-- Product price-->
-                                    <p class="card-text">
-                                        <% if (user && user.role === 'manager') { %>
-                                            View and manage surveys.
-                                        <% } else { %>
-                                            View surveys.
-                                        <% } %>
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-custom-view mt-auto" href="/surveys" aria-label="View Surveys">View</a>
-                                </div>
-                            </div>
+            </a>
+
+            <% if (user) { %>
+            <a href="/surveys" class="group">
+                <div class="h-full bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-gray-100 transform hover:-translate-y-2 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-10 bg-ella-light-blue transition-colors duration-300"></div>
+                    <div class="flex flex-col items-center text-center h-full">
+                        <div class="w-20 h-20 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 shadow-inner transition-colors duration-300 group-hover:bg-ella-light-blue group-hover:text-white">
+                            <i class="bi bi-card-checklist text-4xl text-ella-light-blue group-hover:text-white transition-colors duration-300 animate-float"></i>
                         </div>
+                        <h3 class="font-serif text-2xl mb-3 text-ella-dark-gray">Surveys</h3>
+                        <p class="text-gray-500 text-sm mb-8 flex-grow">
+                            <% if (user.role === 'manager') { %>
+                                View and manage surveys.
+                            <% } else { %>
+                                View surveys.
+                            <% } %>
+                        </p>
+                        <span class="inline-flex items-center gap-2 font-bold text-sm uppercase tracking-wider text-ella-light-blue group-hover:opacity-80">
+                            Access Module <i class="bi bi-arrow-right"></i>
+                        </span>
                     </div>
                 </div>
-                <% } %>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <div class="card-body text-center">
-                            <i class="bi-trophy-fill fs-1" style="color: #F9AFB1;"></i>
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h2 class="fw-bolder">Milestones</h2>
-                                    <!-- Product price-->
-                                    <p class="card-text">
-                                        <% if (user && user.role === 'manager') { %>
-                                            View and manage milestones.
-                                        <% } else { %>
-                                            View milestones.
-                                        <% } %>
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-custom-view mt-auto"
-                                        href="/milestones" aria-label="View Milestones">View</a></div>
-                            </div>
+            </a>
+            <% } %>
+
+            <a href="/milestones" class="group">
+                <div class="h-full bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-gray-100 transform hover:-translate-y-2 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-10 bg-ella-orange transition-colors duration-300"></div>
+                    <div class="flex flex-col items-center text-center h-full">
+                        <div class="w-20 h-20 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 shadow-inner transition-colors duration-300 group-hover:bg-ella-orange group-hover:text-white">
+                            <i class="bi bi-trophy-fill text-4xl text-ella-orange group-hover:text-white transition-colors duration-300 animate-float"></i>
                         </div>
+                        <h3 class="font-serif text-2xl mb-3 text-ella-dark-gray">Milestones</h3>
+                        <p class="text-gray-500 text-sm mb-8 flex-grow">
+                            <% if (user && user.role === 'manager') { %>
+                                View and manage milestones.
+                            <% } else { %>
+                                View milestones.
+                            <% } %>
+                        </p>
+                        <span class="inline-flex items-center gap-2 font-bold text-sm uppercase tracking-wider text-ella-orange group-hover:opacity-80">
+                            Access Module <i class="bi bi-arrow-right"></i>
+                        </span>
                     </div>
                 </div>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <div class="card-body text-center">
-                            <i class="bi-cash-coin fs-1" style="color: #F9AFB1;"></i>
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h2 class="fw-bolder">Donations</h2>
-                                    <!-- Product price-->
-                                    <p class="card-text">
-                                        <% if (user && user.role === 'manager') { %>
-                                            View and manage donations.
-                                        <% } else { %>
-                                            View donations.
-                                        <% } %>
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-custom-view mt-auto"
-                                        href="/donations" aria-label="View Donations">View</a></div>
-                            </div>
+            </a>
+
+            <a href="/donations" class="group">
+                <div class="h-full bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-gray-100 transform hover:-translate-y-2 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-10 bg-ella-green transition-colors duration-300"></div>
+                    <div class="flex flex-col items-center text-center h-full">
+                        <div class="w-20 h-20 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 shadow-inner transition-colors duration-300 group-hover:bg-ella-green group-hover:text-white">
+                            <i class="bi bi-cash-coin text-4xl text-ella-green group-hover:text-white transition-colors duration-300 animate-float"></i>
                         </div>
+                        <h3 class="font-serif text-2xl mb-3 text-ella-dark-gray">Donations</h3>
+                        <p class="text-gray-500 text-sm mb-8 flex-grow">
+                            <% if (user && user.role === 'manager') { %>
+                                View and manage donations.
+                            <% } else { %>
+                                View donations.
+                            <% } %>
+                        </p>
+                        <span class="inline-flex items-center gap-2 font-bold text-sm uppercase tracking-wider text-ella-green group-hover:opacity-80">
+                            Access Module <i class="bi bi-arrow-right"></i>
+                        </span>
                     </div>
                 </div>
-                <% if (user && user.role === 'manager') { %>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <div class="card-body text-center">
-                            <i class="bi-person-badge-fill fs-1" style="color: #F9AFB1;"></i>
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h2 class="fw-bolder">Users</h2>
-                                    <!-- Product price-->
-                                    <p class="card-text">View and manage users.</p>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-custom-view mt-auto" href="/users" aria-label="View Users">View</a>
-                                </div>
-                            </div>
+            </a>
+
+            <% if (user && user.role === 'manager') { %>
+            <a href="/users" class="group">
+                <div class="h-full bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-gray-100 transform hover:-translate-y-2 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-10 bg-ella-red transition-colors duration-300"></div>
+                    <div class="flex flex-col items-center text-center h-full">
+                        <div class="w-20 h-20 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 shadow-inner transition-colors duration-300 group-hover:bg-ella-red group-hover:text-white">
+                            <i class="bi bi-person-badge-fill text-4xl text-ella-red group-hover:text-white transition-colors duration-300 animate-float"></i>
                         </div>
+                        <h3 class="font-serif text-2xl mb-3 text-ella-dark-gray">Users</h3>
+                        <p class="text-gray-500 text-sm mb-8 flex-grow">View and manage users.</p>
+                        <span class="inline-flex items-center gap-2 font-bold text-sm uppercase tracking-wider text-ella-red group-hover:opacity-80">
+                            Access Module <i class="bi bi-arrow-right"></i>
+                        </span>
                     </div>
                 </div>
-                <% } %>
-            </div>
+            </a>
+            <% } %>
         </div>
-    </section>
+    </div>
+
     <!-- Footer-->
-    <footer class="footer bg-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
-                    <ul class="list-inline mb-2">
-                        <li class="list-inline-item"><a href="https://www.ellarises.org/team">About</a></li>
-                        <li class="list-inline-item">⋅</li>
-                        <li class="list-inline-item"><a href="https://www.ellarises.org/contact-us">Contact</a></li>
-                        <li class="list-inline-item">⋅</li>
-                        <li class="list-inline-item"><a href="/teapot">Teapot</a></li>
-                    </ul>
-                    <p class="text-muted small mb-4 mb-lg-0">&copy; 2025 Ella Rises. All Rights Reserved.</p>
+    <footer class="bg-ella-dark-gray text-white pt-16 pb-8 relative overflow-hidden mt-12">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-ella-light-blue via-ella-pink to-ella-purple"></div>
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+                <div class="text-left">
+                    <h3 class="font-serif text-2xl mb-2 text-ella-pink">Ella Rises</h3>
+                    <p class="text-gray-400 max-w-xs text-sm">Empowering young women through education, culture, and community.</p>
                 </div>
-                <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item me-4">
-                            <a href="https://www.facebook.com/share/1ALmigc75W/?mibextid=wwXIfr" aria-label="Visit our Facebook page"><i class="bi-facebook fs-3"></i></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="https://www.instagram.com/ellarises?igsh=YTVtZzBrbDJ0eTBx" aria-label="Visit our Instagram page"><i class="bi-instagram fs-3"></i></a>
-                        </li>
-                    </ul>
+                <div class="flex gap-8">
+                    <a href="https://www.facebook.com/share/1ALmigc75W/?mibextid=wwXIfr" aria-label="Facebook" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink hover:text-ella-dark-gray transition-all duration-300">
+                        <i class="bi bi-facebook text-lg"></i>
+                    </a>
+                    <a href="https://www.instagram.com/ellarises?igsh=YTVtZzBrbDJ0eTBx" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink hover:text-ella-dark-gray transition-all duration-300">
+                        <i class="bi bi-instagram text-lg"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+                <p>&copy; 2025 Ella Rises. All Rights Reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="https://www.ellarises.org/team" class="hover:text-white transition-colors">About</a>
+                    <a href="https://www.ellarises.org/contact-us" class="hover:text-white transition-colors">Contact</a>
+                    <a href="/teapot" class="hover:text-white transition-colors">Teapot</a>
                 </div>
             </div>
         </div>
     </footer>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="/javascripts/scripts.js"></script>
-</body>
 
+    <script>
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== '0px';
+            mobileMenu.style.maxHeight = isOpen ? '0' : '400px';
+            menuIcon.classList.toggle('bi-list');
+            menuIcon.classList.toggle('bi-x-lg');
+            mobileMenuBtn.setAttribute('aria-expanded', !isOpen);
+        });
+    </script>
+    
+    <% if (shouldShowConfetti) { %>
+    <div id="confetti-message" class="fixed top-20 right-4 bg-gradient-to-br from-ella-pink to-ella-light-pink text-ella-dark-gray px-6 py-4 rounded-2xl shadow-2xl max-w-sm border-2 border-ella-red animate-slide-in pointer-events-auto" style="z-index: 9998;">
+        <div class="flex items-start gap-3">
+            <div class="text-3xl">🎉</div>
+            <div>
+                <h4 class="font-bold text-lg mb-1">Congratulations!</h4>
+                <p class="text-sm">You've attended 3 or more events! Thank you for your amazing participation!</p>
+            </div>
+            <button onclick="document.getElementById('confetti-message').style.display='none'" class="ml-2 text-ella-dark-gray hover:text-ella-red transition-colors focus:outline-none focus:ring-2 focus:ring-ella-red rounded" aria-label="Close message">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+    </div>
+    <script src="/javascripts/confetti.js"></script>
+    <style>
+        @keyframes slide-in {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .animate-slide-in {
+            animation: slide-in 0.5s ease-out;
+        }
+        #confetti-message {
+            animation: slide-in 0.5s ease-out, fade-out 0.5s ease-in 4.5s forwards;
+        }
+        @keyframes fade-out {
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+    </style>
+    <script>
+        setTimeout(() => {
+            const message = document.getElementById('confetti-message');
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 5000);
+    </script>
+    <% } %>
+</body>
 </html>

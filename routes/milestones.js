@@ -237,13 +237,11 @@ router.post('/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (re
     return res.redirect(`/milestones/edit/${milestoneId}`);
   }
 
-  // CRITICAL BUG: Missing WHERE clause!
-  // This will update ALL milestones to have the same data, overwriting everything
-  // Should be: .where('milestoneid', milestoneId).update({...})
   await knex('milestones')
+    .where('milestoneid', milestoneId)
     .update({
       participantid: participant.participantid,
-      participantemail: participant.participantemail,        // Update denormalized email
+      participantemail: participant.participantemail,
       milestonetitle: title,
       milestonedate: milestoneDate
     });
