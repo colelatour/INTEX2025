@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS EventOccurrences CASCADE;
 DROP TABLE IF EXISTS EventTemplates CASCADE;
 DROP TABLE IF EXISTS Participants CASCADE;
 DROP TABLE IF EXISTS Users CASCADE;
-DROP TABLE IF EXISTS donoruser CASCADE;
+DROP TABLE IF EXISTS userdonor CASCADE;
 
 -- ============================================================================
 -- TABLE: Users
