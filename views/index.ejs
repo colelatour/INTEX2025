@@ -101,7 +101,7 @@
                 <div class="hidden lg:flex items-center gap-4">
                     <% if (user) { %>
                         <span class="text-sm font-medium text-ella-dark-gray/80">
-                            Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %>
+                            Hi, <span class="<%= user.showConfetti ? 'user-name-confetti' : '' %>"><%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
                         </span>
                         <a href="/logout" class="px-4 py-1.5 text-sm rounded-xl font-semibold transition-all duration-300 transform active:scale-95 bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray hover:bg-ella-dark-gray hover:text-white">
                             Logout
@@ -128,7 +128,7 @@
                 <a href="/#our-impact" class="text-lg font-medium">Impact</a>
                 <div class="pt-4 border-t border-gray-100 w-full flex flex-col items-center gap-3">
                     <% if (user) { %>
-                        <span class="text-sm text-gray-500">Logged in as <%= user.firstName %></span>
+                        <span class="text-sm text-gray-500">Logged in as <span class="<%= user.showConfetti ? 'user-name-confetti' : '' %>"><%= user.firstName %></span></span>
                         <a href="/logout" class="w-full max-w-xs text-center px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray hover:bg-ella-dark-gray hover:text-white">
                             Logout
                         </a>
@@ -458,6 +458,10 @@
         window.addEventListener('resize', updateItemsPerPage);
         updateItemsPerPage();
     </script>
+    
+    <% if (user && user.showConfetti) { %>
+    <script src="/javascripts/confetti.js"></script>
+    <% } %>
 </body>
 
 </html>

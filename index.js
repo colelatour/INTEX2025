@@ -135,11 +135,40 @@ app.post('/login', async (req, res) => {
           .update({ password: hashedPassword });
       }
 
+      // Check if user email matches a participant and has 3+ surveys
+      let showConfetti = false;
+      try {
+        const participant = await knex('participants')
+          .where('participantemail', email)
+          .first();
+        
+        if (participant) {
+          console.log('Found participant:', participant.participantemail);
+          const surveyCount = await knex('surveys')
+            .where('participantemail', email)
+            .count('* as count')
+            .first();
+          
+          console.log('Survey count result:', surveyCount);
+          console.log('Parsed count:', parseInt(surveyCount.count));
+          
+          if (surveyCount && parseInt(surveyCount.count) >= 3) {
+            showConfetti = true;
+            console.log('Setting showConfetti to true');
+          }
+        } else {
+          console.log('No participant found for email:', email);
+        }
+      } catch (error) {
+        console.error('Error checking confetti eligibility:', error);
+      }
+
       // Store minimal user info in the session
       req.session.user = {
         id: user.userid,
         firstName: user.userfirstname,
-        role: user.userrole
+        role: user.userrole,
+        showConfetti: showConfetti
       };
 
       console.log('User object after successful login:', user);
