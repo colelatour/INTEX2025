@@ -80,11 +80,16 @@
                 <h1 class="font-serif text-4xl text-ella-dark-gray mb-2">Events</h1>
                 <p class="text-gray-500">Manage and view events.</p>
             </div>
-            <% if (user && user.role === 'manager') { %>
-                <a href="/events/add" class="px-6 py-2.5 rounded-xl font-semibold transition-all bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink shadow-lg flex items-center gap-2">
-                    <i class="bi bi-plus-lg"></i> Add Participant
+            <div class="flex gap-3">
+                <a href="/dashboard" class="px-6 py-2.5 rounded-xl font-semibold transition-all bg-white text-ella-dark-gray hover:bg-gray-50 border-2 border-gray-200 shadow-sm flex items-center gap-2">
+                    <i class="bi bi-chevron-left"></i> Back
                 </a>
-            <% } %>
+                <% if (user && user.role === 'manager') { %>
+                    <a href="/events/add" class="px-6 py-2.5 rounded-xl font-semibold transition-all bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink shadow-lg flex items-center gap-2">
+                        <i class="bi bi-plus-lg"></i> Add Event
+                    </a>
+                <% } %>
+            </div>
         </div>
 
         <% if (typeof message !== 'undefined' && message) { %>
@@ -109,6 +114,7 @@
                             <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Time</th>
                             <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Location</th>
                             <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Type</th>
+                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Registration Deadline</th>
                             <% if (user && user.role === 'manager') { %>
                             <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg text-right">Actions</th>
                             <% } %>
@@ -125,6 +131,7 @@
                                     <td class="p-6 text-gray-600"><%= e.timeStart || 'N/A' %><% if (e.timeEnd) { %> - <%= e.timeEnd %><% } %></td>
                                     <td class="p-6 text-gray-600"><%= e.location || 'N/A' %></td>
                                     <td class="p-6"><span class="px-3 py-1 rounded-full bg-ella-purple/10 text-ella-dark-gray text-xs font-semibold"><%= e.eventType || 'N/A' %></span></td>
+                                    <td class="p-6 text-gray-600"><%= e.registrationDeadline ? new Date(e.registrationDeadline).toLocaleDateString('en-US') : 'N/A' %></td>
                                     <% if (user && user.role === 'manager') { %>
                                     <td class="p-6 text-right">
                                         <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">

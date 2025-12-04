@@ -247,6 +247,18 @@ router.post('/add', isAuthenticated, authorizeRoles(['manager']), async (req, re
   const { participant_id, amount, donation_date } = req.body;
 
   try {
+    // Validate that the amount is greater than 0
+    const donationAmount = parseFloat(amount);
+    if (isNaN(donationAmount) || donationAmount <= 0) {
+      const participants = await knex('participants').select('participantid', 'participantfirstname', 'participantlastname', 'participantemail');
+      return res.render('donations/add', {
+        user: req.session.user,
+        participants,
+        error: 'Donation amount must be greater than $0.',
+        formData: req.body
+      });
+    }
+
     // Look up the selected participant to ensure they exist and to get their details.
     const participant = await knex('participants').where('participantid', participant_id).first();
 
@@ -265,7 +277,7 @@ router.post('/add', isAuthenticated, authorizeRoles(['manager']), async (req, re
     await knex('donations').insert({
       participantid: participant.participantid,
       participantemail: participant.participantemail, // Store the participant's email with the donation.
-      donationamount: parseFloat(amount) || 0.00, // Ensure amount is a number, default to 0.00 if invalid.
+      donationamount: donationAmount,
       donationdate: donation_date
     });
 
@@ -329,6 +341,13 @@ router.post('/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (re
   // Destructure updated data from the form.
   const { participant_id, amount, donation_date } = req.body;
 
+  // Validate that the amount is greater than 0
+  const donationAmount = parseFloat(amount);
+  if (isNaN(donationAmount) || donationAmount <= 0) {
+    req.session.message = 'Donation amount must be greater than $0.';
+    return res.redirect(`/donations/edit/${donationId}`);
+  }
+
   // Look up the selected participant again to ensure validity and get their current email.
   const participant = await knex('participants').where('participantid', participant_id).first();
 
@@ -344,7 +363,7 @@ router.post('/edit/:id', isAuthenticated, authorizeRoles(['manager']), async (re
     .update({
       participantid: participant.participantid,
       participantemail: participant.participantemail,
-      donationamount: parseFloat(amount) || 0.00,
+      donationamount: donationAmount,
       donationdate: donation_date
     });
   // Redirect to the main donations list upon success.

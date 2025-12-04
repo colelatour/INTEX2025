@@ -57,8 +57,7 @@
         font-family: 'Montserrat', sans-serif;
       }
     </style>
-</head><body class="font-sans selection:bg-ella-pink selection:text-white">
-
+</head>
 
 <body class="font-sans selection:bg-ella-pink selection:text-white">
     <!-- Navigation-->
@@ -88,6 +87,11 @@
             </div>
 
             <form action="/donations/add" method="POST" class="space-y-6">
+                <% if (error) { %>
+                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl" role="alert">
+                    <%= error %>
+                </div>
+                <% } %>
                 
                                 <div class="mb-6">
                                     <label for="participant_id" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Participant</label>

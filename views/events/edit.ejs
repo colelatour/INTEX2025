@@ -57,8 +57,7 @@
         font-family: 'Montserrat', sans-serif;
       }
     </style>
-</head><body class="font-sans selection:bg-ella-pink selection:text-white">
-
+</head>
 
 <body class="font-sans selection:bg-ella-pink selection:text-white">
     <!-- Navigation-->
@@ -88,7 +87,6 @@
             </div>
 
             <form action="/events/edit/<%= event.id %>" method="POST" class="space-y-6">
-                " method="POST">
                                 <div class="mb-6">
                                     <label for="name" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Event Name</label>
                                     <input type="text" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="name" name="name" value="<%= event.name %>" required>
