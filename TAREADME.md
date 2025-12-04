@@ -9,3 +9,6 @@ Manager Level
 User Level
   email: user@example.com
   password: password123
+
+Teapot Page Link: https://ellarises27.is404.net/teapot
+There is a link in the page footer
