@@ -70,6 +70,15 @@ app.use(session({
 
 // This runs on every request
 app.use((req, res, next) => {
+  // TEMPORARY: Auto-login as manager for development
+  if (!req.session.user) {
+    req.session.user = {
+      id: 1,
+      firstName: 'Manager',
+      role: 'manager'
+    };
+  }
+
   // Expose user info to templates (if logged in)
   res.locals.user = req.session.user;
 
@@ -286,8 +295,39 @@ app.get('/dashboard', isAuthenticated, (req, res) => {
 });
 
 // Homepage route
-app.get('/', (req, res) => {
-  res.render('index', { title: 'Ella Rises', user: req.session.user || null });
+app.get('/', async (req, res) => {
+  try {
+    // Get participant count
+    const participantCount = await knex('participants').count('* as count').first();
+    
+    // Get total donations (sum from both participant donations and user donations)
+    const participantDonations = await knex('participants')
+      .sum('totaldonations as total')
+      .first();
+    
+    const userDonations = await knex('userdonor')
+      .sum('userdonoramount as total')
+      .first();
+    
+    const totalDonations = 
+      (parseFloat(participantDonations?.total) || 0) + 
+      (parseFloat(userDonations?.total) || 0);
+    
+    res.render('index', { 
+      title: 'Ella Rises', 
+      user: req.session.user || null,
+      participantCount: participantCount?.count || 0,
+      totalDonations: totalDonations.toFixed(2)
+    });
+  } catch (error) {
+    console.error('Error fetching homepage data:', error);
+    res.render('index', { 
+      title: 'Ella Rises', 
+      user: req.session.user || null,
+      participantCount: 0,
+      totalDonations: '0.00'
+    });
+  }
 });
 
 // Fun “I'm a teapot” route

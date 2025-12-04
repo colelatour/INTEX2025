@@ -6,52 +6,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Edit Survey</title>
+    <title>Edit Survey - Ella Rises</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
     <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
-        type="text/css" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/stylesheets/styles.css" rel="stylesheet" />
-</head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
+    <!-- Google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ella: {
+                'light-blue': '#99B7C6',
+                'purple': '#978Ec4',
+                'off-white': '#F9F5EA',
+                'light-pink': '#FFD8D1',
+                'pink': '#F9AFB1',
+                'green': '#9AB59D',
+                'dark-gray': '#3A3F3B',
+                'orange': '#F4B092',
+                'red': '#CE325B',
+              }
+            },
+            fontFamily: {
+              serif: ['"DM Serif Display"', 'serif'],
+              sans: ['"Montserrat"', 'sans-serif'],
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.8s ease-out forwards',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #F9F5EA;
+        font-family: 'Montserrat', sans-serif;
+      }
+    </style>
+</head><body class="font-sans selection:bg-ella-pink selection:text-white">
 
-<body>
+
+<body class="font-sans selection:bg-ella-pink selection:text-white">
     <!-- Navigation-->
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
-                    style="height: 60px;"></a>
-            <div>
-                <% if (user) { %>
-                    <span class="navbar-text me-3">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
-                    <a class="btn btn-no-background" href="/logout">Logout</a>
-                <% } else { %>
-                    <a class="btn btn-no-background" href="/login">Login</a>
-                <% } %>
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b border-white/20 shadow-sm">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="/" class="flex items-center gap-2 group">
+                    <img src="/assets/img/EllaRises.png" alt="Ella Rises Logo" class="w-12 h-12 transition-transform group-hover:scale-110" />
+                    <span class="font-serif text-2xl font-bold tracking-wide text-ella-dark-gray">
+                        Ella<span class="text-ella-pink">Rises</span>
+                    </span>
+                </a>
             </div>
         </div>
     </nav>
-    <!-- Header-->
-    <header class="bg-primary py-2 position-relative">
-        <a href="/surveys" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center">
-                <h1 class="display-4 fw-bolder">Edit Survey</h1>
+
+    
+    <div class="min-h-[80vh] flex items-center justify-center px-4 relative py-16 animate-fade-in">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-r from-ella-light-pink/20 via-ella-light-blue/20 to-ella-purple/20 blur-3xl -z-10 rounded-full"></div>
+        
+        <div class="w-full max-w-3xl bg-white/60 backdrop-blur-xl p-8 md:p-12 rounded-[2rem] shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] border border-white/40 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-ella-pink to-ella-purple"></div>
+            
+            <div class="text-center mb-8">
+                <h2 class="font-serif text-3xl text-ella-dark-gray mb-2">Edit Survey</h2>
+                <p class="text-gray-500">Fill out the form below</p>
             </div>
-        </div>
-    </header>
-    <!-- Form Section-->
-    <section class="py-5">
-        <div class="container px-4 px-lg-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10">
-                    <div class="card shadow-sm border-0">
-                        <div class="card-body p-5">
-                            <form action="/surveys/edit/<%= survey.id %>" method="POST">
-                                <div class="mb-3">
-                                    <label for="participant_id" class="form-label">Participant</label>
-                                    <select class="form-select" id="participant_id" name="participant_id" required>
+
+            <form action="/surveys/edit/<%= survey.id %>" method="POST" class="space-y-6">
+                " method="POST">
+                                <div class="mb-6">
+                                    <label for="participant_id" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Participant</label>
+                                    <select class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all text-gray-700" id="participant_id" name="participant_id" required>
                                         <% participants.forEach(function(participant) { %>
                                             <option value="<%= participant.participantid %>" <%= survey.participant_id === participant.participantid ? 'selected' : '' %>>
                                                 <%= participant.participantfirstname %> <%= participant.participantlastname %> (<%= participant.participantemail %>)
@@ -59,9 +99,9 @@
                                         <% }); %>
                                     </select>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="event_id" class="form-label">Event</label>
-                                    <select class="form-select" id="event_id" name="event_id">
+                                <div class="mb-6">
+                                    <label for="event_id" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Event</label>
+                                    <select class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all text-gray-700" id="event_id" name="event_id">
                                         <option value="">-- Select Event (Optional) --</option>
                                         <% events.forEach(function(event) { %>
                                             <option value="<%= event.eventoccurrenceid %>" <%= survey.event_id === event.eventoccurrenceid ? 'selected' : '' %>>
@@ -70,60 +110,88 @@
                                         <% }); %>
                                     </select>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="satisfactionScore" class="form-label">Satisfaction Score (1-5)</label>
-                                    <input type="number" class="form-control" id="satisfactionScore" name="satisfactionScore" min="1" max="5" value="<%= survey.satisfactionScore %>">
+                                <div class="mb-6">
+                                    <label for="satisfactionScore" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Satisfaction Score (1-5)</label>
+                                    <input type="number" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="satisfactionScore" name="satisfactionScore" min="1" max="5" value="<%= survey.satisfactionScore %>">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="usefulnessScore" class="form-label">Usefulness Score (1-5)</label>
-                                    <input type="number" class="form-control" id="usefulnessScore" name="usefulnessScore" min="1" max="5" value="<%= survey.usefulnessScore %>">
+                                <div class="mb-6">
+                                    <label for="usefulnessScore" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Usefulness Score (1-5)</label>
+                                    <input type="number" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="usefulnessScore" name="usefulnessScore" min="1" max="5" value="<%= survey.usefulnessScore %>">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="instructorScore" class="form-label">Instructor Score (1-5)</label>
-                                    <input type="number" class="form-control" id="instructorScore" name="instructorScore" min="1" max="5" value="<%= survey.instructorScore %>">
+                                <div class="mb-6">
+                                    <label for="instructorScore" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Instructor Score (1-5)</label>
+                                    <input type="number" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="instructorScore" name="instructorScore" min="1" max="5" value="<%= survey.instructorScore %>">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="recommendationScore" class="form-label">Recommendation Score (0-10)</label>
-                                    <input type="number" class="form-control" id="recommendationScore" name="recommendationScore" min="0" max="10" value="<%= survey.recommendationScore %>">
+                                <div class="mb-6">
+                                    <label for="recommendationScore" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Recommendation Score (0-10)</label>
+                                    <input type="number" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="recommendationScore" name="recommendationScore" min="0" max="10" value="<%= survey.recommendationScore %>">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="overallScore" class="form-label">Overall Score (1-5, e.g. 4.2)</label>
-                                    <input type="number" step="0.1" class="form-control" id="overallScore" name="overallScore" min="1" max="5" value="<%= survey.overallScore %>">
+                                <div class="mb-6">
+                                    <label for="overallScore" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Overall Score (1-5, e.g. 4.2)</label>
+                                    <input type="number" step="0.1" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="overallScore" name="overallScore" min="1" max="5" value="<%= survey.overallScore %>">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="npsBucket" class="form-label">NPS Bucket</label>
-                                    <select class="form-select" id="npsBucket" name="npsBucket">
+                                <div class="mb-6">
+                                    <label for="npsBucket" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">NPS Bucket</label>
+                                    <select class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all text-gray-700" id="npsBucket" name="npsBucket">
                                         <option value="">-- Select NPS Bucket --</option>
                                         <option value="Promoter" <%= survey.npsBucket === 'Promoter' ? 'selected' : '' %>>Promoter</option>
                                         <option value="Passive" <%= survey.npsBucket === 'Passive' ? 'selected' : '' %>>Passive</option>
                                         <option value="Detractor" <%= survey.npsBucket === 'Detractor' ? 'selected' : '' %>>Detractor</option>
                                     </select>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="comments" class="form-label">Comments</label>
-                                    <textarea class="form-control" id="comments" name="comments" rows="5"><%= survey.comments %></textarea>
+                                <div class="mb-6">
+                                    <label for="comments" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Comments</label>
+                                    <textarea class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="comments" name="comments" rows="5"><%= survey.comments %></textarea>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="submissionDate" class="form-label">Submission Date</label>
-                                    <input type="date" class="form-control" id="submissionDate" name="submissionDate" value="<%= survey.submissionDate %>">
+                                <div class="mb-6">
+                                    <label for="submissionDate" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Submission Date</label>
+                                    <input type="date" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="submissionDate" name="submissionDate" value="<%= survey.submissionDate %>">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="submissionTime" class="form-label">Submission Time</label>
-                                    <input type="time" class="form-control" id="submissionTime" name="submissionTime" value="<%= survey.submissionTime %>">
+                                <div class="mb-6">
+                                    <label for="submissionTime" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Submission Time</label>
+                                    <input type="time" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="submissionTime" name="submissionTime" value="<%= survey.submissionTime %>">
                                 </div>
-                                <button type="submit" class="btn btn-custom-view">Update Survey</button>
-                                <a href="/surveys" class="btn btn-secondary">Cancel</a>
-                            </form>
-                        </div>
-                    </div>
+                                <div class="flex gap-4 mt-8">
+                                    <button type="submit" class="px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink shadow-lg">Update Survey</button>
+                                    <a href="/surveys" class="inline-block px-6 py-2.5 rounded-xl font-semibold transition-all bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray hover:bg-ella-dark-gray hover:text-white">Cancel</a>
+                                </div>
+                            
+            </form>
+            
+            <div class="mt-6 text-center">
+                <a href="/surveys" class="text-ella-pink hover:underline text-sm">← Go Back</a>
+            </div>
+        </div>
+    </div>
+
+<!-- Footer-->
+    <footer class="bg-ella-dark-gray text-white pt-16 pb-8 relative overflow-hidden mt-12">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-ella-light-blue via-ella-pink to-ella-purple"></div>
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+                <div class="text-left">
+                    <h3 class="font-serif text-2xl mb-2 text-ella-pink">Ella Rises</h3>
+                    <p class="text-gray-400 max-w-xs text-sm">Empowering young Hispanic women through education, culture, and community.</p>
+                </div>
+                <div class="flex gap-8">
+                    <a href="https://www.facebook.com/share/1ALmigc75W/?mibextid=wwXIfr" aria-label="Facebook" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink hover:text-ella-dark-gray transition-all duration-300">
+                        <i class="bi bi-facebook text-lg"></i>
+                    </a>
+                    <a href="https://www.instagram.com/ellarises?igsh=YTVtZzBrbDJ0eTBx" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink hover:text-ella-dark-gray transition-all duration-300">
+                        <i class="bi bi-instagram text-lg"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+                <p>&copy; 2025 Ella Rises. All Rights Reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="https://www.ellarises.org/team" class="hover:text-white transition-colors">About</a>
+                    <a href="https://www.ellarises.org/contact-us" class="hover:text-white transition-colors">Contact</a>
+                    <a href="/teapot" class="hover:text-white transition-colors">Teapot</a>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="/javascripts/scripts.js"></script>
+    </footer>
 </body>
 
 </html>

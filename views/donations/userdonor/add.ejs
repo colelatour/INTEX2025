@@ -6,78 +6,146 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Make a Donation</title>
+    <title>Make a Donation - Ella Rises</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
     <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
-        type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
     <!-- Google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ella: {
+                'light-blue': '#99B7C6',
+                'purple': '#978Ec4',
+                'off-white': '#F9F5EA',
+                'light-pink': '#FFD8D1',
+                'pink': '#F9AFB1',
+                'green': '#9AB59D',
+                'dark-gray': '#3A3F3B',
+                'orange': '#F4B092',
+                'red': '#CE325B',
+              }
+            },
+            fontFamily: {
+              serif: ['"DM Serif Display"', 'serif'],
+              sans: ['"Montserrat"', 'sans-serif'],
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.8s ease-out forwards',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #F9F5EA;
+        font-family: 'Montserrat', sans-serif;
+      }
+    </style>
+</head><body class="font-sans selection:bg-ella-pink selection:text-white">
 
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/stylesheets/styles.css" rel="stylesheet" />
-</head>
 
-<body>
+<body class="font-sans selection:bg-ella-pink selection:text-white">
     <!-- Navigation-->
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
-                    style="height: 60px;"></a>
-            <div>
-                <% if (user) { %>
-                    <span class="navbar-text me-3">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
-                    <a class="btn btn-no-background" href="/logout">Logout</a>
-                <% } else { %>
-                    <a class="btn btn-no-background" href="/login">Login</a>
-                <% } %>
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b border-white/20 shadow-sm">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="/" class="flex items-center gap-2 group">
+                    <img src="/assets/img/EllaRises.png" alt="Ella Rises Logo" class="w-12 h-12 transition-transform group-hover:scale-110" />
+                    <span class="font-serif text-2xl font-bold tracking-wide text-ella-dark-gray">
+                        Ella<span class="text-ella-pink">Rises</span>
+                    </span>
+                </a>
             </div>
         </div>
     </nav>
-    <!-- Header-->
-    <header class="bg-primary py-2 position-relative">
-        <a href="/donations" class="back-arrow-link position-absolute"><i class="bi bi-chevron-left"></i></a>
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center">
-                <h1 class="display-4 fw-bolder">Make a Donation</h1>
+
+    
+    <div class="min-h-[80vh] flex items-center justify-center px-4 relative py-16 animate-fade-in">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-r from-ella-light-pink/20 via-ella-light-blue/20 to-ella-purple/20 blur-3xl -z-10 rounded-full"></div>
+        
+        <div class="w-full max-w-3xl bg-white/60 backdrop-blur-xl p-8 md:p-12 rounded-[2rem] shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] border border-white/40 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-ella-pink to-ella-purple"></div>
+            
+            <div class="text-center mb-8">
+                <h2 class="font-serif text-3xl text-ella-dark-gray mb-2">Make a Donation</h2>
+                <p class="text-gray-500">Fill out the form below</p>
             </div>
-        </div>
-    </header>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <% if (message) { %>
-                    <div class="alert alert-danger" role="alert">
-                        <%= message %>
+
+            <form action="/donations/userdonor/add" method="POST" class="space-y-6">
+                
+                    <div class="mb-6">
+                        <label for="userdonorfirstname" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">First Name</label>
+                        <input type="text" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="userdonorfirstname" name="userdonorfirstname" required>
                     </div>
-                <% } %>
-                <form action="/donations/userdonor/add" method="POST">
-                    <div class="mb-3">
-                        <label for="userdonorfirstname" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="userdonorfirstname" name="userdonorfirstname" required>
+                    <div class="mb-6">
+                        <label for="userdonorlastname" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Last Name</label>
+                        <input type="text" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="userdonorlastname" name="userdonorlastname" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="userdonorlastname" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="userdonorlastname" name="userdonorlastname" required>
+                    <div class="mb-6">
+                        <label for="userdonoramount" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Donation Amount ($)</label>
+                        <input type="number" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="userdonoramount" name="userdonoramount" step="0.01" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="userdonoramount" class="form-label">Donation Amount ($)</label>
-                        <input type="number" class="form-control" id="userdonoramount" name="userdonoramount" step="0.01" required>
+                    <div class="mb-6">
+                        <label for="userdonordate" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide block mb-2">Donation Date</label>
+                        <input type="date" class="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" id="userdonordate" name="userdonordate" value="<%= new Date().toISOString().slice(0,10) %>" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="userdonordate" class="form-label">Donation Date</label>
-                        <input type="date" class="form-control" id="userdonordate" name="userdonordate" value="<%= new Date().toISOString().slice(0,10) %>" required>
+                    <div class="flex gap-4 mt-8">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink shadow-lg">Add Donation</button>
+                        <a href="/" class="inline-block px-6 py-2.5 rounded-xl font-semibold transition-all bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray hover:bg-ella-dark-gray hover:text-white">Cancel</a>
                     </div>
-                    <button type="submit" class="btn btn-no-background">Add User Donor</button>
-                    <a href="/donations" class="btn btn-no-background btn-cancel">Cancel</a>
-                </form>
+                
+            </form>
+            
+            <div class="mt-6 text-center">
+                <a href="/" class="text-ella-pink hover:underline text-sm">← Go Back</a>
             </div>
         </div>
     </div>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="/javascripts/scripts.js"></script>
+
+<!-- Footer-->
+    <footer class="bg-ella-dark-gray text-white pt-16 pb-8 relative overflow-hidden mt-12">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-ella-light-blue via-ella-pink to-ella-purple"></div>
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+                <div class="text-left">
+                    <h3 class="font-serif text-2xl mb-2 text-ella-pink">Ella Rises</h3>
+                    <p class="text-gray-400 max-w-xs text-sm">Empowering young Hispanic women through education, culture, and community.</p>
+                </div>
+                <div class="flex gap-8">
+                    <a href="https://www.facebook.com/share/1ALmigc75W/?mibextid=wwXIfr" aria-label="Facebook" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink hover:text-ella-dark-gray transition-all duration-300">
+                        <i class="bi bi-facebook text-lg"></i>
+                    </a>
+                    <a href="https://www.instagram.com/ellarises?igsh=YTVtZzBrbDJ0eTBx" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink hover:text-ella-dark-gray transition-all duration-300">
+                        <i class="bi bi-instagram text-lg"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+                <p>&copy; 2025 Ella Rises. All Rights Reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="https://www.ellarises.org/team" class="hover:text-white transition-colors">About</a>
+                    <a href="https://www.ellarises.org/contact-us" class="hover:text-white transition-colors">Contact</a>
+                    <a href="/teapot" class="hover:text-white transition-colors">Teapot</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

@@ -6,190 +6,459 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Ella Rises</title>
+    <title>Ella Rises - Empowering Future Leaders</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
     <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
-        type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
     <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
-        type="text/css" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/stylesheets/styles.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ella: {
+                'light-blue': '#99B7C6',
+                'purple': '#978Ec4',
+                'off-white': '#F9F5EA',
+                'light-pink': '#FFD8D1',
+                'pink': '#F9AFB1',
+                'green': '#9AB59D',
+                'dark-gray': '#3A3F3B',
+                'orange': '#F4B092',
+                'red': '#CE325B',
+              }
+            },
+            fontFamily: {
+              serif: ['"DM Serif Display"', 'serif'],
+              sans: ['"Montserrat"', 'sans-serif'],
+            },
+            animation: {
+              'float': 'float 6s ease-in-out infinite',
+              'fade-in': 'fadeIn 0.8s ease-out forwards',
+              'gradient': 'gradient 8s linear infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              gradient: {
+                '0%, 100%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+              }
+            },
+            backgroundSize: {
+              '300%': '300%',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #F9F5EA;
+        font-family: 'Montserrat', sans-serif;
+      }
+      ::-webkit-scrollbar { width: 10px; }
+      ::-webkit-scrollbar-track { background: #F9F5EA; }
+      ::-webkit-scrollbar-thumb { background: #99B7C6; border-radius: 5px; }
+      ::-webkit-scrollbar-thumb:hover { background: #978Ec4; }
+    </style>
 </head>
 
-<body>
+<body class="font-sans selection:bg-ella-pink selection:text-white">
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid px-4">
-        <a class="navbar-brand" href="/"><img src="/assets/img/EllaRises.png" alt="Ella Rises Logo"
-                style="height: 60px;"></a>
-        <% if (user) { %>
-            <span class="navbar-text d-lg-none mobile-greeting">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
-        <% } %>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"><span></span></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav nav-center-desktop">
-                <li class="nav-item mx-lg-3">
-                    <a class="nav-link-custom" href="/dashboard">Dashboard</a>
-                </li>
-                <li class="nav-item mx-lg-3">
-                    <a class="nav-link-custom" href="/#our-impact">Impact</a>
-                </li>
-                <li class="nav-item mx-lg-3">
-                    <a class="nav-link-custom" href="/donations/userdonor/add">Donate</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ms-lg-auto align-items-lg-center">
-                <% if (user) { %>
-                    <li class="nav-item me-lg-3 d-none d-lg-block">
-                        <span class="navbar-text">Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %></span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-no-background" href="/logout">Logout</a>
-                    </li>
-                <% } else { %>
-                    <li class="nav-item">
-                        <a class="btn btn-no-background" href="/login">Login</a>
-                    </li>
-                <% } %>
-            </ul>
-        </div>
-    </div>
-</nav>
-    <!-- Header-->
-    <header class="bg-primary py-2">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center">
-                <h1 class="display-4 fw-bolder">Welcome to Ella Rises</h1>
-                <p class="lead fw-normal mb-0">
-                    Empowering young women to pursue higher education through high-impact multicultural activities focused on mariachi and STEAM
-                </p>
+    <nav class="sticky top-0 z-50 transition-all duration-300 backdrop-blur-md bg-white/70 border-b border-white/20 shadow-sm">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="/" class="flex items-center gap-2 group">
+                    <img src="/assets/img/EllaRises.png" alt="Ella Rises Logo" class="w-12 h-12 transition-transform group-hover:scale-110" />
+                    <span class="font-serif text-2xl font-bold tracking-wide text-ella-dark-gray">
+                        Ella<span class="text-ella-pink">Rises</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="/" class="text-sm tracking-widest uppercase text-ella-pink font-bold transition-colors">Home</a>
+                    <a href="/dashboard" class="text-sm tracking-widest uppercase text-ella-dark-gray hover:text-ella-pink transition-colors">Dashboard</a>
+                    <a href="/#our-impact" class="text-sm tracking-widest uppercase text-ella-dark-gray hover:text-ella-pink transition-colors">Impact</a>
+                    <a href="/donations/userdonor/add" class="text-sm tracking-widest uppercase text-ella-dark-gray hover:text-ella-pink transition-colors">Donate</a>
+                </div>
+
+                <!-- Desktop User Menu -->
+                <div class="hidden lg:flex items-center gap-4">
+                    <% if (user) { %>
+                        <span class="text-sm font-medium text-ella-dark-gray/80">
+                            Hi, <%= user.firstName ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) : '' %>
+                        </span>
+                        <a href="/logout" class="px-4 py-1.5 text-sm rounded-xl font-semibold transition-all duration-300 transform active:scale-95 bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray hover:bg-ella-dark-gray hover:text-white">
+                            Logout
+                        </a>
+                    <% } else { %>
+                        <a href="/login" class="px-6 py-2 text-sm rounded-xl font-semibold transition-all duration-300 transform active:scale-95 bg-ella-pink text-ella-dark-gray hover:bg-white hover:text-ella-pink border-2 border-ella-pink shadow-md hover:shadow-lg">
+                            Login
+                        </a>
+                    <% } %>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="lg:hidden p-2 text-ella-dark-gray hover:text-ella-pink transition-colors" aria-label="Toggle menu">
+                    <i class="bi bi-list text-2xl" id="menuIcon"></i>
+                </button>
             </div>
         </div>
-    </header>
-    <!-- Section-->
-    <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-            <h2 class="text-center mb-5">What We Offer</h2>
-            <div class="carousel-wrapper">
-                <button class="carousel-nav carousel-nav-left" id="prevBtn" aria-label="Previous">
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-                <div class="carousel-container">
-                    <div class="carousel-track" id="carouselTrack">
-                        <div class="carousel-item-custom">
-                            <div class="card">
-                                <img class="card-img-top card-img-fixed-height" src="/images/classroom.avif" alt="Classroom" />
-                                <div class="card-body">
-                                    <p class="card-text text-center">Education Opportunities</p>
+
+        <!-- Mobile Navigation -->
+        <div id="mobileMenu" class="lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white/95 backdrop-blur-xl border-t border-ella-light-pink/30 max-h-0">
+            <div class="px-4 py-6 space-y-4 flex flex-col items-center">
+                <a href="/" class="text-lg font-medium">Home</a>
+                <a href="/dashboard" class="text-lg font-medium">Dashboard</a>
+                <a href="/#our-impact" class="text-lg font-medium">Impact</a>
+                <div class="pt-4 border-t border-gray-100 w-full flex flex-col items-center gap-3">
+                    <% if (user) { %>
+                        <span class="text-sm text-gray-500">Logged in as <%= user.firstName %></span>
+                        <a href="/logout" class="w-full max-w-xs text-center px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray hover:bg-ella-dark-gray hover:text-white">
+                            Logout
+                        </a>
+                    <% } else { %>
+                        <a href="/login" class="w-full max-w-xs text-center px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink">
+                            Login
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-[#F9F5EA] animate-fade-in py-12">
+        <!-- Animated Background Mesh -->
+        <div class="absolute inset-0 w-full h-full">
+            <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-300/30 rounded-full blur-[120px] animate-float"></div>
+            <div class="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-pink-300/30 rounded-full blur-[120px] animate-float" style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-[-10%] left-[20%] w-[50%] h-[50%] bg-blue-300/30 rounded-full blur-[120px] animate-float" style="animation-delay: 2s;"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 z-10 relative">
+            <div class="max-w-4xl mx-auto text-center">
+                <!-- Glassmorphism Card -->
+                <div class="backdrop-blur-sm bg-white/30 p-6 md:p-10 rounded-3xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]">
+                    
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/60 border border-white/50 backdrop-blur-md shadow-sm mb-6">
+                        <span class="w-1.5 h-1.5 rounded-full bg-ella-red animate-pulse"></span>
+                        <span class="text-ella-dark-gray font-semibold text-xs tracking-[0.2em] uppercase">Empowering Future Leaders</span>
+                    </div>
+
+                    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-ella-dark-gray mb-6 leading-tight tracking-tight">
+                        Rise Above <br/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-ella-pink via-ella-purple to-ella-light-blue animate-gradient bg-300% relative inline-block mt-1">
+                            Expectations
+                        </span>
+                    </h1>
+
+                    <p class="font-sans text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+                        We bridge the gap for young women by combining <span class="font-semibold text-ella-purple">STEAM education</span> with the rich cultural heritage of <span class="font-semibold text-ella-pink">Mariachi</span> and <span class="font-semibold text-ella-pink">Ballet Folklorico</span>.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="/participants/add">
+                            <button class="relative px-6 py-2.5 rounded-full font-semibold transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 overflow-hidden group bg-ella-pink text-ella-dark-gray hover:bg-white hover:text-ella-pink border-2 border-ella-pink shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm">
+                                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full opacity-10 group-hover:w-56 group-hover:h-56 -top-20 -left-20"></span>
+                                Join the Movement
+                            </button>
+                        </a>
+                        <a href="#our-impact">
+                            <button class="relative px-6 py-2.5 rounded-full font-semibold transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 overflow-hidden group bg-white/50 backdrop-blur-md border-2 border-white hover:bg-white text-ella-dark-gray text-sm">
+                                View Impact
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Carousel Section -->
+    <section class="py-16 bg-gradient-to-b from-[#F9F5EA] to-white relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="font-serif text-3xl md:text-4xl text-ella-dark-gray mb-4">What We Offer</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-ella-pink to-ella-purple mx-auto rounded-full"></div>
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Our programs are designed to inspire, educate, and connect.</p>
+            </div>
+            
+            <!-- Carousel -->
+            <div class="relative w-full max-w-5xl mx-auto px-4 py-8">
+                <div class="flex items-center justify-between absolute top-1/2 left-0 right-0 z-10 -mt-6 pointer-events-none">
+                    <button id="prevBtn" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur shadow-lg text-ella-pink hover:bg-ella-pink hover:text-white transition-all duration-300 pointer-events-auto flex items-center justify-center -ml-2 lg:-ml-8" aria-label="Previous">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button id="nextBtn" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur shadow-lg text-ella-pink hover:bg-ella-pink hover:text-white transition-all duration-300 pointer-events-auto flex items-center justify-center -mr-2 lg:-mr-8" aria-label="Next">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="overflow-hidden px-4 py-6 -mx-4">
+                    <div id="carouselTrack" class="flex transition-transform duration-500 ease-out">
+                        <div class="flex-shrink-0 px-2 transition-all duration-300 carousel-item" style="width: 33.333%;">
+                            <div class="group relative h-64 rounded-xl overflow-hidden bg-white shadow-lg hover:shadow-xl hover:shadow-ella-pink/20 transition-all duration-300 transform hover:-translate-y-1">
+                                <img src="/images/classroom.avif" alt="Education Opportunities" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+                                <div class="absolute inset-0 bg-gradient-to-t from-ella-dark-gray/90 via-transparent to-transparent opacity-80"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-4 text-center transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+                                    <h3 class="text-white font-serif text-lg mb-1 drop-shadow-md">Education Opportunities</h3>
+                                    <div class="w-10 h-0.5 bg-ella-pink mx-auto rounded-full group-hover:w-16 transition-all duration-300"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="carousel-item-custom">
-                            <div class="card">
-                                <img class="card-img-top card-img-fixed-height" src="/images/steam.avif" alt="Steam" />
-                                <div class="card-body">
-                                    <p class="card-text text-center">STEAM Activities</p>
+                        <div class="flex-shrink-0 px-2 transition-all duration-300 carousel-item" style="width: 33.333%;">
+                            <div class="group relative h-64 rounded-xl overflow-hidden bg-white shadow-lg hover:shadow-xl hover:shadow-ella-pink/20 transition-all duration-300 transform hover:-translate-y-1">
+                                <img src="/images/steam.avif" alt="STEAM Activities" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+                                <div class="absolute inset-0 bg-gradient-to-t from-ella-dark-gray/90 via-transparent to-transparent opacity-80"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-4 text-center transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+                                    <h3 class="text-white font-serif text-lg mb-1 drop-shadow-md">STEAM Activities</h3>
+                                    <div class="w-10 h-0.5 bg-ella-pink mx-auto rounded-full group-hover:w-16 transition-all duration-300"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="carousel-item-custom">
-                            <div class="card">
-                                <img class="card-img-top card-img-fixed-height" src="/images/ballet.avif" alt="Ballet" />
-                                <div class="card-body">
-                                    <p class="card-text text-center">Ballet Folklorico</p>
+                        <div class="flex-shrink-0 px-2 transition-all duration-300 carousel-item" style="width: 33.333%;">
+                            <div class="group relative h-64 rounded-xl overflow-hidden bg-white shadow-lg hover:shadow-xl hover:shadow-ella-pink/20 transition-all duration-300 transform hover:-translate-y-1">
+                                <img src="/images/ballet.avif" alt="Ballet Folklorico" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+                                <div class="absolute inset-0 bg-gradient-to-t from-ella-dark-gray/90 via-transparent to-transparent opacity-80"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-4 text-center transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+                                    <h3 class="text-white font-serif text-lg mb-1 drop-shadow-md">Ballet Folklorico</h3>
+                                    <div class="w-10 h-0.5 bg-ella-pink mx-auto rounded-full group-hover:w-16 transition-all duration-300"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="carousel-item-custom">
-                            <div class="card">
-                                <img class="card-img-top card-img-fixed-height img-focus-custom" src="/images/mariachi.avif" alt="Mariachi" />
-                                <div class="card-body">
-                                    <p class="card-text text-center">Mariachi</p>
+                        <div class="flex-shrink-0 px-2 transition-all duration-300 carousel-item" style="width: 33.333%;">
+                            <div class="group relative h-64 rounded-xl overflow-hidden bg-white shadow-lg hover:shadow-xl hover:shadow-ella-pink/20 transition-all duration-300 transform hover:-translate-y-1">
+                                <img src="/images/mariachi.avif" alt="Mariachi" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+                                <div class="absolute inset-0 bg-gradient-to-t from-ella-dark-gray/90 via-transparent to-transparent opacity-80"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-4 text-center transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+                                    <h3 class="text-white font-serif text-lg mb-1 drop-shadow-md">Mariachi</h3>
+                                    <div class="w-10 h-0.5 bg-ella-pink mx-auto rounded-full group-hover:w-16 transition-all duration-300"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button class="carousel-nav carousel-nav-right" id="nextBtn" aria-label="Next">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
+
+                <div class="flex justify-center gap-2 mt-6" id="carouselDots">
+                    <button class="carousel-dot h-1.5 rounded-full transition-all duration-300 w-6 bg-ella-pink"></button>
+                    <button class="carousel-dot h-1.5 rounded-full transition-all duration-300 w-1.5 bg-gray-300 hover:bg-ella-light-pink"></button>
+                </div>
             </div>
-            <div class="carousel-dots" id="carouselDots"></div>
         </div>
     </section>
 
-        <!-- Tableau embed section -->
-        <section id="our-impact" class="py-5 mb-5">
-            <div class="container px-4 px-lg-5 mt-3">
-                <h2 class="fw-bolder mb-3 text-center">Our Impact</h2>
-                <div class="tableau-responsive-wrapper">
-                    <div class='tableauPlaceholder' id='viz1764707769727' style='position: relative'><noscript><a href='#'><img alt='Ella Rises ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;20&#47;2025INTEXGroup2-7&#47;EllaRises&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='2025INTEXGroup2-7&#47;EllaRises' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;20&#47;2025INTEXGroup2-7&#47;EllaRises&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>
+
+    <!-- Impact Section (Tableau) -->
+    <section id="our-impact" class="py-16 relative overflow-hidden bg-white">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-10 gap-8">
+                <div class="text-left md:w-1/2">
+                    <span class="text-ella-purple font-bold tracking-widest uppercase text-xs mb-2 block">Data Driven Results</span>
+                    <h2 class="font-serif text-3xl md:text-4xl text-ella-dark-gray mb-4 leading-tight">Measuring Our <br/><span class="text-ella-pink">Community Impact</span></h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        See how Ella Rises is changing lives through data. Our interactive dashboard tracks participation, educational outcomes, and community engagement across all our programs.
+                    </p>
                 </div>
-                <div class="mobile-dashboard-hint text-center mt-3">
-                    <p class="text-muted mb-0">
+                <div class="md:w-1/3 text-right flex gap-3 flex-wrap justify-center md:justify-end">
+                    <div class="inline-block p-4 bg-ella-off-white rounded-2xl border border-ella-pink/20">
+                        <div class="text-2xl font-serif text-ella-dark-gray mb-0.5"><%= participantCount %></div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wide">Participants</div>
+                    </div>
+                    <div class="inline-block p-4 bg-ella-off-white rounded-2xl border border-ella-green/20">
+                        <div class="text-2xl font-serif text-ella-dark-gray mb-0.5">$<%= totalDonations %></div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wide">Total Donations</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-3 border border-gray-100">
+                <div class="relative w-full rounded-[2rem] overflow-hidden bg-gray-100 ring-1 ring-black/5" style="height: 800px;">
+                    <div class='tableauPlaceholder' id='viz1764707769727' style='position: relative; width: 100%; height: 100%;'>
+                        <noscript><a href='#'><img alt='Ella Rises' src='https://public.tableau.com/static/images/20/2025INTEXGroup2-7/EllaRises/1_rss.png' style='border: none' /></a></noscript>
+                        <object class='tableauViz' style='display:none;'>
+                            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+                            <param name='embed_code_version' value='3' />
+                            <param name='site_root' value='' />
+                            <param name='name' value='2025INTEXGroup2-7&#47;EllaRises' />
+                            <param name='tabs' value='no' />
+                            <param name='toolbar' value='yes' />
+                            <param name='static_image' value='https://public.tableau.com/static/images/20/2025INTEXGroup2-7/EllaRises/1.png' />
+                            <param name='animate_transition' value='yes' />
+                            <param name='display_static_image' value='yes' />
+                            <param name='display_spinner' value='yes' />
+                            <param name='display_overlay' value='yes' />
+                            <param name='display_count' value='yes' />
+                            <param name='language' value='en-US' />
+                            <param name='filter' value='publish=yes' />
+                        </object>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <p class="text-gray-500 mb-0">
                         <i class="bi bi-info-circle"></i> Swipe to explore the full dashboard
                     </p>
-                    <p class="text-muted small">
+                    <p class="text-gray-400 text-sm">
                         For the best viewing experience, visit us on desktop
                     </p>
                 </div>
-                <script type='text/javascript'>
-                    var divElement = document.getElementById('viz1764707769727');
-                    var vizElement = divElement.getElementsByTagName('object')[0];
-                    if ( divElement.offsetWidth > 800 ) { 
-                        vizElement.style.width='100%';
-                        vizElement.style.height=(divElement.offsetWidth*0.75)+'px';
-                    } else if ( divElement.offsetWidth > 500 ) { 
-                        vizElement.style.width='100%';
-                        vizElement.style.height=(divElement.offsetWidth*0.75)+'px';
-                    } else { 
-                        vizElement.style.width='100%';
-                        vizElement.style.height='900px';
-                    }
-                    var scriptElement = document.createElement('script');
-                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-                    vizElement.parentNode.insertBefore(scriptElement, vizElement);
-                </script>
             </div>
-        </section>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-ella-dark-gray text-white relative overflow-hidden flex flex-col items-center justify-center text-center">
+        <!-- Futuristic Grid Background -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+        
+        <div class="container mx-auto px-4 relative z-10 flex flex-col items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-ella-pink to-ella-purple rounded-2xl rotate-12 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(249,175,177,0.6)]">
+                <i class="bi bi-heart-fill text-2xl text-white -rotate-12"></i>
+            </div>
+            
+            <h2 class="font-serif text-3xl md:text-4xl mb-6 leading-tight">Ready to make a <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-ella-pink to-ella-light-blue">Difference?</span></h2>
+            <p class="text-base text-gray-300 mb-8 max-w-xl mx-auto leading-relaxed">
+                Your support helps us provide resources, mentorship, and opportunities for the next generation of women leaders.
+            </p>
+            
+            <div class="flex flex-col items-center">
+                <a href="/donations/userdonor/add">
+                    <button class="relative px-8 py-3 rounded-full font-semibold transition-all duration-500 transform active:scale-95 flex items-center justify-center gap-2 overflow-hidden group bg-white text-ella-dark-gray border-2 border-white hover:bg-ella-pink hover:text-white hover:border-ella-pink shadow-lg hover:shadow-xl">
+                        Donate Now
+                    </button>
+                </a>
+                <p class="mt-4 text-xs text-gray-500">Join 500+ other supporters today</p>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer-->
-    <footer class="footer bg-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
-                    <ul class="list-inline mb-2">
-                        <li class="list-inline-item"><a href="https://www.ellarises.org/team">About</a></li>
-                        <li class="list-inline-item">⋅</li>
-                        <li class="list-inline-item"><a href="https://www.ellarises.org/contact-us">Contact</a></li>
-                        <li class="list-inline-item">⋅</li>
-                        <li class="list-inline-item"><a href="/teapot">Teapot</a></li>
-                    </ul>
-                    <p class="text-muted small mb-4 mb-lg-0">&copy; 2025 Ella Rises. All Rights Reserved.</p>
+    <footer class="bg-ella-dark-gray text-white pt-16 pb-8 relative overflow-hidden mt-12">
+        <!-- Decorative background element -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-ella-light-blue via-ella-pink to-ella-purple"></div>
+        <div class="absolute -top-20 -right-20 w-64 h-64 bg-ella-purple rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+        
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+                <div class="text-left">
+                    <h3 class="font-serif text-2xl mb-2 text-ella-pink">Ella Rises</h3>
+                    <p class="text-gray-400 max-w-xs text-sm">Empowering young Hispanic women through education, culture, and community.</p>
                 </div>
-                <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item me-4">
-                            <a href="https://www.facebook.com/share/1ALmigc75W/?mibextid=wwXIfr" aria-label="Visit our Facebook page"><i class="bi-facebook fs-3"></i></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="https://www.instagram.com/ellarises?igsh=YTVtZzBrbDJ0eTBx" aria-label="Visit our Instagram page"><i class="bi-instagram fs-3"></i></a>
-                        </li>
-                    </ul>
+                
+                <div class="flex gap-8">
+                    <a href="https://www.facebook.com/share/1ALmigc75W/?mibextid=wwXIfr" aria-label="Visit our Facebook page" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink hover:text-ella-dark-gray transition-all duration-300">
+                        <i class="bi bi-facebook text-lg"></i>
+                    </a>
+                    <a href="https://www.instagram.com/ellarises?igsh=YTVtZzBrbDJ0eTBx" aria-label="Visit our Instagram page" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink hover:text-ella-dark-gray transition-all duration-300">
+                        <i class="bi bi-instagram text-lg"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-ella-pink hover:text-ella-dark-gray transition-all duration-300">
+                        <i class="bi bi-twitter text-lg"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+                <p>&copy; 2025 Ella Rises. All Rights Reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="https://www.ellarises.org/team" class="hover:text-white transition-colors">About</a>
+                    <a href="https://www.ellarises.org/contact-us" class="hover:text-white transition-colors">Contact</a>
+                    <a href="/teapot" class="hover:text-white transition-colors">Teapot</a>
                 </div>
             </div>
         </div>
     </footer>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="/javascripts/scripts.js"></script>
+
+    <script type='text/javascript'>
+        // Tableau init
+        var divElement = document.getElementById('viz1764707769727');
+        var vizElement = divElement.getElementsByTagName('object')[0];
+        vizElement.style.width='100%';
+        vizElement.style.height='800px';
+        var scriptElement = document.createElement('script');
+        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+        vizElement.parentNode.insertBefore(scriptElement, vizElement);
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== '0px';
+            mobileMenu.style.maxHeight = isOpen ? '0' : '400px';
+            menuIcon.classList.toggle('bi-list');
+            menuIcon.classList.toggle('bi-x-lg');
+        });
+
+        // Carousel functionality
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const items = document.querySelectorAll('.carousel-item');
+        let currentIndex = 0;
+        let itemsPerPage = 3;
+
+        function updateItemsPerPage() {
+            if (window.innerWidth < 768) itemsPerPage = 1;
+            else if (window.innerWidth < 1024) itemsPerPage = 2;
+            else itemsPerPage = 3;
+            
+            items.forEach(item => {
+                item.style.width = `${100 / itemsPerPage}%`;
+            });
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentIndex * (100 / itemsPerPage)}%)`;
+            dots.forEach((dot, idx) => {
+                if (idx === currentIndex) {
+                    dot.classList.add('w-6', 'bg-ella-pink');
+                    dot.classList.remove('w-1.5', 'bg-gray-300');
+                } else {
+                    dot.classList.remove('w-6', 'bg-ella-pink');
+                    dot.classList.add('w-1.5', 'bg-gray-300');
+                }
+            });
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = currentIndex === 0 ? (items.length - itemsPerPage) : currentIndex - 1;
+            updateCarousel();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = currentIndex >= items.length - itemsPerPage ? 0 : currentIndex + 1;
+            updateCarousel();
+        });
+
+        dots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => {
+                currentIndex = idx;
+                updateCarousel();
+            });
+        });
+
+        window.addEventListener('resize', updateItemsPerPage);
+        updateItemsPerPage();
+    </script>
 </body>
 
 </html>

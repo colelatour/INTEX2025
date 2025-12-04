@@ -23,3 +23,7 @@ check_db.js
 *.erd
 *.mwb
 *.drawio
+
+# Build Prompts (internal use only)
+BUILD_PROMPT.txt
+UI_PROMPT.txt
