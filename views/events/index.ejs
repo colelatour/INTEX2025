@@ -58,13 +58,13 @@
                         <a href="/login" class="px-6 py-2 text-sm rounded-xl font-semibold bg-ella-pink text-ella-dark-gray border-2 border-ella-pink shadow-md">Login</a>
                     <% } %>
                 </div>
-                <button id="mobileMenuBtn" class="lg:hidden p-2 text-ella-dark-gray"><i class="bi bi-list text-2xl" id="menuIcon"></i></button>
+                <button id="mobileMenuBtn" class="lg:hidden p-2 text-ella-dark-gray focus:outline-none focus:ring-2 focus:ring-ella-pink focus:ring-offset-2" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu"><i class="bi bi-list text-2xl" id="menuIcon"></i></button>
             </div>
         </div>
-        <div id="mobileMenu" class="lg:hidden overflow-hidden transition-all duration-300 bg-white/95 backdrop-blur-xl border-t border-ella-light-pink/30 max-h-0">
+        <div id="mobileMenu" class="lg:hidden overflow-hidden transition-all duration-300 bg-white/95 backdrop-blur-xl border-t border-ella-light-pink/30 max-h-0" role="navigation" aria-label="Mobile navigation">
             <div class="px-4 py-6 space-y-4 flex flex-col items-center">
-                <a href="/" class="text-lg font-medium">Home</a>
-                <a href="/dashboard" class="text-lg font-medium">Dashboard</a>
+                <a href="/" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Home</a>
+                <a href="/dashboard" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Dashboard</a>
                 <% if (user) { %>
                     <span class="text-sm text-gray-500">Logged in as <%= user.firstName %></span>
                     <a href="/logout" class="w-full max-w-xs text-center px-6 py-2.5 rounded-xl font-semibold bg-transparent text-ella-dark-gray border-2 border-ella-dark-gray">Logout</a>
@@ -97,10 +97,11 @@
         <% } %>
 
         <!-- Search Bar -->
-        <form action="/events" method="GET" class="bg-white rounded-2xl shadow-sm p-4 mb-8 flex items-center gap-4 border border-gray-100">
-            <i class="bi bi-search text-gray-400 text-xl pl-2"></i>
-            <input type="search" name="search" placeholder="Search by name or email..." value="<%= searchTerm || '' %>" class="flex-grow bg-transparent border-none focus:ring-0 text-gray-700 placeholder-gray-400 font-sans outline-none"/>
-            <button type="submit" class="px-6 py-2 rounded-xl font-semibold bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink transition-all">Search</button>
+        <form action="/events" method="GET" class="bg-white rounded-2xl shadow-sm p-4 mb-8 flex items-center gap-4 border border-gray-100" role="search">
+            <i class="bi bi-search text-gray-400 text-xl pl-2" aria-hidden="true"></i>
+            <label for="event-search" class="sr-only">Search events by name or location</label>
+            <input type="search" id="event-search" name="search" placeholder="Search by name or location..." value="<%= searchTerm || '' %>" class="flex-grow bg-transparent border-none focus:ring-0 text-gray-700 placeholder-gray-400 font-sans outline-none" aria-label="Search events"/>
+            <button type="submit" class="px-6 py-2 rounded-xl font-semibold bg-ella-pink text-ella-dark-gray hover:bg-white border-2 border-ella-pink transition-all focus:outline-none focus:ring-2 focus:ring-ella-pink focus:ring-offset-2">Search</button>
         </form>
 
         <!-- Table Card -->
@@ -109,14 +110,14 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-gradient-to-r from-ella-off-white to-white border-b border-gray-100">
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Event Name</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Date</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Time</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Location</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Type</th>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Registration Deadline</th>
+                            <th scope="col" class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Event Name</th>
+                            <th scope="col" class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Date</th>
+                            <th scope="col" class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Time</th>
+                            <th scope="col" class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Location</th>
+                            <th scope="col" class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Type</th>
+                            <th scope="col" class="p-6 font-serif text-ella-dark-gray font-normal text-lg">Registration Deadline</th>
                             <% if (user && user.role === 'manager') { %>
-                            <th class="p-6 font-serif text-ella-dark-gray font-normal text-lg text-right">Actions</th>
+                            <th scope="col" class="p-6 font-serif text-ella-dark-gray font-normal text-lg text-right">Actions</th>
                             <% } %>
                         </tr>
                     </thead>
@@ -136,13 +137,13 @@
                                     <td class="p-6 text-right">
                                         <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <form action="/events/edit/<%= e.id %>" method="GET" class="inline">
-                                                <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-dark-gray text-ella-dark-gray hover:bg-ella-dark-gray hover:text-white transition-all">
-                                                    <i class="bi bi-pencil-fill"></i>
+                                                <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-dark-gray text-ella-dark-gray hover:bg-ella-dark-gray hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-ella-dark-gray focus:ring-offset-2" aria-label="Edit <%= e.name %>">
+                                                    <i class="bi bi-pencil-fill" aria-hidden="true"></i>
                                                 </button>
                                             </form>
-                                            <form action="/events/delete/<%= e.id %>" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
-                                                <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-red text-ella-red hover:bg-ella-red hover:text-white transition-all">
-                                                    <i class="bi bi-trash-fill"></i>
+                                            <form action="/events/delete/<%= e.id %>" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this event?');">
+                                                <button type="submit" class="p-2 h-10 w-10 rounded-full border-2 border-ella-red text-ella-red hover:bg-ella-red hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-ella-red focus:ring-offset-2" aria-label="Delete <%= e.name %>">
+                                                    <i class="bi bi-trash-fill" aria-hidden="true"></i>
                                                 </button>
                                             </form>
                                         </div>

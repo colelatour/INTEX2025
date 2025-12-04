@@ -161,7 +161,8 @@ app.post('/login', async (req, res) => {
         id: user.userid,
         firstName: user.userfirstname,
         role: user.userrole,
-        showConfetti: showConfetti
+        showConfetti: showConfetti,
+        confettiShown: false
       };
 
       // Redirect user back to where they started
@@ -317,9 +318,17 @@ app.get('/dashboard', isAuthenticated, (req, res) => {
   const message = req.session.message;
   req.session.message = null;
 
+  // Check if we should show confetti (only once per session)
+  let shouldShowConfetti = false;
+  if (req.session.user && req.session.user.showConfetti && !req.session.user.confettiShown) {
+    shouldShowConfetti = true;
+    req.session.user.confettiShown = true;
+  }
+
   res.render('dashboard', {
     title: 'Ella Rises Dashboard',
     user: req.session.user || null,
+    shouldShowConfetti: shouldShowConfetti,
     message
   });
 });
@@ -327,6 +336,13 @@ app.get('/dashboard', isAuthenticated, (req, res) => {
 // Homepage route
 app.get('/', async (req, res) => {
   try {
+    // Check if we should show confetti (only once per session)
+    let shouldShowConfetti = false;
+    if (req.session.user && req.session.user.showConfetti && !req.session.user.confettiShown) {
+      shouldShowConfetti = true;
+      req.session.user.confettiShown = true;
+    }
+    
     // Get participant count
     const participantCount = await knex('participants').count('* as count').first();
     
@@ -346,6 +362,7 @@ app.get('/', async (req, res) => {
     res.render('index', { 
       title: 'Ella Rises', 
       user: req.session.user || null,
+      shouldShowConfetti: shouldShowConfetti,
       participantCount: participantCount?.count || 0,
       totalDonations: totalDonations.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     });

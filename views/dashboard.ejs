@@ -91,17 +91,17 @@
                     <% } %>
                 </div>
 
-                <button id="mobileMenuBtn" class="lg:hidden p-2 text-ella-dark-gray hover:text-ella-pink transition-colors">
+                <button id="mobileMenuBtn" class="lg:hidden p-2 text-ella-dark-gray hover:text-ella-pink transition-colors focus:outline-none focus:ring-2 focus:ring-ella-pink focus:ring-offset-2" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu">
                     <i class="bi bi-list text-2xl" id="menuIcon"></i>
                 </button>
             </div>
         </div>
 
-        <div id="mobileMenu" class="lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white/95 backdrop-blur-xl border-t border-ella-light-pink/30 max-h-0">
+        <div id="mobileMenu" class="lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white/95 backdrop-blur-xl border-t border-ella-light-pink/30 max-h-0" role="navigation" aria-label="Mobile navigation">
             <div class="px-4 py-6 space-y-4 flex flex-col items-center">
-                <a href="/" class="text-lg font-medium">Home</a>
-                <a href="/dashboard" class="text-lg font-medium">Dashboard</a>
-                <a href="/#our-impact" class="text-lg font-medium">Impact</a>
+                <a href="/" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Home</a>
+                <a href="/dashboard" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Dashboard</a>
+                <a href="/#our-impact" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Impact</a>
                 <div class="pt-4 border-t border-gray-100 w-full flex flex-col items-center gap-3">
                     <% if (user) { %>
                         <span class="text-sm text-gray-500">Logged in as <span class="<%= user.showConfetti ? 'user-name-confetti' : '' %>"><%= user.firstName %></span></span>
@@ -299,11 +299,56 @@
             mobileMenu.style.maxHeight = isOpen ? '0' : '400px';
             menuIcon.classList.toggle('bi-list');
             menuIcon.classList.toggle('bi-x-lg');
+            mobileMenuBtn.setAttribute('aria-expanded', !isOpen);
         });
     </script>
     
-    <% if (user && user.showConfetti) { %>
+    <% if (shouldShowConfetti) { %>
+    <div id="confetti-message" class="fixed top-20 right-4 bg-gradient-to-br from-ella-pink to-ella-light-pink text-ella-dark-gray px-6 py-4 rounded-2xl shadow-2xl max-w-sm border-2 border-ella-red animate-slide-in pointer-events-auto" style="z-index: 9998;">
+        <div class="flex items-start gap-3">
+            <div class="text-3xl">🎉</div>
+            <div>
+                <h4 class="font-bold text-lg mb-1">Congratulations!</h4>
+                <p class="text-sm">You've attended 3 or more events! Thank you for your amazing participation!</p>
+            </div>
+            <button onclick="document.getElementById('confetti-message').style.display='none'" class="ml-2 text-ella-dark-gray hover:text-ella-red transition-colors focus:outline-none focus:ring-2 focus:ring-ella-red rounded" aria-label="Close message">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+    </div>
     <script src="/javascripts/confetti.js"></script>
+    <style>
+        @keyframes slide-in {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .animate-slide-in {
+            animation: slide-in 0.5s ease-out;
+        }
+        #confetti-message {
+            animation: slide-in 0.5s ease-out, fade-out 0.5s ease-in 4.5s forwards;
+        }
+        @keyframes fade-out {
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+    </style>
+    <script>
+        setTimeout(() => {
+            const message = document.getElementById('confetti-message');
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 5000);
+    </script>
     <% } %>
 </body>
 </html>

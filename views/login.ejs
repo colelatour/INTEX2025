@@ -98,23 +98,23 @@
                 <% } %>
                 
                 <div class="space-y-2">
-                    <label class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide">Email Address</label>
+                    <label for="email" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide">Email Address</label>
                     <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ella-pink transition-colors">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ella-pink transition-colors" aria-hidden="true">
                             <i class="bi bi-envelope-fill"></i>
                         </div>
-                        <input type="email" name="email" required class="w-full pl-11 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="you@example.com"/>
+                        <input type="email" id="email" name="email" required autocomplete="email" class="w-full pl-11 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="you@example.com" aria-required="true"/>
                     </div>
                 </div>
 
                 <div class="space-y-2">
-                    <label class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide">Password</label>
+                    <label for="password" class="text-sm font-bold text-gray-600 ml-1 uppercase tracking-wide">Password</label>
                     <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ella-pink transition-colors">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ella-pink transition-colors" aria-hidden="true">
                             <i class="bi bi-lock-fill"></i>
                         </div>
-                        <input type="password" id="password" name="password" required class="w-full pl-11 pr-12 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="••••••••"/>
-                        <button type="button" onclick="togglePassword('password', 'toggleIcon')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-ella-pink transition-colors">
+                        <input type="password" id="password" name="password" required autocomplete="current-password" class="w-full pl-11 pr-12 py-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-ella-pink focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-700" placeholder="••••••••" aria-required="true"/>
+                        <button type="button" onclick="togglePassword('password', 'toggleIcon')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-ella-pink transition-colors focus:outline-none focus:ring-2 focus:ring-ella-pink rounded" aria-label="Toggle password visibility">
                             <i id="toggleIcon" class="bi bi-eye-fill"></i>
                         </button>
                     </div>
@@ -138,14 +138,17 @@
         function togglePassword(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
+            const button = icon.parentElement;
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.classList.remove('bi-eye-fill');
                 icon.classList.add('bi-eye-slash-fill');
+                button.setAttribute('aria-label', 'Hide password');
             } else {
                 input.type = 'password';
                 icon.classList.remove('bi-eye-slash-fill');
                 icon.classList.add('bi-eye-fill');
+                button.setAttribute('aria-label', 'Show password');
             }
         }
     </script>

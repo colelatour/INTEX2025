@@ -114,18 +114,18 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="lg:hidden p-2 text-ella-dark-gray hover:text-ella-pink transition-colors" aria-label="Toggle menu">
+                <button id="mobileMenuBtn" class="lg:hidden p-2 text-ella-dark-gray hover:text-ella-pink transition-colors focus:outline-none focus:ring-2 focus:ring-ella-pink focus:ring-offset-2" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu">
                     <i class="bi bi-list text-2xl" id="menuIcon"></i>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Navigation -->
-        <div id="mobileMenu" class="lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white/95 backdrop-blur-xl border-t border-ella-light-pink/30 max-h-0">
+        <div id="mobileMenu" class="lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white/95 backdrop-blur-xl border-t border-ella-light-pink/30 max-h-0" role="navigation" aria-label="Mobile navigation">
             <div class="px-4 py-6 space-y-4 flex flex-col items-center">
-                <a href="/" class="text-lg font-medium">Home</a>
-                <a href="/dashboard" class="text-lg font-medium">Dashboard</a>
-                <a href="/#our-impact" class="text-lg font-medium">Impact</a>
+                <a href="/" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Home</a>
+                <a href="/dashboard" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Dashboard</a>
+                <a href="/#our-impact" class="text-lg font-medium focus:outline-none focus:ring-2 focus:ring-ella-pink rounded">Impact</a>
                 <div class="pt-4 border-t border-gray-100 w-full flex flex-col items-center gap-3">
                     <% if (user) { %>
                         <span class="text-sm text-gray-500">Logged in as <span class="<%= user.showConfetti ? 'user-name-confetti' : '' %>"><%= user.firstName %></span></span>
@@ -204,10 +204,10 @@
             <!-- Carousel -->
             <div class="relative w-full max-w-5xl mx-auto px-4 py-8">
                 <div class="flex items-center justify-between absolute top-1/2 left-0 right-0 z-10 -mt-6 pointer-events-none">
-                    <button id="prevBtn" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur shadow-lg text-ella-pink hover:bg-ella-pink hover:text-white transition-all duration-300 pointer-events-auto flex items-center justify-center -ml-2 lg:-ml-8" aria-label="Previous">
+                    <button id="prevBtn" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur shadow-lg text-ella-pink hover:bg-ella-pink hover:text-white transition-all duration-300 pointer-events-auto flex items-center justify-center -ml-2 lg:-ml-8 focus:outline-none focus:ring-2 focus:ring-ella-pink focus:ring-offset-2" aria-label="Previous slide">
                         <i class="bi bi-chevron-left"></i>
                     </button>
-                    <button id="nextBtn" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur shadow-lg text-ella-pink hover:bg-ella-pink hover:text-white transition-all duration-300 pointer-events-auto flex items-center justify-center -mr-2 lg:-mr-8" aria-label="Next">
+                    <button id="nextBtn" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur shadow-lg text-ella-pink hover:bg-ella-pink hover:text-white transition-all duration-300 pointer-events-auto flex items-center justify-center -mr-2 lg:-mr-8 focus:outline-none focus:ring-2 focus:ring-ella-pink focus:ring-offset-2" aria-label="Next slide">
                         <i class="bi bi-chevron-right"></i>
                     </button>
                 </div>
@@ -257,9 +257,9 @@
                     </div>
                 </div>
 
-                <div class="flex justify-center gap-2 mt-6" id="carouselDots">
-                    <button class="carousel-dot h-1.5 rounded-full transition-all duration-300 w-6 bg-ella-pink"></button>
-                    <button class="carousel-dot h-1.5 rounded-full transition-all duration-300 w-1.5 bg-gray-300 hover:bg-ella-light-pink"></button>
+                <div class="flex justify-center gap-2 mt-6" id="carouselDots" role="group" aria-label="Carousel navigation">
+                    <button class="carousel-dot h-1.5 rounded-full transition-all duration-300 w-6 bg-ella-pink focus:outline-none focus:ring-2 focus:ring-ella-pink focus:ring-offset-2" aria-label="Go to slide 1" aria-current="true"></button>
+                    <button class="carousel-dot h-1.5 rounded-full transition-all duration-300 w-1.5 bg-gray-300 hover:bg-ella-light-pink focus:outline-none focus:ring-2 focus:ring-ella-pink focus:ring-offset-2" aria-label="Go to slide 2"></button>
                 </div>
             </div>
         </div>
@@ -267,12 +267,12 @@
 
 
     <!-- Impact Section (Tableau) -->
-    <section id="our-impact" class="py-16 relative overflow-hidden bg-white">
+    <section id="our-impact" class="py-16 relative overflow-hidden bg-white" aria-labelledby="impact-heading">
         <div class="container mx-auto px-4 relative z-10">
             <div class="flex flex-col md:flex-row items-center justify-between mb-10 gap-8">
                 <div class="text-left md:w-1/2">
                     <span class="text-ella-purple font-bold tracking-widest uppercase text-xs mb-2 block">Data Driven Results</span>
-                    <h2 class="font-serif text-3xl md:text-4xl text-ella-dark-gray mb-4 leading-tight">Measuring Our <br/><span class="text-ella-pink">Community Impact</span></h2>
+                    <h2 id="impact-heading" class="font-serif text-3xl md:text-4xl text-ella-dark-gray mb-4 leading-tight">Measuring Our <br/><span class="text-ella-pink">Community Impact</span></h2>
                     <p class="text-gray-600 leading-relaxed">
                         See how Ella Rises is changing lives through data. Our interactive dashboard tracks participation, educational outcomes, and community engagement across all our programs.
                     </p>
@@ -291,8 +291,8 @@
 
             <div class="bg-white rounded-2xl shadow-xl p-3 border border-gray-100">
                 <div class="relative w-full rounded-[2rem] overflow-hidden bg-gray-100 ring-1 ring-black/5" style="height: 800px;">
-                    <div class='tableauPlaceholder' id='viz1764707769727' style='position: relative; width: 100%; height: 100%;'>
-                        <noscript><a href='#'><img alt='Ella Rises' src='https://public.tableau.com/static/images/20/2025INTEXGroup2-7/EllaRises/1_rss.png' style='border: none' /></a></noscript>
+                    <div class='tableauPlaceholder' id='viz1764707769727' style='position: relative; width: 100%; height: 100%;' role="img" aria-label="Ella Rises impact dashboard showing participant statistics and donation data">
+                        <noscript><a href='#'><img alt='Ella Rises impact dashboard showing participant engagement and program effectiveness metrics' src='https://public.tableau.com/static/images/20/2025INTEXGroup2-7/EllaRises/1_rss.png' style='border: none' /></a></noscript>
                         <object class='tableauViz' style='display:none;'>
                             <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
                             <param name='embed_code_version' value='3' />
@@ -403,6 +403,7 @@
             mobileMenu.style.maxHeight = isOpen ? '0' : '400px';
             menuIcon.classList.toggle('bi-list');
             menuIcon.classList.toggle('bi-x-lg');
+            mobileMenuBtn.setAttribute('aria-expanded', !isOpen);
         });
 
         // Carousel functionality
@@ -459,8 +460,52 @@
         updateItemsPerPage();
     </script>
     
-    <% if (user && user.showConfetti) { %>
+    <% if (shouldShowConfetti) { %>
+    <div id="confetti-message" class="fixed top-20 right-4 bg-gradient-to-br from-ella-pink to-ella-light-pink text-ella-dark-gray px-6 py-4 rounded-2xl shadow-2xl max-w-sm border-2 border-ella-red animate-slide-in pointer-events-auto" style="z-index: 9998;">
+        <div class="flex items-start gap-3">
+            <div class="text-3xl">🎉</div>
+            <div>
+                <h4 class="font-bold text-lg mb-1">Congratulations!</h4>
+                <p class="text-sm">You've attended 3 or more events! Thank you for your amazing participation!</p>
+            </div>
+            <button onclick="document.getElementById('confetti-message').style.display='none'" class="ml-2 text-ella-dark-gray hover:text-ella-red transition-colors focus:outline-none focus:ring-2 focus:ring-ella-red rounded" aria-label="Close message">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+    </div>
     <script src="/javascripts/confetti.js"></script>
+    <style>
+        @keyframes slide-in {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .animate-slide-in {
+            animation: slide-in 0.5s ease-out;
+        }
+        #confetti-message {
+            animation: slide-in 0.5s ease-out, fade-out 0.5s ease-in 4.5s forwards;
+        }
+        @keyframes fade-out {
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+    </style>
+    <script>
+        setTimeout(() => {
+            const message = document.getElementById('confetti-message');
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 5000);
+    </script>
     <% } %>
 </body>
 
